@@ -1,0 +1,91 @@
+<breadcrumb [title]="'Charts'" [subtitle]="'Heatmap Charts'" />
+
+<div class="row">
+  <!-- Basic Scatter Charts -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Basic Heatmap Charts</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="basic_heatmap_chart" class="apex-charts">
+          <apx-chart
+            [series]="basicHeatmap.series!"
+            [chart]="basicHeatmap.chart!"
+            [plotOptions]="basicHeatmap.plotOptions!"
+            [colors]="basicHeatmap.colors!"
+            [labels]="basicHeatmap.labels!"
+            [dataLabels]="basicHeatmap.dataLabels!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Multiple Colors Charts -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Multiple Colors Chart</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="multiple_color_chart" class="apex-charts">
+          <apx-chart
+            [series]="multipleColor.series!"
+            [chart]="multipleColor.chart!"
+            [plotOptions]="multipleColor.plotOptions!"
+            [colors]="multipleColor.colors!"
+            [labels]="multipleColor.labels!"
+            [dataLabels]="multipleColor.dataLabels!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Color Range Charts -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Range Colors Chart</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="range_colors_chart" class="apex-charts">
+          <apx-chart
+            [series]="rangeColor.series!"
+            [chart]="rangeColor.chart!"
+            [plotOptions]="rangeColor.plotOptions!"
+            [colors]="rangeColor.colors!"
+            [labels]="rangeColor.labels!"
+            [dataLabels]="rangeColor.dataLabels!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Rounded Colors Charts -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Rounded Colors Chart</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="rounded_colors_chart" class="apex-charts">
+          <apx-chart
+            [series]="roundedColor.series!"
+            [chart]="roundedColor.chart!"
+            [plotOptions]="roundedColor.plotOptions!"
+            [colors]="roundedColor.colors!"
+            [labels]="roundedColor.labels!"
+            [dataLabels]="roundedColor.dataLabels!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

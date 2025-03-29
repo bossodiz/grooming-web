@@ -1,0 +1,60 @@
+<breadcrumb [title]="'Pages'" [subtitle]="'Pricing'" />
+
+<div class="row justify-content-center">
+  <div class="col-lg-12">
+    <!-- Pricing Title-->
+    <div class="text-center">
+      <h3 class="mb-2">Pricing Plans</h3>
+      <p class="text-muted mb-5">
+        We have plans and prices that fit your business perfectly. Make your
+        <br />
+        client site a success with our products.
+      </p>
+    </div>
+
+    <!-- Plans -->
+    <div class="row justify-content-center my-3">
+      @for (item of pricingPlan; track $index) {
+      <div class="pricing-box col-xl-3 col-md-6">
+        <div class="card card-h-full" [ngClass]="{
+              'border-primary border shadow-none':
+                item.name == 'Basic Personal',
+            }">
+          <div class="inner-box card-body p-4">
+
+            <div class="plan-header">
+              <h5 class="plan-title text-{{ item.highlight }}">
+                {{ item.name }}
+              </h5>
+            </div>
+            <div class="flex-shrink-0 pb-3 mb-1 mt-5">
+              <h2 class="month mb-0">
+                <sup class="fw-semibold"><small>$</small></sup>
+                <span class="fw-semibold fs-28">{{ item.price }}</span>/
+                <span class="fs-14 text-muted">month</span>
+              </h2>
+            </div>
+
+
+            <p class="plan-subtitle">{{ item.plan_details.description }}</p>
+          </div>
+
+          <ul class="flex-grow-1 plan-stats list-unstyled">
+            @for (feature of item.plan_details.features; track $index) {
+            <li>
+              <i data-feather="check" class="check-icon text-primary me-2"></i>{{ feature }}
+            </li>
+            }
+          </ul>
+
+          <div class="flex-shrink-0 text-center">
+            <a href="javascript:void(0);" class="{{ item.cta_button.class }} w-100 rounded-2 fw-medium">{{
+              item.cta_button.text }}</a>
+          </div>
+        </div>
+      </div>
+      }
+    </div>
+    <!-- end row -->
+  </div>
+</div>

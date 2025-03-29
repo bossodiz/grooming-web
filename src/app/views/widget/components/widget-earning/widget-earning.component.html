@@ -1,0 +1,42 @@
+<div class="card overflow-hidden">
+  <div class="card-header">
+    <div class="d-flex align-items-center">
+      <h5 class="card-title mb-0">Earnings Reports</h5>
+    </div>
+  </div>
+
+  <div class="card-body p-0">
+    <div class="table-responsive">
+      <table class="table table-traffic mb-0">
+        <thead>
+          <tr>
+            <th class="border-top-0 fw-semibold text-black">Date</th>
+            <th class="border-top-0 fw-semibold text-black">Item Count</th>
+            <th class="border-top-0 fw-semibold text-black">Text</th>
+            <th class="border-top-0 fw-semibold text-black">Earnings</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of transaction; track $index) {
+            <tr>
+              <td>
+                <a href="javascript:void(0);" class="text-reset">{{
+                  item.date
+                }}</a>
+              </td>
+              <td>
+                {{ item.quantity }}
+              </td>
+              <td class="{{ item.changeClass }}">
+                {{ item.change }}
+              </td>
+              <td>
+                {{ item.total }}
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

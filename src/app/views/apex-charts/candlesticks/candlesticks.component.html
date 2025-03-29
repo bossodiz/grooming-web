@@ -1,0 +1,83 @@
+<breadcrumb [title]="'Charts'" [subtitle]="'Candle Stick Charts'" />
+
+<div class="row">
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Basic Candlestick</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="basic_candlestick_chart" class="apex-charts">
+          <apx-chart
+            [series]="basicCandle.series!"
+            [chart]="basicCandle.chart!"
+            [plotOptions]="basicCandle.plotOptions!"
+            [colors]="basicCandle.colors!"
+            [xaxis]="basicCandle.xaxis!"
+            [yaxis]="basicCandle.yaxis!"
+            [title]="basicCandle.title!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Combo Candlestick</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="combo_candlestick_chart" class="apex-charts">
+          <apx-chart
+            [series]="comboCandle.series!"
+            [chart]="comboCandle.chart!"
+            [plotOptions]="comboCandle.plotOptions!"
+            [colors]="comboCandle.colors!"
+            [labels]="comboCandle.labels!"
+            [xaxis]="comboCandle.xaxis!"
+          />
+        </div>
+        <div id="combo_candlestick_chart1" class="apex-charts">
+          <apx-chart
+            [series]="comboCandle1.series!"
+            [chart]="comboCandle1.chart!"
+            [plotOptions]="comboCandle1.plotOptions!"
+            [colors]="comboCandle1.colors!"
+            [dataLabels]="comboCandle1.dataLabels!"
+            [stroke]="comboCandle1.stroke!"
+            [xaxis]="comboCandle1.xaxis!"
+            [yaxis]="comboCandle1.yaxis!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Line Candlestick</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="line_candlestick_chart" class="apex-charts">
+          <apx-chart
+            [series]="lineCandle.series!"
+            [chart]="lineCandle.chart!"
+            [plotOptions]="lineCandle.plotOptions!"
+            [colors]="lineCandle.colors!"
+            [stroke]="lineCandle.stroke!"
+            [xaxis]="lineCandle.xaxis!"
+            [yaxis]="lineCandle.yaxis!"
+            [dataLabels]="lineCandle.dataLabels!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

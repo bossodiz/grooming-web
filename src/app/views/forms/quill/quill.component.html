@@ -1,0 +1,17 @@
+<breadcrumb [title]="'Forms'" [subtitle]="'Quill'" />
+
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <quill-editor
+          #quillEditor
+          [(ngModel)]="content"
+          theme="snow"
+          style="height: 300px"
+          class="w-100"
+        ></quill-editor>
+      </div>
+    </div>
+  </div>
+</div>

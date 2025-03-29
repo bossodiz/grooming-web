@@ -1,0 +1,49 @@
+<breadcrumb [title]="'Charts'" [subtitle]="'Polar Area Chart'" />
+
+<div class="row">
+  <!-- Basic Polar Area Charts -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Basic Polararea Chart</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="basic_polar_chart" class="apex-charts">
+          <apx-chart
+            [chart]="basicPolarChart.chart!"
+            [series]="basicPolarChart.series!"
+            [stroke]="basicPolarChart.stroke!"
+            [fill]="basicPolarChart.fill!"
+            [colors]="basicPolarChart.colors!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Monochrome Charts -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Monochrome Polararea Chart</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="monochrome_polar_chart" class="apex-charts">
+          <apx-chart
+            [chart]="monochromePolarChart.chart!"
+            [series]="monochromePolarChart.series!"
+            [stroke]="monochromePolarChart.stroke!"
+            [fill]="monochromePolarChart.fill!"
+            [colors]="monochromePolarChart.colors!"
+            [plotOptions]="monochromePolarChart.plotOptions!"
+            [legend]="monochromePolarChart.legend!"
+            [theme]="monochromePolarChart.theme!"
+            [yaxis]="monochromePolarChart.yaxis!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

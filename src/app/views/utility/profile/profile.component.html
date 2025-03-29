@@ -1,0 +1,143 @@
+<breadcrumb [title]="'Pages'" [subtitle]="'Profile'" />
+
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <img
+        src="assets/images/small/user-image.jpg"
+        class="rounded-top-2 img-fluid"
+        alt="image data"
+      />
+
+      <div class="card-body">
+        <div class="align-items-center">
+          <div class="hando-main-sections">
+            <div class="hando-profile-main">
+                <img src="assets/images/users/user-11.jpg" class="rounded-circle img-fluid avatar-xxl img-thumbnail float-start" alt="image profile">
+
+                <span class="sil-profile_main-pic-change img-thumbnail">
+                    <i class="mdi mdi-camera text-white"></i>
+                </span>
+            </div>
+
+            <div class="overflow-hidden ms-md-4 ms-0">
+                <h4 class="m-0 text-dark fs-20 mt-2 mt-md-0">John Smith</h4>
+                <p class="my-1 text-muted fs-16">Passionate Software Engineer Crafting Innovative Solutions</p>
+                <span class="fs-15"><i class="mdi mdi-message me-2 align-middle"></i>Speaks: <span>English <span class="badge bg-primary-subtle text-primary px-2 py-1 fs-13 fw-normal">native</span> , Canada, Alberta </span></span>
+            </div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body pt-0">
+        <ul
+          ngbNav
+          #nav="ngbNav"
+          class="nav nav-underline border-bottom pt-2"
+          id="pills-tab"
+          role="tablist"
+        >
+          <li class="nav-item" ngbNavItem role="presentation">
+            <a
+              ngbNavLink
+              class="nav-link p-2"
+              id="profile_about_tab"
+              data-bs-toggle="tab"
+              href="#profile_about"
+              role="tab"
+            >
+              <span class="d-block d-sm-none"
+                ><i class="mdi mdi-information"></i
+              ></span>
+              <span class="d-none d-sm-block">About</span>
+            </a>
+            <ng-template ngbNavContent>
+              <app-about />
+            </ng-template>
+          </li>
+          <li class="nav-item" ngbNavItem>
+            <a
+              class="nav-link p-2"
+              ngbNavLink
+              id="profile_experience_tab"
+              data-bs-toggle="tab"
+              href="#profile_experience"
+              role="tab"
+            >
+              <span class="d-block d-sm-none"
+                ><i class="mdi mdi-sitemap-outline"></i
+              ></span>
+              <span class="d-none d-sm-block">Work experience</span>
+            </a>
+            <ng-template ngbNavContent>
+              <app-work />
+            </ng-template>
+          </li>
+          <li class="nav-item" ngbNavItem>
+            <a
+              class="nav-link p-2"
+              ngbNavLink
+              id="portfolio_education_tab"
+              data-bs-toggle="tab"
+              href="#profile_education"
+              role="tab"
+            >
+              <span class="d-block d-sm-none"
+                ><i class="mdi mdi-school"></i
+              ></span>
+              <span class="d-none d-sm-block">Education</span>
+            </a>
+            <ng-template ngbNavContent>
+              <app-education />
+            </ng-template>
+          </li>
+          <li class="nav-item" ngbNavItem>
+            <a
+              class="nav-link p-2"
+              ngbNavLink
+              id="setting_tab"
+              data-bs-toggle="tab"
+              href="#profile_setting"
+              role="tab"
+            >
+              <span class="d-block d-sm-none"
+                ><i class="mdi mdi-information"></i
+              ></span>
+              <span class="d-none d-sm-block">Setting</span>
+            </a>
+            <ng-template ngbNavContent>
+              <app-setting />
+            </ng-template>
+          </li>
+          <li class="nav-item" ngbNavItem>
+            <a
+              ngbNavLink
+              class="nav-link p-2"
+              id="friend_tab"
+              data-bs-toggle="tab"
+              href="#friends_setting"
+              role="tab"
+            >
+              <span class="d-block d-sm-none"
+                ><i class="mdi mdi-all-inclusive-box"></i
+              ></span>
+              <span class="d-none d-sm-block">Friends</span>
+            </a>
+            <ng-template ngbNavContent>
+              <app-friends />
+            </ng-template>
+          </li>
+        </ul>
+
+        <div class="tab-content text-muted bg-white" [ngbNavOutlet]="nav"></div>
+        <!-- Tab panes -->
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,49 @@
+<div class="auth-container">
+  <div class="auth-card">
+    <div class="auth-logo">
+      <a routerLink="/">
+        <img src="assets/images/logo-dark.png" alt="logo-dark" height="40" />
+      </a>
+    </div>
+
+    <form [formGroup]="signInForm" (ngSubmit)="login()">
+      <div class="form-group mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input
+          class="form-control"
+          type="text"
+          formControlName="username"
+          [ngClass]="{
+            'is-invalid': submitted && formValues['username'].errors
+          }"
+          id="username"
+          required
+          placeholder="Enter your username"
+        />
+      </div>
+
+      <div class="form-group mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input
+          class="form-control"
+          type="password"
+          formControlName="password"
+          [ngClass]="{
+            'is-invalid': submitted && formValues['password'].errors
+          }"
+          required
+          id="password"
+          placeholder="Enter your password"
+        />
+      </div>
+      <div class="form-group mb-3">
+        <div class="row justify-content-center" *ngIf="errorMessage" style="color: var(--bs-form-invalid-border-color);">
+          {{errorMessage}}
+        </div>
+      </div>
+      <button class="btn btn-primary auth-btn" type="submit">
+        Log In
+      </button>
+    </form>
+  </div>
+</div>

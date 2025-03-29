@@ -1,0 +1,51 @@
+<breadcrumb [title]="'Charts'" [subtitle]="'Funnel Charts'" />
+
+<div class="row">
+  <!-- Basic Funnel Charts Chart -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Funnel Area Chart</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="funnel_chart" class="apex-charts">
+          <apx-chart
+            [series]="areaChart.series!"
+            [chart]="areaChart.chart!"
+            [plotOptions]="areaChart.plotOptions!"
+            [colors]="areaChart.colors!"
+            [xaxis]="areaChart.xaxis!"
+            [labels]="areaChart.labels!"
+            [title]="areaChart.title!"
+            [dataLabels]="areaChart.dataLabels!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pyramid Funnel Chart -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Pyramid Funnel Chart</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="pyramid_funnel_chart" class="apex-charts">
+          <apx-chart
+            [series]="Pyramid.series!"
+            [chart]="Pyramid.chart!"
+            [plotOptions]="Pyramid.plotOptions!"
+            [colors]="Pyramid.colors!"
+            [xaxis]="Pyramid.xaxis!"
+            [legend]="Pyramid.legend!"
+            [title]="Pyramid.title!"
+            [dataLabels]="Pyramid.dataLabels!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

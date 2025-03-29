@@ -1,0 +1,145 @@
+<div class="card">
+  <div class="card-header">
+    <div class="d-flex align-items-center">
+      <h5 class="card-title mb-0">On boarding Campaign</h5>
+    </div>
+  </div>
+
+  <div class="card-body">
+    <div class="justify-content-center">
+      <div class="row g-3">
+        <div class="col-md-12 col-xl-12">
+          <div class="border rounded-2 bg-light p-2 d-flex align-items-center">
+            <i class="mdi mdi-star-four-points fs-19 text-primary me-2"></i>
+            <p class="fs-16 mb-0">
+              Help new customer understand the value they'll receive from your
+              product.
+            </p>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-xl-6">
+          <div class="border rounded-3 px-2 py-3">
+            <span
+              class="mb-2 text-black text-success bg-tag rounded-2 py-1 px-2 align-content-center"
+              ><i class="mdi mdi-circle-medium dot-primary mt-2"></i
+              >Delivered</span
+            >
+            <div class="d-flex align-content-center justify-content-between">
+              <div>
+                <h3 class="m-0 mb-2 fs-22 text-black mt-3">12.50%</h3>
+                <p class="text-muted mb-0 fs-14">Last 24 hours</p>
+              </div>
+              <div
+                id="chart-boarding-delivered"
+                class="apex-charts align-self-end"
+              >
+                <apx-chart
+                  [series]="deliveredChart.series!"
+                  [chart]="deliveredChart.chart!"
+                  [fill]="deliveredChart.fill!"
+                  [stroke]="deliveredChart.stroke!"
+                  [yaxis]="deliveredChart.yaxis!"
+                  [colors]="deliveredChart.colors!"
+                  [legend]="deliveredChart.legend!"
+                  [xaxis]="deliveredChart.xaxis!"
+                  [labels]="deliveredChart.labels!"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-xl-6">
+          <div class="border rounded-3 px-2 py-3">
+            <span
+              class="mb-2 text-black text-success bg-tag rounded-2 py-1 px-2 align-content-center"
+              ><i class="mdi mdi-circle-medium dot-primary mt-2"></i
+              >Opened</span
+            >
+            <div class="d-flex align-content-center justify-content-between">
+              <div>
+                <h3 class="m-0 mb-2 fs-22 text-black mt-3">40.3%</h3>
+                <p class="text-muted mb-0 fs-14">Last 30 hours</p>
+              </div>
+              <div
+                id="chart-boarding-opened"
+                class="apex-charts align-self-end"
+              >
+                <apx-chart
+                  [series]="openChart.series!"
+                  [chart]="openChart.chart!"
+                  [plotOptions]="openChart.plotOptions!"
+                  [stroke]="openChart.stroke!"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-xl-6">
+          <div class="border rounded-3 px-2 py-3">
+            <span
+              class="mb-2 text-black text-success bg-tag rounded-2 py-1 px-2 align-content-center"
+              ><i class="mdi mdi-circle-medium dot-primary mt-2"></i
+              >Clicked</span
+            >
+            <div class="d-flex align-content-center justify-content-between">
+              <div>
+                <h3 class="m-0 mb-2 fs-22 text-black mt-3">38.7%</h3>
+                <p class="text-muted mb-0 fs-14">Last 30 hours</p>
+              </div>
+              <div
+                id="chart-boarding-clicked"
+                class="apex-charts align-self-end"
+              >
+                <apx-chart
+                  [series]="clickedChart.series!"
+                  [chart]="clickedChart.chart!"
+                  [plotOptions]="clickedChart.plotOptions!"
+                  [stroke]="clickedChart.stroke!"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-xl-6">
+          <a href="javascript:void(0);">
+            <div class="border rounded-3 px-2 py-3">
+              <span
+                class="mb-2 text-black text-success bg-tag rounded-2 py-1 px-2 align-content-center"
+                ><i class="mdi mdi-circle-medium dot-primary mt-2"></i
+                >Converted</span
+              >
+              <div class="d-flex align-content-center justify-content-between">
+                <div>
+                  <h3 class="m-0 mb-2 fs-22 text-black mt-3">12.3%</h3>
+                  <p class="text-muted mb-0 fs-14">Last 30 hours</p>
+                </div>
+                <div
+                  id="chart-boarding-converted"
+                  class="apex-charts align-self-end"
+                >
+                  <apx-chart
+                    [series]="convertedChart.series!"
+                    [chart]="convertedChart.chart!"
+                    [plotOptions]="convertedChart.plotOptions!"
+                    [fill]="convertedChart.fill!"
+                    [stroke]="convertedChart.stroke!"
+                    [yaxis]="convertedChart.yaxis!"
+                    [colors]="convertedChart.colors!"
+                    [grid]="convertedChart.grid!"
+                    [xaxis]="convertedChart.xaxis!"
+                    [legend]="convertedChart.legend!"
+                    [labels]="convertedChart.labels!"
+                  />
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

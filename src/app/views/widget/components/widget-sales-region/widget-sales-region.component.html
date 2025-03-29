@@ -1,0 +1,26 @@
+<div class="card">
+  <div class="card-header">
+    <div class="d-flex align-items-center">
+      <h5 class="card-title mb-0">Sales by Region</h5>
+    </div>
+  </div>
+
+  <div class="card-body">
+    <div id="sales-region" class="apex-charts">
+      <apx-chart
+        [series]="salesRegionChart.series!"
+        [chart]="salesRegionChart.chart!"
+        [plotOptions]="salesRegionChart.plotOptions!"
+        [fill]="salesRegionChart.fill!"
+        [stroke]="salesRegionChart.stroke!"
+        [markers]="salesRegionChart.markers!"
+        [yaxis]="salesRegionChart.yaxis!"
+        [colors]="salesRegionChart.colors!"
+        [dataLabels]="salesRegionChart.dataLabels!"
+        [grid]="salesRegionChart.grid!"
+        [xaxis]="salesRegionChart.xaxis!"
+        [legend]="salesRegionChart.legend!"
+      />
+    </div>
+  </div>
+</div>

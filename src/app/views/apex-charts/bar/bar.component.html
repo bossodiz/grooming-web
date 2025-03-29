@@ -1,0 +1,301 @@
+<breadcrumb [title]="'Charts'" [subtitle]="'bar Charts'" />
+
+<div class="row">
+  <!-- Basic Bar Chart -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Basic Bar Chart</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="basic_bar_chart" class="apex-charts">
+          <apx-chart
+            [series]="basicBarChart.series!"
+            [chart]="basicBarChart.chart!"
+            [plotOptions]="basicBarChart.plotOptions!"
+            [colors]="basicBarChart.colors!"
+            [labels]="basicBarChart.labels!"
+            [stroke]="basicBarChart.stroke!"
+            [xaxis]="basicBarChart.xaxis!"
+            [title]="basicBarChart.title!"
+            [markers]="basicBarChart.markers!"
+            [dataLabels]="basicBarChart.dataLabels!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Grouped Bar Chart -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Grouped Bar Chart</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="grouped_bar_chart" class="apex-charts">
+          <apx-chart
+            [series]="groupBarChart.series!"
+            [chart]="groupBarChart.chart!"
+            [plotOptions]="groupBarChart.plotOptions!"
+            [colors]="groupBarChart.colors!"
+            [labels]="groupBarChart.labels!"
+            [stroke]="groupBarChart.stroke!"
+            [xaxis]="groupBarChart.xaxis!"
+            [title]="groupBarChart.title!"
+            [markers]="groupBarChart.markers!"
+            [dataLabels]="groupBarChart.dataLabels!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <!-- Stacked Bar Chart -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Stacked Bar Chart</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="stacked_bar_chart" class="apex-charts">
+          <apx-chart
+            [series]="stackedBarChart.series!"
+            [chart]="stackedBarChart.chart!"
+            [plotOptions]="stackedBarChart.plotOptions!"
+            [colors]="stackedBarChart.colors!"
+            [labels]="stackedBarChart.labels!"
+            [stroke]="stackedBarChart.stroke!"
+            [xaxis]="stackedBarChart.xaxis!"
+            [title]="stackedBarChart.title!"
+            [markers]="stackedBarChart.markers!"
+            [dataLabels]="stackedBarChart.dataLabels!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stacked Bars 100 Chart -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Stacked Bars 100</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="stackedfull_bar_chart" class="apex-charts">
+          <apx-chart
+            [series]="stackedfullBar.series!"
+            [chart]="stackedfullBar.chart!"
+            [plotOptions]="stackedfullBar.plotOptions!"
+            [colors]="stackedfullBar.colors!"
+            [labels]="stackedfullBar.labels!"
+            [stroke]="stackedfullBar.stroke!"
+            [xaxis]="stackedfullBar.xaxis!"
+            [title]="stackedfullBar.title!"
+            [markers]="stackedfullBar.markers!"
+            [dataLabels]="stackedfullBar.dataLabels!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Grouped Stacked Bars Chart -->
+<div class="row">
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Grouped Stacked Bars Chart</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="groupedstacked_bar_chart" class="apex-charts">
+          <apx-chart
+            [series]="groupedStackedBar.series!"
+            [chart]="groupedStackedBar.chart!"
+            [plotOptions]="groupedStackedBar.plotOptions!"
+            [colors]="groupedStackedBar.colors!"
+            [labels]="groupedStackedBar.labels!"
+            [stroke]="groupedStackedBar.stroke!"
+            [xaxis]="groupedStackedBar.xaxis!"
+            [title]="groupedStackedBar.title!"
+            [markers]="groupedStackedBar.markers!"
+            [dataLabels]="groupedStackedBar.dataLabels!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bar with Negative Values Chart -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Bar with Negative Values</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="negative_bar_chart" class="apex-charts">
+          <apx-chart
+            [series]="nagativeChart.series!"
+            [chart]="nagativeChart.chart!"
+            [plotOptions]="nagativeChart.plotOptions!"
+            [colors]="nagativeChart.colors!"
+            [labels]="nagativeChart.labels!"
+            [stroke]="nagativeChart.stroke!"
+            [xaxis]="nagativeChart.xaxis!"
+            [title]="nagativeChart.title!"
+            [markers]="nagativeChart.markers!"
+            [dataLabels]="nagativeChart.dataLabels!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <!-- Bar with Markers Chart -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Bar with Markers</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="markers_bar_chart" class="apex-charts">
+          <apx-chart
+            [series]="markerBarCgart.series!"
+            [chart]="markerBarCgart.chart!"
+            [plotOptions]="markerBarCgart.plotOptions!"
+            [colors]="markerBarCgart.colors!"
+            [labels]="markerBarCgart.labels!"
+            [stroke]="markerBarCgart.stroke!"
+            [xaxis]="markerBarCgart.xaxis!"
+            [title]="markerBarCgart.title!"
+            [markers]="markerBarCgart.markers!"
+            [dataLabels]="markerBarCgart.dataLabels!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reversed Bar Chart -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Reversed Bar Chart</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="reversed_bar_chart" class="apex-charts">
+          <apx-chart
+            [series]="reversedChart.series!"
+            [chart]="reversedChart.chart!"
+            [plotOptions]="reversedChart.plotOptions!"
+            [colors]="reversedChart.colors!"
+            [labels]="reversedChart.labels!"
+            [stroke]="reversedChart.stroke!"
+            [xaxis]="reversedChart.xaxis!"
+            [title]="reversedChart.title!"
+            [markers]="reversedChart.markers!"
+            [dataLabels]="reversedChart.dataLabels!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <!-- Custom DataLabels Bar Chart -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Custom DataLabels Bar</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="datalabels_bar_chart" class="apex-charts">
+          <apx-chart
+            [series]="datalabelBarChart.series!"
+            [chart]="datalabelBarChart.chart!"
+            [plotOptions]="datalabelBarChart.plotOptions!"
+            [colors]="datalabelBarChart.colors!"
+            [labels]="datalabelBarChart.labels!"
+            [stroke]="datalabelBarChart.stroke!"
+            [xaxis]="datalabelBarChart.xaxis!"
+            [title]="datalabelBarChart.title!"
+            [markers]="datalabelBarChart.markers!"
+            [dataLabels]="datalabelBarChart.dataLabels!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Patterned Bar Chart -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Patterned Chart</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="patterned_bar_chart" class="apex-charts">
+          <apx-chart
+            [series]="patterenChart.series!"
+            [chart]="patterenChart.chart!"
+            [plotOptions]="patterenChart.plotOptions!"
+            [colors]="patterenChart.colors!"
+            [labels]="patterenChart.labels!"
+            [stroke]="patterenChart.stroke!"
+            [xaxis]="patterenChart.xaxis!"
+            [title]="patterenChart.title!"
+            [markers]="patterenChart.markers!"
+            [dataLabels]="patterenChart.dataLabels!"
+            [fill]="patterenChart.fill!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <!-- Patterned Bar Chart -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Bar with Images</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="image_bar_chart" class="apex-charts">
+          <apx-chart
+            [series]="imageBarChart.series!"
+            [chart]="imageBarChart.chart!"
+            [plotOptions]="imageBarChart.plotOptions!"
+            [colors]="imageBarChart.colors!"
+            [labels]="imageBarChart.labels!"
+            [stroke]="imageBarChart.stroke!"
+            [xaxis]="imageBarChart.xaxis!"
+            [title]="imageBarChart.title!"
+            [markers]="imageBarChart.markers!"
+            [dataLabels]="imageBarChart.dataLabels!"
+            [fill]="imageBarChart.fill!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

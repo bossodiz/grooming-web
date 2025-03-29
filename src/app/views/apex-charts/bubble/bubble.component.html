@@ -1,0 +1,54 @@
+<breadcrumb [title]="'Charts'" [subtitle]="'Bubble Charts'" />
+
+<!-- Bubble Charts -->
+<div class="row">
+  <!-- Basic Bubble Charts -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Simple Bubble Chart</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="simple_bubble_chart" class="apex-charts">
+          <apx-chart
+            [series]="simpleBubble.series!"
+            [chart]="simpleBubble.chart!"
+            [plotOptions]="simpleBubble.plotOptions!"
+            [colors]="simpleBubble.colors!"
+            [labels]="simpleBubble.labels!"
+            [title]="simpleBubble.title!"
+            [xaxis]="simpleBubble.xaxis!"
+            [yaxis]="simpleBubble.yaxis!"
+            [dataLabels]="simpleBubble.dataLabels!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3D Bubble Charts -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">3D Bubble Chart</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="animation_bubble_chart" class="apex-charts">
+          <apx-chart
+            [series]="animationBubble.series!"
+            [chart]="animationBubble.chart!"
+            [plotOptions]="animationBubble.plotOptions!"
+            [colors]="animationBubble.colors!"
+            [title]="animationBubble.title!"
+            [xaxis]="animationBubble.xaxis!"
+            [yaxis]="animationBubble.yaxis!"
+            [dataLabels]="animationBubble.dataLabels!"
+            [fill]="animationBubble.fill!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

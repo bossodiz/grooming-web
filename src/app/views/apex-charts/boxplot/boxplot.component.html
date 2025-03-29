@@ -1,0 +1,69 @@
+<breadcrumb [title]="'Charts'" [subtitle]="'Boxplot Chart'" />
+
+<div class="row">
+  <!-- Basic Boxplot Charts -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Basic Box Chart</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="basic_box_chart" class="apex-charts">
+          <apx-chart
+            [series]="basicBox.series!"
+            [chart]="basicBox.chart!"
+            [plotOptions]="basicBox.plotOptions!"
+            [colors]="basicBox.colors!"
+            [labels]="basicBox.labels!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Boxplot-Scatter Charts -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Boxplot Scatter Chart</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="boxplot_scatter_chart" class="apex-charts">
+          <apx-chart
+            [series]="boxplotScatter.series!"
+            [chart]="boxplotScatter.chart!"
+            [plotOptions]="boxplotScatter.plotOptions!"
+            [colors]="boxplotScatter.colors!"
+            [labels]="boxplotScatter.labels!"
+            [xaxis]="boxplotScatter.xaxis!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <!-- Horizontal BoxPlot Charts -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Horizontal BoxPlot</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="horizontal_box_chart" class="apex-charts">
+          <apx-chart
+            [series]="horizontalBoxplor.series!"
+            [chart]="horizontalBoxplor.chart!"
+            [plotOptions]="horizontalBoxplor.plotOptions!"
+            [colors]="horizontalBoxplor.colors!"
+            [labels]="horizontalBoxplor.labels!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

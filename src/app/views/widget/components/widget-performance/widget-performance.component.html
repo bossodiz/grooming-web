@@ -1,0 +1,27 @@
+<div class="card">
+  <div class="card-header">
+    <div class="d-flex align-items-center">
+      <h5 class="card-title mb-0">Employee Performance Rating</h5>
+    </div>
+  </div>
+
+  <div class="card-body">
+    <div id="employeeRating-chart" class="apex-charts">
+      <apx-chart
+        [series]="performanceChart.series!"
+        [chart]="performanceChart.chart!"
+        [plotOptions]="performanceChart.plotOptions!"
+        [fill]="performanceChart.fill!"
+        [stroke]="performanceChart.stroke!"
+        [markers]="performanceChart.markers!"
+        [yaxis]="performanceChart.yaxis!"
+        [colors]="performanceChart.colors!"
+        [dataLabels]="performanceChart.dataLabels!"
+        [grid]="performanceChart.grid!"
+        [xaxis]="performanceChart.xaxis!"
+        [legend]="performanceChart.legend!"
+      />
+    </div>
+  </div>
+</div>
+<!-- end card -->

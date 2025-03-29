@@ -1,0 +1,115 @@
+<breadcrumb [title]="'Charts'" [subtitle]="'Mix Charts'" />
+<div class="row">
+  <!-- Line Column Mixed Chart -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Line & Column Chart</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="linecolumn_mixed_chart" class="apex-charts">
+          <apx-chart
+            [title]="lineColumnChart.title!"
+            [series]="lineColumnChart.series!"
+            [chart]="lineColumnChart.chart!"
+            [plotOptions]="lineColumnChart.plotOptions!"
+            [colors]="lineColumnChart.colors!"
+            [labels]="lineColumnChart.labels!"
+            [stroke]="lineColumnChart.stroke!"
+            [xaxis]="lineColumnChart.xaxis!"
+            [yaxis]="lineColumnChart.yaxis!"
+            [title]="lineColumnChart.title!"
+            [markers]="lineColumnChart.markers!"
+            [dataLabels]="lineColumnChart.dataLabels!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Line && Area Mixed Chart -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Line & Area Chart</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="line_area_chart" class="apex-charts">
+          <apx-chart
+            [series]="lineArea.series!"
+            [chart]="lineArea.chart!"
+            [fill]="lineArea.fill!"
+            [plotOptions]="lineArea.plotOptions!"
+            [colors]="lineArea.colors!"
+            [labels]="lineArea.labels!"
+            [stroke]="lineArea.stroke!"
+            [xaxis]="lineArea.xaxis!"
+            [title]="lineArea.title!"
+            [markers]="lineArea.markers!"
+            [tooltip]="lineArea.tooltip!"
+            [yaxis]="lineArea.yaxis!"
+            [dataLabels]="lineArea.dataLabels!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Line && Column Area Mixed Chart -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Line & Column Area Chart</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="linecolumn_area_chart" class="apex-charts">
+          <apx-chart
+            [series]="lineColumn.series!"
+            [chart]="lineColumn.chart!"
+            [plotOptions]="lineColumn.plotOptions!"
+            [colors]="lineColumn.colors!"
+            [labels]="lineColumn.labels!"
+            [stroke]="lineColumn.stroke!"
+            [xaxis]="lineColumn.xaxis!"
+            [title]="lineColumn.title!"
+            [markers]="lineColumn.markers!"
+            [yaxis]="lineColumn.yaxis!"
+            [dataLabels]="lineColumn.dataLabels!"
+            [fill]="lineColumn.fill!"
+            [tooltip]="lineColumn.tooltip!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Line Scatter Mixed Chart -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Line Scatter Chart</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="scatter_chart" class="apex-charts">
+          <apx-chart
+            [series]="scatterChart.series!"
+            [chart]="scatterChart.chart!"
+            [colors]="scatterChart.colors!"
+            [labels]="scatterChart.labels!"
+            [stroke]="scatterChart.stroke!"
+            [xaxis]="scatterChart.xaxis!"
+            [title]="scatterChart.title!"
+            [markers]="scatterChart.markers!"
+            [tooltip]="scatterChart.tooltip!"
+            [dataLabels]="scatterChart.dataLabels!"
+            [legend]="scatterChart.legend!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

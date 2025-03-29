@@ -1,0 +1,561 @@
+<breadcrumb [title]="'Extended UI'" [subtitle]="'Offcanvas'" />
+
+<div class="row">
+  <div class="col-xl-4">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Offcanvas</h5>
+      </div>
+      <!-- end card header -->
+
+      <div class="card-body">
+        <div class="d-flex flex-wrap gap-2" (click)="openStart(content)">
+          <a
+            class="btn btn-primary"
+            data-bs-toggle="offcanvas"
+            role="button"
+            aria-controls="offcanvasExample"
+          >
+            Link with href
+          </a>
+          <button
+            class="btn btn-primary"
+            (click)="openStart(content)"
+            type="button"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#offcanvasExample"
+            aria-controls="offcanvasExample"
+          >
+            Button with data-bs-target
+          </button>
+        </div>
+
+        <ng-template
+          #content
+          let-offcanvas
+          class="offcanvas offcanvas-start"
+          tabindex="-1"
+          id="offcanvasExample"
+          aria-labelledby="offcanvasExampleLabel"
+        >
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasExampleLabel">
+              Offcanvas
+            </h5>
+            <button
+              type="button"
+              (click)="offcanvas.close('Close click')"
+              class="btn-close"
+              data-bs-dismiss="offcanvas"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="offcanvas-body">
+            <div>
+              Some text as placeholder. In real life you can have the elements
+              you have chosen. Like, text, images, lists, etc.
+            </div>
+            <div class="dropdown mt-3" ngbDropdown>
+              <button
+                class="btn btn-primary dropdown-toggle"
+                ngbDropdownToggle
+                type="button"
+                data-bs-toggle="dropdown"
+              >
+                Dropdown button
+              </button>
+              <ul class="dropdown-menu" ngbDropdownMenu>
+                <li>
+                  <a class="dropdown-item" href="javascript:void(0);">Action</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="javascript:void(0);"
+                    >Another action</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item" href="javascript:void(0);"
+                    >Something else here</a
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+      <!-- end card-body -->
+    </div>
+    <!-- end card-->
+  </div>
+  <!-- end col -->
+
+  <div class="col-xl-4">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Offcanvas Backdrop</h5>
+      </div>
+      <!-- end card header -->
+
+      <div class="card-body">
+        <div class="d-flex flex-wrap gap-2">
+          <button
+            class="btn btn-primary"
+            (click)="openNoBackdrop(scrollContent)"
+            type="button"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#offcanvasScrolling"
+            aria-controls="offcanvasScrolling"
+          >
+            Enable body scrolling
+          </button>
+          <button
+            class="btn btn-primary mt-2 mt-md-0"
+            (click)="openStart(backdropContent)"
+            type="button"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#offcanvasWithBackdrop"
+            aria-controls="offcanvasWithBackdrop"
+          >
+            Enable (default)
+          </button>
+          <button
+            class="btn btn-primary"
+            type="button"
+            (click)="openScroll(backdropScroll)"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#offcanvasWithBothOptions"
+            aria-controls="offcanvasWithBothOptions"
+          >
+            Enable both scrolling & backdrop
+          </button>
+        </div>
+
+        <ng-template
+          #scrollContent
+          let-offcanvas
+          class="offcanvas offcanvas-start"
+          data-bs-scroll="true"
+          data-bs-backdrop="false"
+          tabindex="-1"
+          id="offcanvasScrolling"
+          aria-labelledby="offcanvasScrollingLabel"
+        >
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasScrollingLabel">
+              Offcanvas with body scrolling
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              (click)="offcanvas.close('Close click')"
+              data-bs-dismiss="offcanvas"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="offcanvas-body">
+            <p>
+              Try scrolling the rest of the page to see this option in action.
+            </p>
+          </div>
+        </ng-template>
+
+        <ng-template
+          #backdropContent
+          let-offcanvas
+          class="offcanvas offcanvas-start"
+          tabindex="-1"
+          id="offcanvasWithBackdrop"
+          aria-labelledby="offcanvasWithBackdropLabel"
+        >
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasWithBackdropLabel">
+              Offcanvas with backdrop
+            </h5>
+            <button
+              type="button"
+              class="btn-close text-reset"
+              (click)="offcanvas.close('Close click')"
+              data-bs-dismiss="offcanvas"
+              aria-label="Close"
+            ></button>
+          </div>
+          <!-- end offcanvas-header-->
+
+          <div class="offcanvas-body">
+            <div>
+              Some text as placeholder. In real life you can have the elements
+              you have chosen. Like, text, images, lists, etc.
+            </div>
+            <h5 class="mt-3">List</h5>
+            <ul class="ps-3">
+              <li class="">Nemo enim ipsam voluptatem quia aspernatur</li>
+              <li class="">Neque porro quisquam est, qui dolorem</li>
+              <li class="">Quis autem vel eum iure qui in ea</li>
+            </ul>
+
+            <ul class="ps-3">
+              <li class="">
+                At vero eos et accusamus et iusto odio dignissimos
+              </li>
+              <li class="">Et harum quidem rerum facilis</li>
+              <li class="">Temporibus autem quibusdam et aut officiis</li>
+            </ul>
+          </div>
+          <!-- end offcanvas-body-->
+        </ng-template>
+        <!-- end offcanvas-->
+
+        <ng-template
+          #backdropScroll
+          let-offcanvas
+          class="offcanvas offcanvas-start"
+          data-bs-scroll="true"
+          tabindex="-1"
+          id="offcanvasWithBothOptions"
+          aria-labelledby="offcanvasWithBothOptionsLabel"
+        >
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">
+              Backdrop with scrolling
+            </h5>
+            <button
+              type="button"
+              (click)="offcanvas.close('Close click')"
+              class="btn-close"
+              data-bs-dismiss="offcanvas"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="offcanvas-body">
+            <p>
+              Try scrolling the rest of the page to see this option in action.
+            </p>
+          </div>
+        </ng-template>
+      </div>
+      <!-- end card-body -->
+    </div>
+    <!-- end card-->
+  </div>
+  <!-- end col -->
+
+  <div class="col-xl-4">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Dark Offcanvas</h5>
+      </div>
+      <!-- end card header -->
+
+      <div class="card-body">
+        <div class="d-flex flex-wrap gap-2">
+          <button
+            (click)="openDark(darkContent)"
+            class="btn btn-primary mt-2 mt-md-0"
+            type="button"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#offcanvasDark"
+            aria-controls="offcanvasDark"
+          >
+            Dark offcanvas
+          </button>
+        </div>
+
+        <ng-template
+          #darkContent
+          let-offcanvas
+          class="offcanvas offcanvas-start text-bg-dark"
+          tabindex="-1"
+          id="offcanvasDark"
+          aria-labelledby="offcanvasDarkLabel"
+        >
+          <div class="offcanvas-header">
+            <h5 id="offcanvasDarkLabel">Dark Offcanvas</h5>
+            <button
+              type="button"
+              class="btn-close text-reset"
+              (click)="offcanvas.close('Close click')"
+              data-bs-dismiss="offcanvas"
+              aria-label="Close"
+            ></button>
+          </div>
+          <!-- end offcanvas-header-->
+
+          <div class="offcanvas-body">
+            <div>
+              Some text as placeholder. In real life you can have the elements
+              you have chosen. Like, text, images, lists, etc.
+            </div>
+            <h5 class="mt-3">List</h5>
+            <ul class="ps-3">
+              <li class="">Nemo enim ipsam voluptatem quia aspernatur</li>
+              <li class="">Neque porro quisquam est, qui dolorem</li>
+              <li class="">Quis autem vel eum iure qui in ea</li>
+            </ul>
+          </div>
+          <!-- end offcanvas-body-->
+        </ng-template>
+        <!-- end offcanvas-->
+      </div>
+      <!-- end card-body -->
+    </div>
+    <!-- end card-->
+  </div>
+  <!-- end col -->
+
+  <div class="col-xl-4">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Placement Offcanvas</h5>
+      </div>
+      <!-- end card header -->
+
+      <div class="card-body">
+        <div class="d-flex flex-wrap gap-2">
+          <button
+            class="btn btn-primary mt-2 mt-md-0"
+            type="button"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#offcanvasTop"
+            aria-controls="offcanvasTop"
+            (click)="openTop(topContent)"
+          >
+            Toggle Top offcanvas
+          </button>
+          <button
+            class="btn btn-primary mt-2 mt-md-0"
+            type="button"
+            (click)="openEnd(rightContent)"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#offcanvasRight"
+            aria-controls="offcanvasRight"
+          >
+            Toggle right offcanvas
+          </button>
+          <button
+            class="btn btn-primary mt-2 mt-md-0"
+            (click)="openBottom(bottomContent)"
+            type="button"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#offcanvasBottom"
+            aria-controls="offcanvasBottom"
+          >
+            Toggle bottom offcanvas
+          </button>
+          <button
+            class="btn btn-primary mt-2 mt-lg-0"
+            (click)="openStart(leftContent)"
+            type="button"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#offcanvasLeft"
+            aria-controls="offcanvasLeft"
+          >
+            Toggle Left offcanvas
+          </button>
+        </div>
+
+        <ng-template
+          #topContent
+          let-offcanvas
+          class="offcanvas offcanvas-top"
+          tabindex="-1"
+          id="offcanvasTop"
+          aria-labelledby="offcanvasTopLabel"
+        >
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasTopLabel">
+              Offcanvas top
+            </h5>
+            <button
+              type="button"
+              (click)="offcanvas.close('Close click')"
+              class="btn-close"
+              data-bs-dismiss="offcanvas"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="offcanvas-body">
+            <div>
+              Some text as placeholder. In real life you can have the elements
+              you have chosen. Like, text, images, lists, etc.
+            </div>
+            <h5 class="mt-3">List</h5>
+            <ul class="ps-3">
+              <li class="">Nemo enim ipsam voluptatem quia aspernatur</li>
+              <li class="">Neque porro quisquam est, qui dolorem</li>
+              <li class="">Quis autem vel eum iure qui in ea</li>
+            </ul>
+          </div>
+        </ng-template>
+
+        <ng-template
+          #rightContent
+          let-offcanvas
+          class="offcanvas offcanvas-end"
+          tabindex="-1"
+          id="offcanvasRight"
+          aria-labelledby="offcanvasRightLabel"
+        >
+          <div class="offcanvas-header">
+            <h5 id="offcanvasRightLabel">Offcanvas right</h5>
+            <button
+              type="button"
+              class="btn-close text-reset"
+              (click)="offcanvas.close('Close click')"
+              data-bs-dismiss="offcanvas"
+              aria-label="Close"
+            ></button>
+          </div>
+          <!-- end offcanvas-header-->
+
+          <div class="offcanvas-body">
+            <div>
+              Some text as placeholder. In real life you can have the elements
+              you have chosen. Like, text, images, lists, etc.
+            </div>
+            <h5 class="mt-3">List</h5>
+            <ul class="ps-3">
+              <li class="">Nemo enim ipsam voluptatem quia aspernatur</li>
+              <li class="">Neque porro quisquam est, qui dolorem</li>
+              <li class="">Quis autem vel eum iure qui in ea</li>
+            </ul>
+          </div>
+          <!-- end offcanvas-body-->
+        </ng-template>
+        <!-- end offcanvas-->
+
+        <ng-template
+          #bottomContent
+          let-offcanvas
+          class="offcanvas offcanvas-bottom"
+          tabindex="-1"
+          id="offcanvasBottom"
+          aria-labelledby="offcanvasBottomLabel"
+        >
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasBottomLabel">
+              Offcanvas bottom
+            </h5>
+            <button
+              type="button"
+              class="btn-close text-reset"
+              (click)="offcanvas.close('Close click')"
+              data-bs-dismiss="offcanvas"
+              aria-label="Close"
+            ></button>
+          </div>
+          <!-- end offcanvas-header-->
+
+          <div class="offcanvas-body">
+            <div>
+              Some text as placeholder. In real life you can have the elements
+              you have chosen. Like, text, images, lists, etc.
+            </div>
+            <h5 class="mt-3">List</h5>
+            <ul class="ps-3">
+              <li class="">Nemo enim ipsam voluptatem quia aspernatur</li>
+              <li class="">Neque porro quisquam est, qui dolorem</li>
+              <li class="">Quis autem vel eum iure qui in ea</li>
+            </ul>
+          </div>
+          <!-- end offcanvas-body-->
+        </ng-template>
+        <!-- end offcanvas-->
+
+        <ng-template
+          #leftContent
+          let-offcanvas
+          class="offcanvas offcanvas-start"
+          tabindex="-1"
+          id="offcanvasLeft"
+          aria-labelledby="offcanvasLeftLabel"
+        >
+          <div class="offcanvas-header">
+            <h5 id="offcanvasLeftLabel">Offcanvas Left</h5>
+            <button
+              type="button"
+              (click)="offcanvas.close('Close click')"
+              class="btn-close text-reset"
+              (click)="offcanvas.close('Close click')"
+              data-bs-dismiss="offcanvas"
+              aria-label="Close"
+            ></button>
+          </div>
+          <!-- end offcanvas-header-->
+
+          <div class="offcanvas-body">
+            <div>
+              Some text as placeholder. In real life you can have the elements
+              you have chosen. Like, text, images, lists, etc.
+            </div>
+            <h5 class="mt-3">List</h5>
+            <ul class="ps-3">
+              <li class="">Nemo enim ipsam voluptatem quia aspernatur</li>
+              <li class="">Neque porro quisquam est, qui dolorem</li>
+              <li class="">Quis autem vel eum iure qui in ea</li>
+            </ul>
+          </div>
+          <!-- end offcanvas-body-->
+        </ng-template>
+        <!-- end offcanvas-->
+      </div>
+      <!-- end card-body -->
+    </div>
+    <!-- end card-->
+  </div>
+  <!-- end col -->
+
+  <div class="col-xl-4">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Placement Offcanvas</h5>
+      </div>
+      <!-- end card header -->
+
+      <div class="card-body">
+        <div class="d-flex flex-wrap gap-2">
+          <button
+            class="btn btn-primary d-lg-none"
+            type="button"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#offcanvasResponsive"
+            aria-controls="offcanvasResponsive"
+          >
+            Toggle offcanvas
+          </button>
+        </div>
+
+        <div class="alert alert-info d-none d-lg-block">
+          Resize your browser to show the responsive offcanvas toggle.
+        </div>
+
+        <div
+          class="offcanvas-lg offcanvas-end"
+          tabindex="-1"
+          id="offcanvasResponsive"
+          aria-labelledby="offcanvasResponsiveLabel"
+        >
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasResponsiveLabel">
+              Responsive offcanvas
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="offcanvas"
+              data-bs-target="#offcanvasResponsive"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="offcanvas-body">
+            <p class="mb-0">
+              This is content within an <code>.offcanvas-lg</code>.
+            </p>
+          </div>
+        </div>
+      </div>
+      <!-- end card-body -->
+    </div>
+    <!-- end card-->
+  </div>
+  <!-- end col -->
+</div>

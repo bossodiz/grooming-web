@@ -1,0 +1,134 @@
+<breadcrumb [title]="'Charts'" [subtitle]="'Piecharts'" />
+
+<!-- Simple Pie Charts -->
+<div class="row">
+  <!-- Simple Pie Charts -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Simple Pie Chart</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="simple_pie_chart" class="apex-charts">
+          <apx-chart
+            [series]="simplePie.series!"
+            [chart]="simplePie.chart!"
+            [colors]="simplePie.colors!"
+            [labels]="simplePie.labels!"
+            [legend]="simplePie.legend!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Simple Donut Charts -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Simple Donut Chart</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="simple_donut_chart" class="apex-charts">
+          <apx-chart
+            [series]="simpleDonut.series!"
+            [chart]="simpleDonut.chart!"
+            [plotOptions]="simpleDonut.plotOptions!"
+            [colors]="simpleDonut.colors!"
+            [labels]="simpleDonut.labels!"
+            [legend]="simpleDonut.legend!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Monochrome Pie Charts -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Monochrome Pie Chart</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="monochrome_pie_chart" class="apex-charts">
+          <apx-chart
+            [series]="Monochrome.series!"
+            [chart]="Monochrome.chart!"
+            [legend]="Monochrome.legend!"
+            [colors]="Monochrome.colors!"
+            [labels]="Monochrome.labels!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gradient Donut Pie Charts -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Gradiant Donut Pie Chart</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="gradient_donut_pie_chart" class="apex-charts">
+          <apx-chart
+            [series]="gradientDonutPie.series!"
+            [chart]="gradientDonutPie.chart!"
+            [fill]="gradientDonutPie.fill!"
+            [legend]="gradientDonutPie.legend!"
+            [colors]="gradientDonutPie.colors!"
+            [dataLabels]="gradientDonutPie.dataLabels!"
+            [title]="gradientDonutPie.title!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Semi Donut Pie Charts -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Semi Donut Pie Chart</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="semi_donut_pie_chart" class="apex-charts">
+          <apx-chart
+            [series]="semiDonut.series!"
+            [chart]="semiDonut.chart!"
+            [plotOptions]="semiDonut.plotOptions!"
+            [colors]="semiDonut.colors!"
+            [grid]="semiDonut.grid!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Donut with Pattern Charts -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Donut with Pattern Chart</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="pattern_donut_pie_chart" class="apex-charts">
+          <apx-chart
+            [series]="donutWithPattern.series!"
+            [chart]="donutWithPattern.chart!"
+            [plotOptions]="donutWithPattern.plotOptions!"
+            [title]="donutWithPattern.title!"
+            [colors]="donutWithPattern.colors!"
+            [fill]="donutWithPattern.fill!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

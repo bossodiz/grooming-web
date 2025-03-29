@@ -1,0 +1,81 @@
+<breadcrumb [title]="'Charts'" [subtitle]="'Radar Charts'" />
+
+<div class="row">
+  <!-- Basic Radar Charts -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Basic Radar Chart</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="basic_radar_chart" class="apex-charts">
+          <apx-chart
+            [chart]="basicRadarChart.chart!"
+            [title]="basicRadarChart.title!"
+            [series]="basicRadarChart.series!"
+            [stroke]="basicRadarChart.stroke!"
+            [fill]="basicRadarChart.fill!"
+            [colors]="basicRadarChart.colors!"
+            [plotOptions]="basicRadarChart.plotOptions!"
+            [legend]="basicRadarChart.legend!"
+            [theme]="basicRadarChart.theme!"
+            [yaxis]="basicRadarChart.yaxis!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Multiple Series Radar Charts -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Radar Chart - Multiple Series</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="multiple_radar_chart" class="apex-charts">
+          <apx-chart
+            [chart]="multipleRadarChart.chart!"
+            [title]="multipleRadarChart.title!"
+            [series]="multipleRadarChart.series!"
+            [stroke]="multipleRadarChart.stroke!"
+            [fill]="multipleRadarChart.fill!"
+            [colors]="multipleRadarChart.colors!"
+            [plotOptions]="multipleRadarChart.plotOptions!"
+            [legend]="multipleRadarChart.legend!"
+            [theme]="multipleRadarChart.theme!"
+            [yaxis]="multipleRadarChart.yaxis!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Polygon Fill Radar Charts -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Radar Chart - Polygon Fill</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="polygonfill_radar_chart" class="apex-charts">
+          <apx-chart
+            [chart]="polygonfillRadarChart.chart!"
+            [title]="polygonfillRadarChart.title!"
+            [series]="polygonfillRadarChart.series!"
+            [stroke]="polygonfillRadarChart.stroke!"
+            [fill]="polygonfillRadarChart.fill!"
+            [colors]="polygonfillRadarChart.colors!"
+            [plotOptions]="polygonfillRadarChart.plotOptions!"
+            [legend]="polygonfillRadarChart.legend!"
+            [theme]="polygonfillRadarChart.theme!"
+            [yaxis]="polygonfillRadarChart.yaxis!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

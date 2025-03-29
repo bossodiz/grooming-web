@@ -1,0 +1,272 @@
+<breadcrumb [title]="'Charts'" [subtitle]="'Area Charts'" />
+
+<div class="row">
+  <!-- Basic Area Chart -->
+  <div class="col-xl-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Basic Area Chart</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="basic_area_chart" class="apex-charts">
+          <apx-chart
+            [series]="basicAreaChart.series!"
+            [chart]="basicAreaChart.chart!"
+            [plotOptions]="basicAreaChart.plotOptions!"
+            [colors]="basicAreaChart.colors!"
+            [labels]="basicAreaChart.labels!"
+            [stroke]="basicAreaChart.stroke!"
+            [xaxis]="basicAreaChart.xaxis!"
+            [title]="basicAreaChart.title!"
+            [markers]="basicAreaChart.markers!"
+            [dataLabels]="basicAreaChart.dataLabels!"
+            [fill]="basicAreaChart.fill!"
+            [yaxis]="basicAreaChart.yaxis!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Spline Area Chart -->
+  <div class="col-xl-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Spline Area Chart</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="spline_area_chart" class="apex-charts">
+          <apx-chart
+            [series]="spilineAreaChart.series!"
+            [chart]="spilineAreaChart.chart!"
+            [plotOptions]="spilineAreaChart.plotOptions!"
+            [colors]="spilineAreaChart.colors!"
+            [labels]="spilineAreaChart.labels!"
+            [stroke]="spilineAreaChart.stroke!"
+            [xaxis]="spilineAreaChart.xaxis!"
+            [title]="spilineAreaChart.title!"
+            [markers]="spilineAreaChart.markers!"
+            [dataLabels]="spilineAreaChart.dataLabels!"
+            [fill]="spilineAreaChart.fill!"
+            [yaxis]="spilineAreaChart.yaxis!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <!-- Datetime X-Axis Area Chart -->
+  <div class="col-xl-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Datetime X-Axis Area Chart</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="datetime_Xaxis_area_chart" class="apex-charts">
+          <apx-chart
+            [series]="datetimeAreaChart.series!"
+            [chart]="datetimeAreaChart.chart!"
+            [plotOptions]="datetimeAreaChart.plotOptions!"
+            [colors]="datetimeAreaChart.colors!"
+            [labels]="datetimeAreaChart.labels!"
+            [stroke]="datetimeAreaChart.stroke!"
+            [xaxis]="datetimeAreaChart.xaxis!"
+            [title]="datetimeAreaChart.title!"
+            [markers]="datetimeAreaChart.markers!"
+            [dataLabels]="datetimeAreaChart.dataLabels!"
+            [fill]="datetimeAreaChart.fill!"
+            [annotations]="datetimeAreaChart.annotations!"
+            [yaxis]="datetimeAreaChart.yaxis!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Negative Area Chart -->
+  <div class="col-xl-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Negative Values Area Chart</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="negative_area_chart" class="apex-charts">
+          <apx-chart
+            [series]="negativeAreaChart.series!"
+            [chart]="negativeAreaChart.chart!"
+            [plotOptions]="negativeAreaChart.plotOptions!"
+            [colors]="negativeAreaChart.colors!"
+            [labels]="negativeAreaChart.labels!"
+            [stroke]="negativeAreaChart.stroke!"
+            [xaxis]="negativeAreaChart.xaxis!"
+            [title]="negativeAreaChart.title!"
+            [markers]="negativeAreaChart.markers!"
+            [dataLabels]="negativeAreaChart.dataLabels!"
+            [fill]="negativeAreaChart.fill!"
+            [yaxis]="negativeAreaChart.yaxis!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <!-- Github Style Area Chart -->
+  <div class="col-xl-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Github Style Area Chart</h5>
+      </div>
+
+      <div class="card-body">
+        <div class="bg-light">
+          <div id="area_chart-months" class="apex-charts">
+            <apx-chart
+              [series]="areaChartMMonth.series!"
+              [chart]="areaChartMMonth.chart!"
+              [plotOptions]="areaChartMMonth.plotOptions!"
+              [colors]="areaChartMMonth.colors!"
+              [labels]="areaChartMMonth.labels!"
+              [stroke]="areaChartMMonth.stroke!"
+              [xaxis]="areaChartMMonth.xaxis!"
+              [title]="areaChartMMonth.title!"
+              [markers]="areaChartMMonth.markers!"
+              [dataLabels]="areaChartMMonth.dataLabels!"
+              [fill]="areaChartMMonth.fill!"
+              [yaxis]="areaChartMMonth.yaxis!"
+            />
+          </div>
+        </div>
+
+        <div class="github-style d-flex align-items-center my-2">
+          <div class="flex-shrink-0 me-2">
+            <img
+              class="avatar-sm rounded"
+              src="assets/images/users/user-6.jpg"
+              data-hovercard-user-id="634573"
+              alt=""
+            />
+          </div>
+          <div class="flex-grow-1">
+            <a class="font-size-14 text-body fw-medium">coder</a>
+            <div class="cmeta text-muted font-size-11">
+              <span class="commits text-body fw-medium"></span> commits
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-light">
+          <div id="area_chart-years" class="apex-charts">
+            <apx-chart
+              [series]="areaChartYaer.series!"
+              [chart]="areaChartYaer.chart!"
+              [plotOptions]="areaChartYaer.plotOptions!"
+              [colors]="areaChartYaer.colors!"
+              [labels]="areaChartYaer.labels!"
+              [stroke]="areaChartYaer.stroke!"
+              [xaxis]="areaChartYaer.xaxis!"
+              [title]="areaChartYaer.title!"
+              [markers]="areaChartYaer.markers!"
+              [dataLabels]="areaChartYaer.dataLabels!"
+              [fill]="areaChartYaer.fill!"
+              [yaxis]="areaChartYaer.yaxis!"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stacked Area Chart -->
+  <div class="col-xl-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Stacked Area Chart</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="stacked_area_chart" class="apex-charts">
+          <apx-chart
+            [series]="stackedAreaChart.series!"
+            [chart]="stackedAreaChart.chart!"
+            [plotOptions]="stackedAreaChart.plotOptions!"
+            [colors]="stackedAreaChart.colors!"
+            [labels]="stackedAreaChart.labels!"
+            [stroke]="stackedAreaChart.stroke!"
+            [xaxis]="stackedAreaChart.xaxis!"
+            [title]="stackedAreaChart.title!"
+            [markers]="stackedAreaChart.markers!"
+            [dataLabels]="stackedAreaChart.dataLabels!"
+            [fill]="stackedAreaChart.fill!"
+            [yaxis]="stackedAreaChart.yaxis!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <!-- Irregular Timeseries Chart -->
+  <div class="col-xl-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Irregular Timeseries Chart</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="irregular_area_chart" class="apex-charts">
+          <apx-chart
+            [series]="irregularAreaChart.series!"
+            [chart]="irregularAreaChart.chart!"
+            [plotOptions]="irregularAreaChart.plotOptions!"
+            [colors]="irregularAreaChart.colors!"
+            [labels]="irregularAreaChart.labels!"
+            [stroke]="irregularAreaChart.stroke!"
+            [xaxis]="irregularAreaChart.xaxis!"
+            [title]="irregularAreaChart.title!"
+            [markers]="irregularAreaChart.markers!"
+            [dataLabels]="irregularAreaChart.dataLabels!"
+            [fill]="irregularAreaChart.fill!"
+            [yaxis]="irregularAreaChart.yaxis!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Area Chart With Null Values Chart -->
+  <div class="col-xl-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Area Chart With Null Values Chart</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="missing_null-value_area_chart" class="apex-charts">
+          <apx-chart
+            [series]="missingNullValue.series!"
+            [chart]="missingNullValue.chart!"
+            [plotOptions]="missingNullValue.plotOptions!"
+            [colors]="missingNullValue.colors!"
+            [labels]="missingNullValue.labels!"
+            [stroke]="missingNullValue.stroke!"
+            [xaxis]="missingNullValue.xaxis!"
+            [title]="missingNullValue.title!"
+            [markers]="missingNullValue.markers!"
+            [dataLabels]="missingNullValue.dataLabels!"
+            [fill]="missingNullValue.fill!"
+            [yaxis]="missingNullValue.yaxis!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

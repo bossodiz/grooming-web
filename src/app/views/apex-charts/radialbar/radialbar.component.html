@@ -1,0 +1,157 @@
+<breadcrumb [title]="'Charts'" [subtitle]="'Radialbar Charts'" />
+
+<div class="row">
+  <!-- Radialbar Pie Charts -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Simple Radialbar Chart</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="simple_radialbar_chart" class="apex-charts">
+          <apx-chart
+            [series]="simpleRadialbar.series!"
+            [chart]="simpleRadialbar.chart!"
+            [plotOptions]="simpleRadialbar.plotOptions!"
+            [colors]="simpleRadialbar.colors!"
+            [labels]="simpleRadialbar.labels!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Multiple Pie Charts -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Multiple Radialbar Chart</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="multiple_radialbar_chart" class="apex-charts">
+          <apx-chart
+            [series]="multipleRadialbar.series!"
+            [chart]="multipleRadialbar.chart!"
+            [plotOptions]="multipleRadialbar.plotOptions!"
+            [colors]="multipleRadialbar.colors!"
+            [labels]="multipleRadialbar.labels!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Custom Angle Circle Radial Bar Charts -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Custom Angle Circle Radialbar Chart</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="angle_radialbar_chart" class="apex-charts">
+          <apx-chart
+            [series]="customAngleCircle.series!"
+            [chart]="customAngleCircle.chart!"
+            [plotOptions]="customAngleCircle.plotOptions!"
+            [colors]="customAngleCircle.colors!"
+            [labels]="customAngleCircle.labels!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gradient Radial Bar Charts -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Gradient Radialbar Chart</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="gradient_radialbar_chart" class="apex-charts">
+          <apx-chart
+            [series]="gradientRadialbar.series!"
+            [chart]="gradientRadialbar.chart!"
+            [plotOptions]="gradientRadialbar.plotOptions!"
+            [colors]="gradientRadialbar.colors!"
+            [labels]="gradientRadialbar.labels!"
+            [fill]="gradientRadialbar.fill!"
+            [stroke]="gradientRadialbar.stroke!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Radialbars with Image Radial Bar Charts -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Radialbars with Image Chart</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="image_radialbar_chart" class="apex-charts">
+          <apx-chart
+            [series]="radialbarsImage.series!"
+            [chart]="radialbarsImage.chart!"
+            [plotOptions]="radialbarsImage.plotOptions!"
+            [colors]="radialbarsImage.colors!"
+            [labels]="radialbarsImage.labels!"
+            [fill]="radialbarsImage.fill!"
+            [stroke]="radialbarsImage.stroke!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stroked Gauge Radial Bar Charts -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Stroked Gauge Chart</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="stroked_radialbar_chart" class="apex-charts">
+          <apx-chart
+            [series]="strokedGauge.series!"
+            [chart]="strokedGauge.chart!"
+            [plotOptions]="strokedGauge.plotOptions!"
+            [colors]="strokedGauge.colors!"
+            [labels]="strokedGauge.labels!"
+            [stroke]="strokedGauge.stroke!"
+            [fill]="strokedGauge.fill!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Semi Circle Gauge Radial Bar Charts -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Semi Circle Gauge Chart</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="semicircle_radialbar_chart" class="apex-charts">
+          <apx-chart
+            [series]="semiCircleGauge.series!"
+            [chart]="semiCircleGauge.chart!"
+            [plotOptions]="semiCircleGauge.plotOptions!"
+            [colors]="semiCircleGauge.colors!"
+            [labels]="semiCircleGauge.labels!"
+            [fill]="semiCircleGauge.fill!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

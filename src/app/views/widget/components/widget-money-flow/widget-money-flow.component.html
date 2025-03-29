@@ -1,0 +1,45 @@
+<div class="card">
+  <div class="card-header">
+    <div class="d-flex align-items-center">
+      <h5 class="card-title mb-0">Money Flow</h5>
+      <div class="ms-auto" ngbDropdown>
+        <button
+          ngbDropdownToggle
+          class="btn btn-sm bg-light border dropdown-toggle fw-medium text-black"
+          type="button"
+          data-bs-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          <i class="mdi mdi-currency-usd me-1 fs-14"></i>Profile<i
+            class="mdi mdi-chevron-down ms-1 fs-14"
+          ></i>
+        </button>
+        <div class="dropdown-menu" ngbDropdownMenu>
+          <a class="dropdown-item" href="javascript:void(0);">Profile</a>
+          <a class="dropdown-item" href="javascript:void(0);">Income</a>
+          <a class="dropdown-item" href="javascript:void(0);">Expense</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-body">
+    <div id="chart-money" class="apex-charts">
+      <apx-chart
+        [series]="moneyFlow.series!"
+        [chart]="moneyFlow.chart!"
+        [plotOptions]="moneyFlow.plotOptions!"
+        [fill]="moneyFlow.fill!"
+        [stroke]="moneyFlow.stroke!"
+        [markers]="moneyFlow.markers!"
+        [yaxis]="moneyFlow.yaxis!"
+        [colors]="moneyFlow.colors!"
+        [dataLabels]="moneyFlow.dataLabels!"
+        [grid]="moneyFlow.grid!"
+        [xaxis]="moneyFlow.xaxis!"
+        [legend]="moneyFlow.legend!"
+      />
+    </div>
+  </div>
+</div>

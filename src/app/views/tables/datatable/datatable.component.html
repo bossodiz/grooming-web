@@ -1,0 +1,298 @@
+<breadcrumb [title]="'Table'" [subtitle]="'Data Table'" />
+
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-header border-bottom border-dashed">
+        <h4 class="card-title mb-0 flex-grow-1">Base Example</h4>
+      </div>
+
+      <div class="card-body">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Name</th>
+              <th scope="col">Email</th>
+              <th scope="col">Position</th>
+              <th scope="col">Company</th>
+              <th scope="col">Country</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of basicCountries; track item.name; let i = $index) {
+              <tr>
+                <th scope="row">{{ i + 1 }}</th>
+                <td>
+                  {{ item.name }}
+                </td>
+                <td>
+                  <a href="">{{ item.email }}</a>
+                </td>
+                <td>{{ item.position }}</td>
+                <td>{{ item.company }}</td>
+                <td>{{ item.country }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-header border-bottom border-dashed">
+        <h4 class="card-title mb-0">Pagination</h4>
+      </div>
+
+      <div class="card-body">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Name</th>
+              <th scope="col">Email</th>
+              <th scope="col">Position</th>
+              <th scope="col">Company</th>
+              <th scope="col">Country</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of countries; track item.name; let i = $index) {
+              <tr>
+                <th scope="row">{{ i + 1 }}</th>
+                <td>
+                  {{ item.name }}
+                </td>
+                <td>
+                  <a href="">{{ item.email }}</a>
+                </td>
+                <td>{{ item.position }}</td>
+                <td>{{ item.company }}</td>
+                <td>{{ item.country }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+        <ngb-pagination
+          class="d-flex justify-content-end"
+          [collectionSize]="collectionSize"
+          [(page)]="page"
+          [pageSize]="pageSize"
+          (pageChange)="refreshCountries()"
+        >
+        </ngb-pagination>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-header border-bottom border-dashed">
+        <h4 class="card-title mb-0">Search</h4>
+      </div>
+      <div class="card-body">
+        <div class="mb-3 row">
+          <label
+            for="table-filtering-search"
+            class="col-xs-3 col-sm-auto col-form-label"
+            >Full text search:</label
+          >
+          <div class="col-xs-3 col-sm-auto">
+            <input
+              id="table-filtering-search"
+              class="form-control"
+              type="text"
+              [(ngModel)]="filter"
+              (ngModelChange)="searchfilter()"
+            />
+          </div>
+        </div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Name</th>
+              <th scope="col">Email</th>
+              <th scope="col">Position</th>
+              <th scope="col">Company</th>
+              <th scope="col">Country</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of searchCountries; track item.name; let i = $index) {
+              <tr>
+                <th scope="row">{{ i + 1 }}</th>
+                <td>
+                  <ngb-highlight [result]="item.name" [term]="filter" />
+                </td>
+                <td>
+                  <a href="">{{ item.email }}</a>
+                </td>
+                <td>{{ item.position }}</td>
+                <td>{{ item.company }}</td>
+                <td>
+                  <ngb-highlight [result]="item.country" [term]="filter" />
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+        <ngb-pagination
+          class="d-flex justify-content-end"
+          [collectionSize]="searchCountries.length"
+          [page]="1"
+          [pageSize]="2"
+          (pageChange)="refreshSearchCountries()"
+        >
+        </ngb-pagination>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-header border-bottom border-dashed">
+        <h4 class="card-title mb-0">Sorting</h4>
+      </div>
+
+      <div class="card-body">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col" sortable="name" (sort)="onSort($event)">Name</th>
+              <th scope="col" sortable="email" (sort)="onSort($event)">
+                Email
+              </th>
+              <th scope="col" sortable="position" (sort)="onSort($event)">
+                Position
+              </th>
+              <th scope="col" sortable="company" (sort)="onSort($event)">
+                Company
+              </th>
+              <th scope="col" sortable="country" (sort)="onSort($event)">
+                Country
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of sortCountries; track item.name; let i = $index) {
+              <tr>
+                <th scope="row">{{ i + 1 }}</th>
+                <td>
+                  <ngb-highlight [result]="item.name" [term]="filter" />
+                </td>
+                <td>
+                  <a href="">{{ item.email }}</a>
+                </td>
+                <td>{{ item.position }}</td>
+                <td>{{ item.company }}</td>
+                <td>
+                  <ngb-highlight [result]="item.country" [term]="filter" />
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-header border-bottom border-dashed">
+        <h4 class="card-title mb-0">Complete Example</h4>
+      </div>
+
+      <div class="card-body">
+        <form>
+          <div class="mb-3 row">
+            <label
+              for="table-complete-search"
+              class="col-xs-3 col-sm-auto col-form-label"
+              >Full text search:</label
+            >
+            <div class="col-xs-3 col-sm-auto">
+              <input
+                id="table-complete-search"
+                type="text"
+                class="form-control"
+                name="searchTerm"
+                [(ngModel)]="tableService.searchTerm"
+              />
+            </div>
+            @if (tableService.loading$ | async) {
+              <span class="col col-form-label">Loading...</span>
+            }
+          </div>
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col" sortable="name" (sort)="onCompleteSort($event)">
+                  Name
+                </th>
+                <th
+                  scope="col"
+                  sortable="email"
+                  (sort)="onCompleteSort($event)"
+                >
+                  Email
+                </th>
+                <th
+                  scope="col"
+                  sortable="position"
+                  (sort)="onCompleteSort($event)"
+                >
+                  Position
+                </th>
+                <th
+                  scope="col"
+                  sortable="company"
+                  (sort)="onCompleteSort($event)"
+                >
+                  Company
+                </th>
+                <th
+                  scope="col"
+                  sortable="country"
+                  (sort)="onCompleteSort($event)"
+                >
+                  Country
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (item of Countries; track item.name; let i = $index) {
+                <tr>
+                  <th scope="row">{{ i + 1 }}</th>
+                  <td>
+                    <ngb-highlight [result]="item.name" [term]="filter" />
+                  </td>
+                  <td>
+                    <a href="">{{ item.email }}</a>
+                  </td>
+                  <td>{{ item.position }}</td>
+                  <td>{{ item.company }}</td>
+                  <td>
+                    <ngb-highlight [result]="item.country" [term]="filter" />
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

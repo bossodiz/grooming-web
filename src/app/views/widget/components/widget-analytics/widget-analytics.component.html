@@ -1,0 +1,90 @@
+<div class="card">
+  <div class="card-header">
+    <div class="d-flex align-items-center">
+      <h5 class="card-title mb-0">Web Analytics</h5>
+    </div>
+  </div>
+
+  <div class="card-body">
+    <div class="justify-content-center mb-4">
+      <div class="row g-3">
+        <div class="col-md-6 col-xl-3">
+          <a href="javascript:void(0);">
+            <div class="border rounded-3 px-2 py-3 text-center">
+              <p class="mb-2 text-dark">Users</p>
+              <h3 class="m-0 mb-2 fs-24 text-black">3 680</h3>
+              <p class="text-muted mb-0 fs-13">
+                <span class="text-success bg-success-subtle rounded-2 p-1 me-2"
+                  ><i class="mdi mdi-arrow-up-circle"></i> 2.5%</span
+                >
+              </p>
+            </div>
+          </a>
+        </div>
+        <div class="col-md-6 col-xl-3">
+          <a href="javascript:void(0);">
+            <div class="border rounded-3 px-2 py-3 text-center">
+              <p class="mb-2 text-dark">New Users</p>
+              <h3 class="m-0 mb-2 fs-24 text-black">2 870</h3>
+              <p class="text-muted mb-0 fs-13">
+                <span class="text-success bg-success-subtle rounded-2 p-1 me-2"
+                  ><i class="mdi mdi-arrow-up-circle"></i> 1.6%</span
+                >
+              </p>
+            </div>
+          </a>
+        </div>
+        <div class="col-md-6 col-xl-3">
+          <a href="javascript:void(0);">
+            <div class="border rounded-3 px-2 py-3 text-center">
+              <p class="mb-2 text-dark">Key Event</p>
+              <h3 class="m-0 mb-2 fs-24 text-black">78</h3>
+              <p class="text-muted mb-0 fs-13">
+                <span class="text-danger bg-danger-subtle rounded-2 p-1 me-2"
+                  ><i class="mdi mdi-arrow-down-circle"></i> 7.7%</span
+                >
+              </p>
+            </div>
+          </a>
+        </div>
+        <div class="col-md-6 col-xl-3">
+          <a href="javascript:void(0);">
+            <div class="border rounded-3 px-2 py-3 text-center">
+              <p class="mb-2 text-dark">Event Count</p>
+              <h3 class="m-0 mb-2 fs-24 text-black">9.4K</h3>
+              <p class="text-muted mb-0 fs-13">
+                <span class="text-success bg-success-subtle rounded-2 p-1 me-2"
+                  ><i class="mdi mdi-arrow-up-circle"></i> 17.6%</span
+                >
+              </p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div id="chart-new-clients" class="apex-charts">
+      <apx-chart
+        [series]="analticsChart.series!"
+        [chart]="analticsChart.chart!"
+        [plotOptions]="analticsChart.plotOptions!"
+        [fill]="analticsChart.fill!"
+        [stroke]="analticsChart.stroke!"
+        [markers]="analticsChart.markers!"
+        [yaxis]="analticsChart.yaxis!"
+        [colors]="analticsChart.colors!"
+        [dataLabels]="analticsChart.dataLabels!"
+        [grid]="analticsChart.grid!"
+        [xaxis]="analticsChart.xaxis!"
+        [legend]="analticsChart.legend!"
+      />
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <a
+          class="btn text-black border fw-normal d-flex align-items-center justify-content-center text-capitalize rounded-3 mt-3"
+          >View reports snapshot <i class="mdi mdi-arrow-right ms-2 fs-17"></i
+        ></a>
+      </div>
+    </div>
+  </div>
+</div>

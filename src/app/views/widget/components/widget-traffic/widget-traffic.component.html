@@ -1,0 +1,65 @@
+<div class="row">
+  <div class="col-md-12 col-xl-12">
+    <div class="card">
+      <div class="card-header">
+        <div class="d-flex align-items-center">
+          <h5 class="card-title mb-0">Traffic summary</h5>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div id="chart-traffic" class="apex-charts">
+          <apx-chart
+            [series]="trafficChart.series!"
+            [chart]="trafficChart.chart!"
+            [plotOptions]="trafficChart.plotOptions!"
+            [fill]="trafficChart.fill!"
+            [stroke]="trafficChart.stroke!"
+            [markers]="trafficChart.markers!"
+            [yaxis]="trafficChart.yaxis!"
+            [colors]="trafficChart.colors!"
+            [dataLabels]="trafficChart.dataLabels!"
+            [grid]="trafficChart.grid!"
+            [xaxis]="trafficChart.xaxis!"
+            [legend]="trafficChart.legend!"
+            [labels]="trafficChart.labels!"
+          />
+        </div>
+      </div>
+      <!-- end card body -->
+    </div>
+    <!-- end card -->
+  </div>
+
+  <div class="col-md-12 col-xl-12">
+    <div class="card">
+      <div class="card-header">
+        <div class="d-flex align-items-center">
+          <h5 class="card-title mb-0">Subscribers</h5>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div id="chart-development-activity" class="apex-charts">
+          <apx-chart
+            [series]="subscribeChart.series!"
+            [chart]="subscribeChart.chart!"
+            [plotOptions]="subscribeChart.plotOptions!"
+            [fill]="subscribeChart.fill!"
+            [stroke]="subscribeChart.stroke!"
+            [markers]="subscribeChart.markers!"
+            [yaxis]="subscribeChart.yaxis!"
+            [colors]="subscribeChart.colors!"
+            [dataLabels]="subscribeChart.dataLabels!"
+            [grid]="subscribeChart.grid!"
+            [xaxis]="subscribeChart.xaxis!"
+            [legend]="subscribeChart.legend!"
+            [labels]="subscribeChart.labels!"
+          />
+        </div>
+      </div>
+      <!-- end card body -->
+    </div>
+    <!-- end card -->
+  </div>
+</div>

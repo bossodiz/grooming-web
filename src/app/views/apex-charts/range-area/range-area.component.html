@@ -1,0 +1,55 @@
+<breadcrumb [title]="'Charts'" [subtitle]="'Range Area'" />
+<div class="row">
+  <!-- Basic Range Area Chart -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Basic Range Area</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="basic_rangearea_chart" class="apex-charts">
+          <apx-chart
+            [series]="basicAreaChart.series!"
+            [chart]="basicAreaChart.chart!"
+            [plotOptions]="basicAreaChart.plotOptions!"
+            [colors]="basicAreaChart.colors!"
+            [labels]="basicAreaChart.labels!"
+            [stroke]="basicAreaChart.stroke!"
+            [xaxis]="basicAreaChart.xaxis!"
+            [title]="basicAreaChart.title!"
+            [markers]="basicAreaChart.markers!"
+            [dataLabels]="basicAreaChart.dataLabels!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Combo Range Area Chart -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Combo Range Area</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="cambo_rangearea_chart" class="apex-charts">
+          <apx-chart
+            [series]="comboRangeArea.series!"
+            [chart]="comboRangeArea.chart!"
+            [plotOptions]="comboRangeArea.plotOptions!"
+            [colors]="comboRangeArea.colors!"
+            [labels]="comboRangeArea.labels!"
+            [stroke]="comboRangeArea.stroke!"
+            [xaxis]="comboRangeArea.xaxis!"
+            [title]="comboRangeArea.title!"
+            [fill]="comboRangeArea.fill!"
+            [markers]="comboRangeArea.markers!"
+            [dataLabels]="comboRangeArea.dataLabels!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

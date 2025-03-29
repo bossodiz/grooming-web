@@ -1,0 +1,70 @@
+<div class="card">
+  <div class="card-header">
+    <div class="d-flex align-items-center">
+      <h5 class="card-title mb-0">Average revenue</h5>
+    </div>
+  </div>
+
+  <div class="card-body">
+    <div id="average-revenue" class="apex-charts">
+      <apx-chart
+        [series]="revenueChart.series!"
+        [chart]="revenueChart.chart!"
+        [plotOptions]="revenueChart.plotOptions!"
+        [fill]="revenueChart.fill!"
+        [stroke]="revenueChart.stroke!"
+        [yaxis]="revenueChart.yaxis!"
+        [labels]="revenueChart.labels!"
+        [colors]="revenueChart.colors!"
+        [dataLabels]="revenueChart.dataLabels!"
+        [grid]="revenueChart.grid!"
+        [xaxis]="revenueChart.xaxis!"
+        [yaxis]="revenueChart.yaxis!"
+      />
+    </div>
+
+    <div class="row">
+      <div class="col-md-4 col-xl-4">
+        <div class="mt-3">
+          <p class="mb-2 text-dark fs-15">This month</p>
+          <h3 class="m-0 mb-1 fs-18 text-black">$ 36,026.89</h3>
+          <div class="d-flex align-items-center">
+            <span
+              class="avatar-xs rounded-circle bg-success-subtle d-flex justify-content-center align-items-center me-2"
+              ><i class="mdi mdi-arrow-up fs-13 text-success"></i
+            ></span>
+            <p class="text-muted mb-0 fs-13">+ $ 1,670.76</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4 col-xl-4">
+        <div class="mt-3">
+          <p class="mb-2 text-dark fs-15">Today</p>
+          <h3 class="m-0 mb-1 fs-18 text-black">$ 1,260.16</h3>
+          <div class="d-flex align-items-center">
+            <span
+              class="avatar-xs rounded-circle bg-danger-subtle d-flex justify-content-center align-items-center me-2"
+              ><i class="mdi mdi-arrow-down fs-13 text-danger"></i
+            ></span>
+            <p class="text-muted mb-0 fs-13">+ $ 1,670.76</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4 col-xl-4">
+        <div class="mt-3">
+          <p class="mb-2 text-dark fs-15">This Year</p>
+          <h3 class="m-0 mb-1 fs-18 text-black">$ 136,026.89</h3>
+          <div class="d-flex align-items-center">
+            <span
+              class="avatar-xs rounded-circle bg-success-subtle d-flex justify-content-center align-items-center me-2"
+              ><i class="mdi mdi-arrow-up fs-13 text-success"></i
+            ></span>
+            <p class="text-muted mb-0 fs-13">+ $ 11,670.76</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

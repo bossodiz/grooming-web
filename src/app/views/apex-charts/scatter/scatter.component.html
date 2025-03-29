@@ -1,0 +1,71 @@
+<breadcrumb [title]="'Charts'" [subtitle]="'Scatter Charts'" />
+
+<!-- Scatter Charts -->
+<div class="row">
+  <!-- Basic Scatter Charts -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Basic Scatter Chart</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="basic_scatter_chart" class="apex-charts">
+          <apx-chart
+            [series]="scatterMap.series!"
+            [chart]="scatterMap.chart!"
+            [plotOptions]="scatterMap.plotOptions!"
+            [colors]="scatterMap.colors!"
+            [labels]="scatterMap.labels!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Datetime Scatter Charts -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Datetime Scatter Chart</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="datetime_scatter_chart" class="apex-charts">
+          <apx-chart
+            [series]="datetimeScatter.series!"
+            [chart]="datetimeScatter.chart!"
+            [plotOptions]="datetimeScatter.plotOptions!"
+            [colors]="datetimeScatter.colors!"
+            [labels]="datetimeScatter.labels!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Image Scatter Charts -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Images Scatter Chart</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="images_scatter_chart" class="apex-charts">
+          <apx-chart
+            [series]="imagesScatter.series!"
+            [chart]="imagesScatter.chart!"
+            [markers]="imagesScatter.markers!"
+            [colors]="imagesScatter.colors!"
+            [xaxis]="imagesScatter.xaxis!"
+            [yaxis]="imagesScatter.yaxis!"
+            [labels]="imagesScatter.labels!"
+            [legend]="imagesScatter.legend!"
+            [fill]="imagesScatter.fill!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

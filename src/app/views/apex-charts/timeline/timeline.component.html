@@ -1,0 +1,159 @@
+<breadcrumb [title]="'Charts'" [subtitle]="'Timeline'" />
+
+<div class="row">
+  <!-- Basic Timeline Chart -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Basic Timeline Chart</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="basic_timeline_chart" class="apex-charts">
+          <apx-chart
+            [series]="basicTimeline.series!"
+            [chart]="basicTimeline.chart!"
+            [plotOptions]="basicTimeline.plotOptions!"
+            [colors]="basicTimeline.colors!"
+            [labels]="basicTimeline.labels!"
+            [stroke]="basicTimeline.stroke!"
+            [xaxis]="basicTimeline.xaxis!"
+            [title]="basicTimeline.title!"
+            [markers]="basicTimeline.markers!"
+            [dataLabels]="basicTimeline.dataLabels!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Distributed Timeline Chart -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Distributed Timeline</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="distributed_timeline_chart" class="apex-charts">
+          <apx-chart
+            [series]="distributedChart.series!"
+            [chart]="distributedChart.chart!"
+            [plotOptions]="distributedChart.plotOptions!"
+            [colors]="distributedChart.colors!"
+            [labels]="distributedChart.labels!"
+            [stroke]="distributedChart.stroke!"
+            [xaxis]="distributedChart.xaxis!"
+            [title]="distributedChart.title!"
+            [markers]="distributedChart.markers!"
+            [dataLabels]="distributedChart.dataLabels!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Multi-Series Timeline Chart -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Multi Series Timeline</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="multi_timeline_chart" class="apex-charts">
+          <apx-chart
+            [series]="multiTimeline.series!"
+            [chart]="multiTimeline.chart!"
+            [plotOptions]="multiTimeline.plotOptions!"
+            [colors]="multiTimeline.colors!"
+            [labels]="multiTimeline.labels!"
+            [stroke]="multiTimeline.stroke!"
+            [xaxis]="multiTimeline.xaxis!"
+            [title]="multiTimeline.title!"
+            [markers]="multiTimeline.markers!"
+            [dataLabels]="multiTimeline.dataLabels!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Advanced Timeline Chart -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Advanced Timeline</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="advanced_timeline_chart" class="apex-charts">
+          <apx-chart
+            [series]="advanceTimeline.series!"
+            [chart]="advanceTimeline.chart!"
+            [plotOptions]="advanceTimeline.plotOptions!"
+            [colors]="advanceTimeline.colors!"
+            [labels]="advanceTimeline.labels!"
+            [stroke]="advanceTimeline.stroke!"
+            [xaxis]="advanceTimeline.xaxis!"
+            [title]="advanceTimeline.title!"
+            [markers]="advanceTimeline.markers!"
+            [dataLabels]="advanceTimeline.dataLabels!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Multiple series – Group rows Chart -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Multiple Series Group Rows Timeline</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="group_timeline_chart" class="apex-charts">
+          <apx-chart
+            [series]="multiSeriesRow.series!"
+            [chart]="multiSeriesRow.chart!"
+            [plotOptions]="multiSeriesRow.plotOptions!"
+            [colors]="multiSeriesRow.colors!"
+            [labels]="multiSeriesRow.labels!"
+            [stroke]="multiSeriesRow.stroke!"
+            [xaxis]="multiSeriesRow.xaxis!"
+            [title]="multiSeriesRow.title!"
+            [markers]="multiSeriesRow.markers!"
+            [dataLabels]="multiSeriesRow.dataLabels!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dumbbell (Horizontal) Chart -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Dumbbell Horizontal Timeline</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="dumbbell_timeline_chart" class="apex-charts">
+          <apx-chart
+            [series]="dumbbellChart.series!"
+            [chart]="dumbbellChart.chart!"
+            [plotOptions]="dumbbellChart.plotOptions!"
+            [colors]="dumbbellChart.colors!"
+            [labels]="dumbbellChart.labels!"
+            [stroke]="dumbbellChart.stroke!"
+            [xaxis]="dumbbellChart.xaxis!"
+            [title]="dumbbellChart.title!"
+            [markers]="dumbbellChart.markers!"
+            [dataLabels]="dumbbellChart.dataLabels!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

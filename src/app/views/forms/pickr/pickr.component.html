@@ -1,0 +1,294 @@
+<breadcrumb [title]="'Forms'" [subtitle]="'Forms Picker'" />
+
+<!-- Advance Form -->
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Flatpickr Date picker</h5>
+      </div>
+      <!-- end card header -->
+
+      <div class="card-body">
+        <div class="row">
+          <div class="col-xl-6">
+            <div class="mb-3">
+              <label mwlFlatpickr class="form-label">Basic</label>
+              <input
+                type="text"
+                class="form-control"
+                id="basic-datepicker"
+                placeholder="Basic datepicker"
+              />
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Date & Time</label>
+              <input
+                mwlFlatpickr
+                [flatpickrOptions]="{
+                  enableTime: true,
+                  dateFormat: 'Y-m-d H:i',
+                }"
+                type="text"
+                class="form-control"
+                id="datetime-datepicker"
+                placeholder="Date and Time"
+              />
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">MinDate and MaxDate</label>
+              <input
+                mwlFlatpickr
+                [flatpickrOptions]="{
+                  dateFormat: 'd.m.Y',
+                  minDate: '01-01-2025',
+                  maxDate: '30-01-2025',
+                }"
+                type="text"
+                class="form-control"
+                id="minmax-datepicker"
+                placeholder="Mindate - Maxdate"
+              />
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">MinDate</label>
+              <input
+                type="text"
+                mwlFlatpickr
+                [flatpickrOptions]="{
+                  dateFormat: 'd.m.Y',
+                  minDate: '10-01-2025',
+                }"
+                class="form-control"
+                id="mindate-datepicker"
+                placeholder="Mindate"
+              />
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">MaxDate</label>
+              <input
+                type="text"
+                mwlFlatpickr
+                [flatpickrOptions]="{
+                  dateFormat: 'd.m.Y',
+                  maxDate: '10-01-2025',
+                }"
+                class="form-control"
+                placeholder="Maxdate"
+              />
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Today</label>
+              <input
+                type="text"
+                mwlFlatpickr
+                [flatpickrOptions]="{
+                  minDate: 'today',
+                }"
+                class="form-control"
+                id="today-datepicker"
+                placeholder="Today"
+              />
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Today to maximum day</label>
+              <input
+                type="text"
+                mwlFlatpickr
+                [flatpickrOptions]="{
+                  minDate: 'today',
+                  dateFormat: 'd.m.Y',
+                  maxDate: '15.01.2025',
+                }"
+                class="form-control"
+                id="todaymax-datepicker"
+                placeholder="Today to maximum day"
+              />
+            </div>
+
+            <div>
+              <label class="form-label">Disabling dates</label>
+              <input
+                type="text"
+                mwlFlatpickr
+                [flatpickrOptions]="{
+                  dateFormat: 'd.m.Y',
+                  disable: [
+                    '
+                                01-01-2025',
+                    '12-01-2025',
+                  ],
+                }"
+                class="form-control"
+                id="disable-datepicker"
+                placeholder="Disabling dates"
+              />
+            </div>
+          </div>
+
+          <div class="col-xl-6">
+            <div class="mb-3">
+              <label class="form-label">Disabling dates by a functions</label>
+              <input
+                type="text"
+                class="form-control"
+                id="disablefunction-datepicker"
+                placeholder="Disabling by functions"
+              />
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Selecting multiple dates</label>
+              <input
+                type="text"
+                mwlFlatpickr
+                [flatpickrOptions]="{ dateFormat: 'Y.m.d', mode: 'multiple' }"
+                class="form-control"
+                id="multipledates-datepicker"
+                placeholder="Selecting multiple dates"
+              />
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Selecting multiple conjunction</label>
+              <input
+                type="text"
+                mwlFlatpickr
+                [flatpickrOptions]="{
+                  dateFormat: 'd.m.Y',
+                  defaultDate: [
+                    '
+                                2016-10-20',
+                    '2016-11-04',
+                  ],
+                  mode: 'multiple',
+                }"
+                class="form-control"
+                id="multipleconjunction-datepicker"
+                placeholder="Selecting multiple conjunction"
+              />
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Range Calendar</label>
+              <input
+                type="text"
+                mwlFlatpickr
+                [flatpickrOptions]="{ mode: 'range' }"
+                class="form-control"
+                id="rangecalendar-datepicker"
+                placeholder="Range Calendar"
+              />
+            </div>
+
+            <div>
+              <label class="form-label">Inline</label>
+              <input
+                type="text"
+                mwlFlatpickr
+                [flatpickrOptions]="{ inline: true }"
+                class="form-control"
+                id="inline-datepicker"
+                placeholder="Inline"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Flatpickr Time Picker</h5>
+      </div>
+      <!-- end card header -->
+
+      <div class="card-body">
+        <div class="row">
+          <div class="col-xl-6">
+            <div class="mb-3">
+              <label class="form-label">Time Picker</label>
+              <input
+                id="basic-timepicker"
+                mwlFlatpickr
+                [flatpickrOptions]="{
+                  enableTime: true,
+                  noCalendar: true,
+                  dateFormat: 'H:i',
+                  time_24hr: true,
+                }"
+                type="text"
+                class="form-control"
+                placeholder="Basic timepicker"
+              />
+            </div>
+
+            <div class="mb-0">
+              <label class="form-label">24-hour Time Picker</label>
+              <input
+                id="24hours-timepicker"
+                mwlFlatpickr
+                [flatpickrOptions]="{
+                  enableTime: true,
+                  noCalendar: true,
+                  dateFormat: 'H:i',
+                  time_24hr: true,
+                }"
+                type="text"
+                class="form-control"
+                placeholder="24-hour Time Picker"
+              />
+            </div>
+          </div>
+
+          <div class="col-xl-6">
+            <div class="mb-3">
+              <label class="form-label">Time Picker w/ Limits</label>
+              <input
+                id="minmax-timepicker"
+                mwlFlatpickr
+                [flatpickrOptions]="{
+                  enableTime: true,
+                  noCalendar: true,
+                  dateFormat: 'H:i',
+                  minTime: '16:00',
+                  maxTime: '22:30',
+                }"
+                type="text"
+                class="form-control"
+                placeholder="Limits"
+              />
+            </div>
+
+            <div class="mb-0">
+              <label class="form-label">Preloading Time</label>
+              <input
+                id="preloading-timepicker"
+                type="text"
+                class="form-control"
+                mwlFlatpickr
+                [flatpickrOptions]="{
+                  enableTime: true,
+                  noCalendar: true,
+                  dateFormat: 'H:i',
+                  defaultDate: '13:45',
+                }"
+                placeholder="Preloading Time"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,92 @@
+<div class="row">
+  <div class="col-md-12 col-xl-12">
+    <div class="card overflow-hidden">
+      <div class="card-header">
+        <div class="d-flex align-items-center">
+          <h5 class="card-title mb-0">Latest Transaction</h5>
+          <div class="ms-auto" ngbDropdown>
+            <button
+              ngbDropdownToggle
+              class="btn btn-sm bg-light border dropdown-toggle fw-medium text-black"
+              type="button"
+              data-bs-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              <i class="mdi mdi-calendar-blank-outline me-1 fs-14"></i>Monthly<i
+                class="mdi mdi-chevron-down ms-1 fs-14"
+              ></i>
+            </button>
+            <div ngbDropdownMenu class="dropdown-menu">
+              <a class="dropdown-item" href="javascript:void(0);">Monthly</a>
+              <a class="dropdown-item" href="javascript:void(0);">Yearly</a>
+              <a class="dropdown-item" href="javascript:void(0);">Date Wise</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table table-traffic mb-0">
+            <thead>
+              <tr class="">
+                <th>Transaction type</th>
+                <th>Person</th>
+                <th>Date</th>
+                <th>Amount</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (item of latestTransaction; track $index) {
+                <tr>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <div
+                        class="rounded-circle border d-flex align-items-center justify-content-center me-2"
+                        style="height: 35px; width: 35px"
+                      >
+                        <i class="mdi {{ item.icon }} fs-17"></i>
+                      </div>
+                      <a href="javascript:void(0);" class="text-reset">{{
+                        item.transactionType
+                      }}</a>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <img
+                        [src]="item.person.avatar"
+                        class="avatar avatar-sm rounded-circle me-2"
+                      />
+                      <p class="mb-0">{{ item.person.name }}</p>
+                    </div>
+                  </td>
+                  <td class="text-nowrap text-reset">
+                    {{ item.date }}
+                  </td>
+                  <td>
+                    <a href="javascript:void(0);" class="text-reset">
+                      {{ item.amount }}
+                    </a>
+                  </td>
+                  <td class="text-nowrap text-reset">
+                    <div class="d-flex align-items-center">
+                      <i
+                        [attr.data-feather]="item.status.icon"
+                        style="height: 16px; width: 16px"
+                        class="{{ item.status.iconClass }} me-2"
+                      ></i>
+                      <p class="mb-0">{{ item.status.text }}</p>
+                    </div>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

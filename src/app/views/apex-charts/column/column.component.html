@@ -1,0 +1,274 @@
+<breadcrumb [title]="'Charts'" [subtitle]="'Column'" />
+
+<div class="row">
+  <!-- Basic Column Chart -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Basic Column Chart</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="basic_column_chart" class="apex-charts">
+          <apx-chart
+            [series]="basicColumn.series!"
+            [chart]="basicColumn.chart!"
+            [plotOptions]="basicColumn.plotOptions!"
+            [colors]="basicColumn.colors!"
+            [labels]="basicColumn.labels!"
+            [stroke]="basicColumn.stroke!"
+            [xaxis]="basicColumn.xaxis!"
+            [title]="basicColumn.title!"
+            [markers]="basicColumn.markers!"
+            [dataLabels]="basicColumn.dataLabels!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Data Labels With Column Chart -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Column With Data Labels</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="datalabels_column_chart" class="apex-charts">
+          <apx-chart
+            [series]="datatableColumn.series!"
+            [chart]="datatableColumn.chart!"
+            [plotOptions]="datatableColumn.plotOptions!"
+            [colors]="datatableColumn.colors!"
+            [labels]="datatableColumn.labels!"
+            [stroke]="datatableColumn.stroke!"
+            [xaxis]="datatableColumn.xaxis!"
+            [title]="datatableColumn.title!"
+            [markers]="datatableColumn.markers!"
+            [dataLabels]="datatableColumn.dataLabels!"
+            [yaxis]="datatableColumn.yaxis!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <!-- Data Labels With Column Chart -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Stacked Columns Chart</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="stacked_column_chart" class="apex-charts">
+          <apx-chart
+            [series]="stackedColumnChart.series!"
+            [chart]="stackedColumnChart.chart!"
+            [plotOptions]="stackedColumnChart.plotOptions!"
+            [colors]="stackedColumnChart.colors!"
+            [labels]="stackedColumnChart.labels!"
+            [stroke]="stackedColumnChart.stroke!"
+            [xaxis]="stackedColumnChart.xaxis!"
+            [title]="stackedColumnChart.title!"
+            [markers]="stackedColumnChart.markers!"
+            [dataLabels]="stackedColumnChart.dataLabels!"
+            [fill]="stackedColumnChart.fill!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stacked Column 100 Chart -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Stacked Column 100</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="stacked_100_column_chart" class="apex-charts">
+          <apx-chart
+            [series]="stacked100ColumnChart.series!"
+            [chart]="stacked100ColumnChart.chart!"
+            [plotOptions]="stacked100ColumnChart.plotOptions!"
+            [colors]="stacked100ColumnChart.colors!"
+            [labels]="stacked100ColumnChart.labels!"
+            [stroke]="stacked100ColumnChart.stroke!"
+            [xaxis]="stacked100ColumnChart.xaxis!"
+            [title]="stacked100ColumnChart.title!"
+            [markers]="stacked100ColumnChart.markers!"
+            [dataLabels]="stacked100ColumnChart.dataLabels!"
+            [fill]="stacked100ColumnChart.fill!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <!-- Grouped Stacked Columns Chart -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Grouped Stacked Columns</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="grouped_column_chart" class="apex-charts">
+          <apx-chart
+            [series]="groupedColumnChart.series!"
+            [chart]="groupedColumnChart.chart!"
+            [plotOptions]="groupedColumnChart.plotOptions!"
+            [colors]="groupedColumnChart.colors!"
+            [labels]="groupedColumnChart.labels!"
+            [stroke]="groupedColumnChart.stroke!"
+            [xaxis]="groupedColumnChart.xaxis!"
+            [title]="groupedColumnChart.title!"
+            [markers]="groupedColumnChart.markers!"
+            [dataLabels]="groupedColumnChart.dataLabels!"
+            [fill]="groupedColumnChart.fill!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dumbbell Chart -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Dumbbell Chart</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="dumbbell_column_chart" class="apex-charts">
+          <apx-chart
+            [series]="dumbellColumnChart.series!"
+            [chart]="dumbellColumnChart.chart!"
+            [plotOptions]="dumbellColumnChart.plotOptions!"
+            [colors]="dumbellColumnChart.colors!"
+            [labels]="dumbellColumnChart.labels!"
+            [stroke]="dumbellColumnChart.stroke!"
+            [xaxis]="dumbellColumnChart.xaxis!"
+            [title]="dumbellColumnChart.title!"
+            [markers]="dumbellColumnChart.markers!"
+            [dataLabels]="dumbellColumnChart.dataLabels!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <!-- Column With Markers Chart -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Column With Markers</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="markers_column_chart" class="apex-charts">
+          <apx-chart
+            [series]="markerColumnChart.series!"
+            [chart]="markerColumnChart.chart!"
+            [plotOptions]="markerColumnChart.plotOptions!"
+            [colors]="markerColumnChart.colors!"
+            [labels]="markerColumnChart.labels!"
+            [stroke]="markerColumnChart.stroke!"
+            [xaxis]="markerColumnChart.xaxis!"
+            [title]="markerColumnChart.title!"
+            [markers]="markerColumnChart.markers!"
+            [dataLabels]="markerColumnChart.dataLabels!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Distributed Columns Chart -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Distributed Columns Chart</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="distributed_column_chart" class="apex-charts">
+          <apx-chart
+            [series]="distributedChart.series!"
+            [chart]="distributedChart.chart!"
+            [plotOptions]="distributedChart.plotOptions!"
+            [colors]="distributedChart.colors!"
+            [labels]="distributedChart.labels!"
+            [stroke]="distributedChart.stroke!"
+            [xaxis]="distributedChart.xaxis!"
+            [title]="distributedChart.title!"
+            [markers]="distributedChart.markers!"
+            [dataLabels]="distributedChart.dataLabels!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <!-- Column with Rotated Labels Chart -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Column With Rotated Labels</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="rotated_column_chart" class="apex-charts">
+          <apx-chart
+            [series]="rotatedColumn.series!"
+            [chart]="rotatedColumn.chart!"
+            [plotOptions]="rotatedColumn.plotOptions!"
+            [colors]="rotatedColumn.colors!"
+            [labels]="rotatedColumn.labels!"
+            [stroke]="rotatedColumn.stroke!"
+            [xaxis]="rotatedColumn.xaxis!"
+            [title]="rotatedColumn.title!"
+            [markers]="rotatedColumn.markers!"
+            [dataLabels]="rotatedColumn.dataLabels!"
+            [fill]="rotatedColumn.fill!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Column with Negative Values Chart -->
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Column With Negative Values</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="negative_column_chart" class="apex-charts">
+          <apx-chart #chart
+            [series]="nagativeColumn.series!"
+            [chart]="nagativeColumn.chart!"
+            [plotOptions]="nagativeColumn.plotOptions!"
+            [yaxis]="nagativeColumn.yaxis!"
+            [colors]="nagativeColumn.colors!"
+            [labels]="nagativeColumn.labels!"
+            [xaxis]="nagativeColumn.xaxis!"
+            [dataLabels]="nagativeColumn.dataLabels!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,83 @@
+<div class="card overflow-hidden">
+  <div class="card-header">
+    <div class="d-flex align-items-center">
+      <h5 class="card-title mb-0">Tasks</h5>
+    </div>
+  </div>
+
+  <div class="card-body p-0">
+    <div class="table-responsive">
+      <table class="table table-traffic mb-0">
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>Task Name</th>
+            <th>Created Date</th>
+            <th>Number of Task</th>
+            <th>Deadline</th>
+            <th>Project</th>
+            <th>Assignee</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of tasks; track $index) {
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  class="form-check-input m-0 align-middle"
+                  aria-label="Select task"
+                  [checked]="item.checked"
+                />
+              </td>
+              <td>
+                <a href="javascript:void(0);" class="text-reset">{{
+                  item.taskName
+                }}</a>
+              </td>
+              <td class="text-nowrap text-reset">
+                <i
+                  [attr.data-feather]="'calendar'"
+                  style="height: 18px; width: 18px"
+                  class="me-1"
+                ></i>
+                {{ item.createdDate }}
+              </td>
+              <td>
+                <a href="javascript:void(0);" class="text-reset">
+                  <i
+                    data-feather="check"
+                    style="height: 18px; width: 18px"
+                    class="me-1"
+                  ></i>
+                  {{ item.numberOfTasks }}
+                </a>
+              </td>
+              <td class="text-nowrap text-reset">
+                <i
+                  data-feather="calendar"
+                  style="height: 18px; width: 18px"
+                  class="me-1"
+                ></i>
+                {{ item.deadline }}
+              </td>
+              <td>
+                <a href="javascript:void(0);" class="text-reset">
+                  <i
+                    data-feather="folder"
+                    style="height: 18px; width: 18px"
+                    class="me-1"
+                  ></i>
+                  {{ item.project }}
+                </a>
+              </td>
+              <td>
+                <img [src]="item.assignee" class="avatar avatar-sm rounded-2" />
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

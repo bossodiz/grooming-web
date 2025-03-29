@@ -1,0 +1,333 @@
+<breadcrumb [title]="'Charts'" [subtitle]="'Line Charts'" />
+
+<div class="row">
+  <!-- Basic Line Chart -->
+  <div class="col-xl-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Basic Line Chart</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="basic_line_chart" class="apex-charts">
+          <apx-chart
+            [series]="basicLineChart.series!"
+            [chart]="basicLineChart.chart!"
+            [plotOptions]="basicLineChart.plotOptions!"
+            [fill]="basicLineChart.fill!"
+            [stroke]="basicLineChart.stroke!"
+            [markers]="basicLineChart.markers!"
+            [yaxis]="basicLineChart.yaxis!"
+            [colors]="basicLineChart.colors!"
+            [dataLabels]="basicLineChart.dataLabels!"
+            [grid]="basicLineChart.grid!"
+            [xaxis]="basicLineChart.xaxis!"
+            [legend]="basicLineChart.legend!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Line with Data Labels Line Chart -->
+  <div class="col-xl-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Line with Data Labels Chart</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="datalabel_line_chart" class="apex-charts">
+          <apx-chart
+            [series]="datableLineChart.series!"
+            [chart]="datableLineChart.chart!"
+            [plotOptions]="datableLineChart.plotOptions!"
+            [fill]="datableLineChart.fill!"
+            [stroke]="datableLineChart.stroke!"
+            [markers]="datableLineChart.markers!"
+            [title]="datableLineChart.title!"
+            [yaxis]="datableLineChart.yaxis!"
+            [legend]="datableLineChart.legend!"
+            [colors]="datableLineChart.colors!"
+            [dataLabels]="datableLineChart.dataLabels!"
+            [grid]="datableLineChart.grid!"
+            [xaxis]="datableLineChart.xaxis!"
+            [legend]="datableLineChart.legend!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <!-- Zoomable Timeseries Line Chart -->
+  <div class="col-xl-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Zoomable Timeseries Chart</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="zoomable_line_chart" class="apex-charts">
+          <apx-chart
+            [series]="zoomableChart.series!"
+            [chart]="zoomableChart.chart!"
+            [plotOptions]="zoomableChart.plotOptions!"
+            [fill]="zoomableChart.fill!"
+            [stroke]="zoomableChart.stroke!"
+            [markers]="zoomableChart.markers!"
+            [yaxis]="zoomableChart.yaxis!"
+            [colors]="zoomableChart.colors!"
+            [dataLabels]="zoomableChart.dataLabels!"
+            [grid]="zoomableChart.grid!"
+            [xaxis]="zoomableChart.xaxis!"
+            [legend]="zoomableChart.legend!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Syncing Line charts -->
+  <div class="col-xl-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Syncing Chart</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="syncing_line_chart" class="apex-charts">
+          <apx-chart
+            [series]="syncingChart.series!"
+            [chart]="syncingChart.chart!"
+            [plotOptions]="syncingChart.plotOptions!"
+            [fill]="syncingChart.fill!"
+            [stroke]="syncingChart.stroke!"
+            [markers]="syncingChart.markers!"
+            [yaxis]="syncingChart.yaxis!"
+            [colors]="syncingChart.colors!"
+            [dataLabels]="syncingChart.dataLabels!"
+            [grid]="syncingChart.grid!"
+            [xaxis]="syncingChart.xaxis!"
+            [legend]="syncingChart.legend!"
+          />
+        </div>
+        <div id="syncing_line_chart2" class="apex-charts">
+          <apx-chart
+            [series]="syncingChart2.series!"
+            [chart]="syncingChart2.chart!"
+            [plotOptions]="syncingChart2.plotOptions!"
+            [fill]="syncingChart2.fill!"
+            [stroke]="syncingChart2.stroke!"
+            [markers]="syncingChart2.markers!"
+            [yaxis]="syncingChart2.yaxis!"
+            [colors]="syncingChart2.colors!"
+            [dataLabels]="syncingChart2.dataLabels!"
+            [grid]="syncingChart2.grid!"
+            [xaxis]="syncingChart2.xaxis!"
+            [legend]="syncingChart2.legend!"
+          />
+        </div>
+        <div id="syncing_line_chart_area" class="apex-charts">
+          <apx-chart
+            [series]="syncingChart3.series!"
+            [chart]="syncingChart3.chart!"
+            [plotOptions]="syncingChart3.plotOptions!"
+            [fill]="syncingChart3.fill!"
+            [stroke]="syncingChart3.stroke!"
+            [markers]="syncingChart3.markers!"
+            [yaxis]="syncingChart3.yaxis!"
+            [colors]="syncingChart3.colors!"
+            [dataLabels]="syncingChart3.dataLabels!"
+            [grid]="syncingChart3.grid!"
+            [xaxis]="syncingChart3.xaxis!"
+            [legend]="syncingChart3.legend!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <!-- Brush Line Chart -->
+  <div class="col-xl-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Brush Chart</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="brush_line_chart" class="apex-charts">
+          <apx-chart
+            [series]="brushlineChart.series!"
+            [chart]="brushlineChart.chart!"
+            [plotOptions]="brushlineChart.plotOptions!"
+            [fill]="brushlineChart.fill!"
+            [markers]="brushlineChart.markers!"
+            [colors]="brushlineChart.colors!"
+            [dataLabels]="brushlineChart.dataLabels!"
+            [xaxis]="brushlineChart.xaxis!"
+          />
+        </div>
+        <div id="brush_line_chart2" class="apex-charts">
+          <apx-chart
+            [series]="brushline2Chart.series!"
+            [chart]="brushline2Chart.chart!"
+            [fill]="brushline2Chart.fill!"
+            [stroke]="brushline2Chart.stroke!"
+            [yaxis]="brushline2Chart.yaxis!"
+            [colors]="brushline2Chart.colors!"
+            [xaxis]="brushline2Chart.xaxis!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stepline Line Chart -->
+  <div class="col-xl-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Stepline Chart</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="stepline_line_chart" class="apex-charts">
+          <apx-chart
+            [series]="stepLineChart.series!"
+            [chart]="stepLineChart.chart!"
+            [plotOptions]="stepLineChart.plotOptions!"
+            [fill]="stepLineChart.fill!"
+            [stroke]="stepLineChart.stroke!"
+            [markers]="stepLineChart.markers!"
+            [yaxis]="stepLineChart.yaxis!"
+            [colors]="stepLineChart.colors!"
+            [dataLabels]="stepLineChart.dataLabels!"
+            [grid]="stepLineChart.grid!"
+            [xaxis]="stepLineChart.xaxis!"
+            [legend]="stepLineChart.legend!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <!-- Gradient Line Chart -->
+  <div class="col-xl-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Gradient Chart</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="gradient_line_chart" class="apex-charts">
+          <apx-chart
+            [series]="gradiantChart.series!"
+            [chart]="gradiantChart.chart!"
+            [fill]="gradiantChart.fill!"
+            [stroke]="gradiantChart.stroke!"
+            [yaxis]="gradiantChart.yaxis!"
+            [colors]="gradiantChart.colors!"
+            [xaxis]="gradiantChart.xaxis!"
+            [title]="gradiantChart.title!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Missing / Null Values Line Chart -->
+  <div class="col-xl-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Missing Data/ Null Value Chart</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="missingnull_line_chart" class="apex-charts">
+          <apx-chart
+            [series]="missingChart.series!"
+            [chart]="missingChart.chart!"
+            [plotOptions]="missingChart.plotOptions!"
+            [fill]="missingChart.fill!"
+            [stroke]="missingChart.stroke!"
+            [markers]="missingChart.markers!"
+            [yaxis]="missingChart.yaxis!"
+            [colors]="missingChart.colors!"
+            [dataLabels]="missingChart.dataLabels!"
+            [grid]="missingChart.grid!"
+            [xaxis]="missingChart.xaxis!"
+            [legend]="missingChart.legend!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <!-- Dashed Line Chart -->
+  <div class="col-xl-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Dashed Chart</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="dashed_line_chart" class="apex-charts">
+          <apx-chart
+            [series]="dashedChart.series!"
+            [chart]="dashedChart.chart!"
+            [plotOptions]="dashedChart.plotOptions!"
+            [fill]="dashedChart.fill!"
+            [stroke]="dashedChart.stroke!"
+            [markers]="dashedChart.markers!"
+            [yaxis]="dashedChart.yaxis!"
+            [colors]="dashedChart.colors!"
+            [dataLabels]="dashedChart.dataLabels!"
+            [grid]="dashedChart.grid!"
+            [xaxis]="dashedChart.xaxis!"
+            [legend]="dashedChart.legend!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Live Chart With Annotations Chart -->
+  <div class="col-xl-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Live Chart With Annotations Chart</h5>
+      </div>
+
+      <div class="card-body">
+        <div id="annotations_line_chart" class="apex-charts">
+          <apx-chart
+            [series]="annotationsLineChart.series!"
+            [chart]="annotationsLineChart.chart!"
+            [plotOptions]="annotationsLineChart.plotOptions!"
+            [fill]="annotationsLineChart.fill!"
+            br
+            [stroke]="annotationsLineChart.stroke!"
+            [markers]="annotationsLineChart.markers!"
+            [yaxis]="annotationsLineChart.yaxis!"
+            [colors]="annotationsLineChart.colors!"
+            [dataLabels]="annotationsLineChart.dataLabels!"
+            [grid]="annotationsLineChart.grid!"
+            [xaxis]="annotationsLineChart.xaxis!"
+            [legend]="annotationsLineChart.legend!"
+            [labels]="annotationsLineChart.labels!"
+            [annotations]="annotationsLineChart.annotations!"
+            [xaxis]="annotationsLineChart.xaxis!"
+            [title]="annotationsLineChart.title!"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
