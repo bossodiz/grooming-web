@@ -1,15 +1,56 @@
-import type { Route } from '@angular/router'
-import { IndexComponent } from './dashboards/index/index.component'
-import { AnalyticsComponent } from './dashboards/analytics/analytics.component'
-import { EcommerceComponent } from './dashboards/ecommerce/ecommerce.component'
-import { WidgetComponent } from './widget/widget.component'
-import { Title } from '@angular/platform-browser'
-import { ProjectsComponent } from './dashboards/projects/projects.component'
-import { HrmComponent } from './dashboards/hrm/hrm.component'
-import { JobsComponent } from './dashboards/jobs/jobs.component'
+import { PROMOTIONS_ROUTES } from './promotion/promotion.route';
+import type { Route } from '@angular/router';
+import { IndexComponent } from './dashboards/index/index.component';
+import { AnalyticsComponent } from './dashboards/analytics/analytics.component';
+import { EcommerceComponent } from './dashboards/ecommerce/ecommerce.component';
+import { WidgetComponent } from './widget/widget.component';
+import { Title } from '@angular/platform-browser';
+import { ProjectsComponent } from './dashboards/projects/projects.component';
+import { HrmComponent } from './dashboards/hrm/hrm.component';
+import { JobsComponent } from './dashboards/jobs/jobs.component';
 // import { DashboardComponent } from './dashboard/dashboard.component'
 
 export const VIEWS_ROUTES: Route[] = [
+  {
+    path: '',
+    redirectTo: 'dashboards',
+    pathMatch: 'full',
+  },
+  {
+    path: 'dashboard',
+    loadChildren: () =>
+      import('./dashboards/dashboards.route').then(
+        (mod) => mod.DASHBOARD_ROUTES,
+      ),
+  },
+  {
+    path: 'member',
+    loadChildren: () =>
+      import('./members/members.route').then((mod) => mod.MEMBERS_ROUTES),
+  },
+  {
+    path: 'grooming',
+    loadChildren: () =>
+      import('./grooming/grooming.route').then((mod) => mod.GROOMIMG_ROUTES),
+  },
+  {
+    path: 'product',
+    loadChildren: () =>
+      import('./products/products.route').then((mod) => mod.PRODUCT_ROUTES),
+  },
+  {
+    path: 'promotion',
+    loadChildren: () =>
+      import('./promotion/promotion.route').then(
+        (mod) => mod.PROMOTIONS_ROUTES,
+      ),
+  },
+  {
+    path: 'payment',
+    loadChildren: () =>
+      import('./payment/payment.route').then((mod) => mod.PAYMENT_ROUTES),
+  },
+  //////////////////////////////////////////////////////
   {
     path: 'ui',
     loadChildren: () =>
@@ -19,13 +60,8 @@ export const VIEWS_ROUTES: Route[] = [
     path: 'extended',
     loadChildren: () =>
       import('./extended-ui/extended-ui.route').then(
-        (mod) => mod.EXTENDED_UI_ROUTES
+        (mod) => mod.EXTENDED_UI_ROUTES,
       ),
-  },
-  {
-    path: 'icons',
-    loadChildren: () =>
-      import('./icons/icons.route').then((mod) => mod.ICONS_ROUTES),
   },
   {
     path: 'charts',
@@ -98,4 +134,4 @@ export const VIEWS_ROUTES: Route[] = [
     component: WidgetComponent,
     data: { title: 'Widget' },
   },
-]
+];

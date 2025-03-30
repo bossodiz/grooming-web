@@ -1,35 +1,35 @@
-import { Component, inject } from '@angular/core'
-import { BreadcrumbComponent } from '../../../components/breadcrumb/breadcrumb.component'
+import { Component, inject } from '@angular/core';
+import { BreadcrumbComponent } from '../../../components/breadcrumb/breadcrumb.component';
 import {
   FormsModule,
   ReactiveFormsModule,
   UntypedFormBuilder,
   UntypedFormGroup,
   Validators,
-} from '@angular/forms'
-import { CommonModule } from '@angular/common'
+} from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
-    selector: 'app-validation',
-    imports: [
-        BreadcrumbComponent,
-        FormsModule,
-        ReactiveFormsModule,
-        CommonModule,
-    ],
-    templateUrl: './validation.component.html',
-    styles: ``
+  selector: 'app-validation',
+  imports: [
+    BreadcrumbComponent,
+    FormsModule,
+    ReactiveFormsModule,
+    CommonModule,
+  ],
+  templateUrl: './validation.component.html',
+  styles: ``,
 })
 export class ValidationComponent {
-  validationform!: UntypedFormGroup
-  tooltipvalidationform!: UntypedFormGroup
-  customValidationForm!: UntypedFormGroup
-  supportedForm!: UntypedFormGroup
-  submit!: boolean
-  formsubmit!: boolean
-  cuSubmit!: boolean
+  validationform!: UntypedFormGroup;
+  tooltipvalidationform!: UntypedFormGroup;
+  customValidationForm!: UntypedFormGroup;
+  supportedForm!: UntypedFormGroup;
+  submit!: boolean;
+  formsubmit!: boolean;
+  cuSubmit!: boolean;
 
-  public formBuilder = inject(UntypedFormBuilder)
+  public formBuilder = inject(UntypedFormBuilder);
 
   ngOnInit(): void {
     this.validationform = this.formBuilder.group({
@@ -44,9 +44,9 @@ export class ValidationComponent {
       username: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9]+')]],
       city: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9]+')]],
       state: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9]+')]],
-      zip: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9]+')]],
+      zip: ['', [Validators.pattern('[a-zA-Z0-9]+')]],
       terms: ['', [Validators.required]],
-    })
+    });
 
     this.tooltipvalidationform = this.formBuilder.group({
       firstName: [
@@ -61,22 +61,22 @@ export class ValidationComponent {
       city: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9]+')]],
       state: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9]+')]],
       zip: ['', [Validators.required, Validators.pattern('[a-zA-Z0-9]+')]],
-    })
+    });
   }
 
   get form() {
-    return this.validationform.controls
+    return this.validationform.controls;
   }
 
   get formData() {
-    return this.tooltipvalidationform.controls
+    return this.tooltipvalidationform.controls;
   }
 
   validSubmit() {
-    this.submit = true
+    this.submit = true;
   }
 
   formSubmit() {
-    this.formsubmit = true
+    this.formsubmit = true;
   }
 }

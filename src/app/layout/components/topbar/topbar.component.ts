@@ -31,7 +31,6 @@ import { SimplebarAngularModule } from 'simplebar-angular';
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class TopbarComponent {
-  isSidebarVisible = true;
   isFullscreen: boolean = false;
   // private theme: string = 'light';
   private config = { theme: 'light' };
@@ -60,13 +59,13 @@ export class TopbarComponent {
   }
 
   onToggleSidebar() {
-    this.isSidebarVisible = !this.isSidebarVisible;
     this.updateBodyAttribute();
   }
 
   updateBodyAttribute() {
     const body = this.el.nativeElement.ownerDocument.body;
-    if (this.isSidebarVisible) {
+    var sidebarVisible = body.getAttribute('data-sidebar');
+    if (sidebarVisible === 'hidden') {
       this.renderer.setAttribute(body, 'data-sidebar', 'default');
     } else {
       this.renderer.setAttribute(body, 'data-sidebar', 'hidden');

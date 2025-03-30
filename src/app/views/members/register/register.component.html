@@ -1,0 +1,140 @@
+<breadcrumb [title]="'Forms'" [subtitle]="'Register Customer'" />
+<div class="row">
+  <div class="col-xl-8 justify-content-center mx-auto">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Form</h5>
+      </div>
+      <div class="card-body">
+        <form
+          class="row g-3 needs-validation"
+          novalidate
+          [formGroup]="registerForm"
+          (ngSubmit)="validSubmit()"
+        >
+          <div class="col-md-6">
+            <label for="usernameInput" class="form-label"
+              >Phone <span class="text-danger">*</span></label
+            >
+            <input
+              formControlName="username"
+              [ngClass]="{ 'is-invalid': submit && form['username'].errors }"
+              type="text"
+              class="form-control"
+              id="usernameInput"
+              (input)="onPhoneInput($event)"
+              maxlength="12"
+              required
+            />
+            <div class="invalid-feedback">
+              {{ usernameError }}
+            </div>
+            <div class="valid-feedback"></div>
+          </div>
+          <div class="col-md-6">
+            <label for="nicknameInput" class="form-label"
+              >Name <span class="text-danger">*</span></label
+            >
+            <input
+              formControlName="nickname"
+              [ngClass]="{ 'is-invalid': submit && form['nickname'].errors }"
+              type="text"
+              class="form-control"
+              id="nicknameInput"
+              required
+            />
+            <div class="invalid-feedback">Please enter a name</div>
+          </div>
+          <div class="col-md-6">
+            <label for="firstnameInput" class="form-label">First name</label>
+            <input
+              formControlName="firstname"
+              type="text"
+              class="form-control"
+              id="firstnameInput"
+            />
+          </div>
+          <div class="col-md-6">
+            <label for="lastNameInput" class="form-label">Last name</label>
+            <input
+              formControlName="lastname"
+              type="text"
+              class="form-control"
+              id="lastNameInput"
+            />
+          </div>
+          <div class="col-md-6">
+            <label for="phoneOtherInput" class="form-label">Phone Other</label>
+            <input
+              formControlName="phone2"
+              type="text"
+              class="form-control"
+              id="phoneOtherInput"
+            />
+          </div>
+          <div class="row g-3 justify-content-center mx-auto">
+            <div class="col-md-6 d-flex justify-content-between">
+              <button class="btn btn-primary w-50 me-2" type="submit">
+                Register
+              </button>
+              <button
+                class="btn btn-light w-50"
+                type="button"
+                (click)="clear()"
+              >
+                Clear
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <!-- end card-body -->
+    </div>
+    <!-- end card-->
+  </div>
+</div>
+
+<ng-template
+  #standardModal
+  let-modal
+  class="modal fade"
+  id="standard-modal"
+  tabindex="-1"
+  aria-labelledby="standard-modalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-header">
+    <h1 class="modal-title fs-5" id="standard-modalLabel">Register</h1>
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="modal"
+      (click)="modal.close('Save click')"
+      aria-label="Close"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <p>
+      <span class="text-success">{{ modalData.message }}</span>
+    </p>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-light"
+      data-bs-dismiss="modal"
+      (click)="modal.close('Save click')"
+    >
+      Close
+    </button>
+    @if (isSuccess) {
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)="payment(modalData.data)"
+      >
+        Go to payment
+      </button>
+    }
+  </div>
+</ng-template>

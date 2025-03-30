@@ -6,77 +6,77 @@ import {
   inject,
   OnInit,
   Renderer2,
-} from '@angular/core'
-import { SimplebarAngularModule } from 'simplebar-angular'
-import { MENU_ITEMS, MenuItemType } from '../../../common/menu.meta'
-import { NavigationEnd, Router, RouterModule } from '@angular/router'
-import { CommonModule } from '@angular/common'
-import { NgbCollapse, NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap'
-import { findAllParent, findMenuItem } from '../../../helper/utils'
-import { basePath } from '@common/constants'
+} from '@angular/core';
+import { SimplebarAngularModule } from 'simplebar-angular';
+import { MENU_ITEMS, MenuItemType } from '../../../common/menu.meta';
+import { NavigationEnd, Router, RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { NgbCollapse, NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
+import { findAllParent, findMenuItem } from '../../../helper/utils';
+import { basePath } from '@common/constants';
 
 @Component({
-    selector: 'app-sidebar',
-    imports: [
-        SimplebarAngularModule,
-        RouterModule,
-        CommonModule,
-        NgbCollapseModule,
-    ],
-    templateUrl: './sidebar.component.html',
-    styles: ``,
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  selector: 'app-sidebar',
+  imports: [
+    SimplebarAngularModule,
+    RouterModule,
+    CommonModule,
+    NgbCollapseModule,
+  ],
+  templateUrl: './sidebar.component.html',
+  styles: ``,
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class SidebarComponent implements OnInit, AfterViewInit {
-  menuItems: MenuItemType[] = []
-  activeMenuItems: string[] = []
-  router = inject(Router)
+  menuItems: MenuItemType[] = [];
+  activeMenuItems: string[] = [];
+  router = inject(Router);
   trimmedURL = this.router.url?.replaceAll(
     basePath !== '' ? basePath + '/' : '',
-    '/'
-  )
+    '/',
+  );
   constructor(
     private renderer: Renderer2,
-    private el: ElementRef
+    private el: ElementRef,
   ) {
     this.router.events.forEach((event) => {
       if (event instanceof NavigationEnd) {
         this.trimmedURL = this.router.url?.replaceAll(
           basePath !== '' ? basePath + '/' : '',
-          '/'
-        )
-        this._activateMenu()
+          '/',
+        );
+        this._activateMenu();
       }
-    })
+    });
   }
   ngOnInit(): void {
-    this.initMenu()
+    this.initMenu();
   }
 
   ngAfterViewInit() {
     setTimeout(() => {
-      this._activateMenu()
-    })
+      this._activateMenu();
+    });
   }
   initMenu(): void {
-    this.menuItems = MENU_ITEMS
+    this.menuItems = MENU_ITEMS;
   }
 
   getFeatherIcon(icon: string): string {
-    const icons = window['feather'].icons as Record<string, any>
-    return icons[icon]?.toSvg() || ''
+    const icons = window['feather'].icons as Record<string, any>;
+    return icons[icon]?.toSvg() || '';
   }
 
   hasSubmenu(menu: MenuItemType): boolean {
-    return menu.children ? true : false
+    return menu.children ? true : false;
   }
 
   _activateMenu(): void {
-    const div = this.el.nativeElement.querySelector('.app-sidebar-menu')
-    let matchingMenuItem: any = null
+    const div = this.el.nativeElement.querySelector('.app-sidebar-menu');
+    let matchingMenuItem: any = null;
 
     if (div) {
-      const items = div.getElementsByClassName('nav-link-ref')
+      const items = div.getElementsByClassName('nav-link-ref');
       for (let i = 0; i < items.length; ++i) {
         if (
           this.trimmedURL === items[i].pathname ||
@@ -85,24 +85,24 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           (this.trimmedURL.startsWith('/ecommerce/product/') &&
             items[i].pathname === '/ecommerce/product/1')
         ) {
-          matchingMenuItem = items[i]
-          break
+          matchingMenuItem = items[i];
+          break;
         }
       }
       if (matchingMenuItem) {
-        const mid = matchingMenuItem.getAttribute('aria-controls')
-        const activeMt = findMenuItem(this.menuItems, mid)
+        const mid = matchingMenuItem.getAttribute('aria-controls');
+        const activeMt = findMenuItem(this.menuItems, mid);
 
         if (activeMt) {
           const matchingObjs = [
             activeMt['key'],
             ...findAllParent(this.menuItems, activeMt),
-          ]
+          ];
 
-          this.activeMenuItems = matchingObjs
+          this.activeMenuItems = matchingObjs;
           this.menuItems.forEach((menu: MenuItemType) => {
-            menu.collapsed = !matchingObjs.includes(menu.key!)
-          })
+            menu.collapsed = !matchingObjs.includes(menu.key!);
+          });
         }
       }
     }
@@ -114,18 +114,30 @@ export class SidebarComponent implements OnInit, AfterViewInit {
    * @param collapse collpase instance
    */
   toggleMenuItem(menuItem: MenuItemType, collapse: NgbCollapse): void {
-    collapse.toggle()
-    let openMenuItems: string[]
+    collapse.toggle();
+    let openMenuItems: string[];
     if (!menuItem.collapsed) {
       openMenuItems = [
         menuItem['key'],
         ...findAllParent(this.menuItems, menuItem),
-      ]
+      ];
       this.menuItems.forEach((menu: MenuItemType) => {
         if (!openMenuItems.includes(menu.key!)) {
-          menu.collapsed = true
+          menu.collapsed = true;
         }
-      })
+      });
+    }
+  }
+  clickMenuItem(): void {
+    const body = this.el.nativeElement.ownerDocument.body;
+    const sidebarVisible = body.getAttribute('data-sidebar');
+    const userAgent = navigator.userAgent.toLowerCase();
+    if (/mobile|android|iphone/i.test(userAgent)) {
+      this.renderer.setAttribute(
+        body,
+        'data-sidebar',
+        sidebarVisible === 'hidden' ? 'default' : 'hidden',
+      );
     }
   }
 }

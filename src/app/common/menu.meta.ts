@@ -1,29 +1,112 @@
 export type MenuItemType = {
-  key: string
-  label: string
-  isTitle?: boolean
-  icon?: string
-  url?: string
+  key: string;
+  label: string;
+  isTitle?: boolean;
+  icon?: string;
+  icon_type?: string;
+  url?: string;
   badge?: {
-    variant: string
-    text: string
-  }
-  parentKey?: string
-  isDisabled?: boolean
-  collapsed?: boolean
-  children?: MenuItemType[]
-}
+    variant: string;
+    text: string;
+  };
+  parentKey?: string;
+  isDisabled?: boolean;
+  collapsed?: boolean;
+  children?: MenuItemType[];
+};
 
 export const MENU_ITEMS: MenuItemType[] = [
   {
-    key: 'nav',
-    label: 'MENU',
+    key: 'dashboard',
+    label: 'Dashboard',
     isTitle: true,
   },
   {
-    key: 'dashboard',
-    label: 'Dashboard',
+    key: 'dashboard-overview',
+    label: 'Overview',
     icon: 'home',
+    icon_type: 'feather',
+    url: '/dashboard/overview',
+  },
+  {
+    key: 'member',
+    label: 'Member',
+    isTitle: true,
+  },
+  {
+    key: 'member-register',
+    label: 'Register',
+    icon: 'user-plus',
+    icon_type: 'feather',
+    url: '/member/register',
+  },
+  {
+    key: 'member-customers',
+    label: 'Customers',
+    icon: 'users',
+    icon_type: 'feather',
+    url: '/member/customers',
+  },
+  {
+    key: 'members-pets',
+    label: 'Pets',
+    icon: 'mdi mdi-paw',
+    icon_type: 'mdi',
+    url: '/member/pets',
+  },
+  {
+    key: 'grooming',
+    label: 'Grooming',
+    isTitle: true,
+  },
+  {
+    key: 'grooming-reserve',
+    label: 'Reserve',
+    icon: 'mdi mdi-calendar-clock-outline',
+    icon_type: 'mdi',
+    url: '/grooming/reserve',
+  },
+  {
+    key: 'grooming-service',
+    label: 'Service',
+    icon: 'mdi mdi-content-cut',
+    icon_type: 'mdi',
+    url: '/grooming/service',
+  },
+  {
+    key: 'shop',
+    label: 'Shop',
+    isTitle: true,
+  },
+  {
+    key: 'product-list',
+    label: 'Products',
+    icon: 'mdi mdi-shopping-outline',
+    icon_type: 'mdi',
+    url: '/product/list',
+  },
+  {
+    key: 'promotion-list',
+    label: 'Promotions',
+    icon: 'star',
+    icon_type: 'feather',
+    url: '/promotion/list',
+  },
+  {
+    key: 'payment-form',
+    label: 'Payment',
+    icon: 'mdi mdi-cash-multiple',
+    icon_type: 'mdi',
+    url: '/payment/form',
+  },
+  {
+    key: 'pages',
+    label: 'PAGES',
+    isTitle: true,
+  },
+  {
+    icon: 'home',
+    icon_type: 'feather',
     collapsed: false,
     children: [
       {
@@ -56,23 +139,21 @@ export const MENU_ITEMS: MenuItemType[] = [
         url: '/hrm',
         parentKey: 'dashboard',
       },
-       {
+      {
         key: 'dashboard-jobs',
         label: 'Jobs',
         url: '/jobs',
         parentKey: 'dashboard',
       },
     ],
-  },
-  {
-    key: 'pages',
-    label: 'PAGES',
-    isTitle: true,
+    key: '',
+    label: 'Dashboard Example',
   },
   {
     key: 'auth',
     label: 'Authentication',
     icon: 'users',
+    icon_type: 'feather',
     collapsed: true,
     children: [
       {
@@ -123,6 +204,7 @@ export const MENU_ITEMS: MenuItemType[] = [
     key: 'error',
     label: 'Error Pages',
     icon: 'alert-octagon',
+    icon_type: 'feather',
     collapsed: true,
     children: [
       {
@@ -162,6 +244,7 @@ export const MENU_ITEMS: MenuItemType[] = [
     label: 'Utility',
     collapsed: true,
     icon: 'file-text',
+    icon_type: 'feather',
     children: [
       {
         key: 'utility-starter',
@@ -229,18 +312,21 @@ export const MENU_ITEMS: MenuItemType[] = [
     key: 'todo',
     label: 'Todo List',
     icon: 'columns',
+    icon_type: 'feather',
     url: '/apps/todolist',
   },
   {
     key: 'contact',
     label: 'Contacts',
     icon: 'map-pin',
+    icon_type: 'feather',
     url: '/apps/contacts',
   },
   {
     key: 'calendar',
     label: 'Calendar',
     icon: 'calendar',
+    icon_type: 'feather',
     url: '/apps/calendar',
   },
   {
@@ -252,6 +338,7 @@ export const MENU_ITEMS: MenuItemType[] = [
     key: 'components',
     label: 'Components',
     icon: 'package',
+    icon_type: 'feather',
     collapsed: true,
     children: [
       {
@@ -392,12 +479,14 @@ export const MENU_ITEMS: MenuItemType[] = [
     key: 'widget',
     label: 'Widgets',
     icon: 'aperture',
+    icon_type: 'feather',
     url: '/widgets',
   },
   {
     key: 'extended',
     label: 'Extended UI',
     icon: 'cpu',
+    icon_type: 'feather',
     collapsed: true,
     children: [
       {
@@ -430,6 +519,7 @@ export const MENU_ITEMS: MenuItemType[] = [
     key: 'icon',
     label: 'Icons',
     icon: 'award',
+    icon_type: 'feather',
     collapsed: true,
     children: [
       {
@@ -450,6 +540,7 @@ export const MENU_ITEMS: MenuItemType[] = [
     key: 'forms',
     label: 'Forms',
     icon: 'briefcase',
+    icon_type: 'feather',
     collapsed: true,
     children: [
       {
@@ -482,6 +573,7 @@ export const MENU_ITEMS: MenuItemType[] = [
     key: 'table',
     label: 'Tables',
     icon: 'table',
+    icon_type: 'feather',
     collapsed: true,
     children: [
       {
@@ -502,6 +594,7 @@ export const MENU_ITEMS: MenuItemType[] = [
     key: 'charts',
     label: 'Apex Charts',
     icon: 'pie-chart',
+    icon_type: 'feather',
     collapsed: true,
     children: [
       {
@@ -618,6 +711,7 @@ export const MENU_ITEMS: MenuItemType[] = [
     key: 'maps',
     label: 'Maps',
     icon: 'map',
+    icon_type: 'feather',
     collapsed: true,
     children: [
       {
@@ -634,4 +728,4 @@ export const MENU_ITEMS: MenuItemType[] = [
       },
     ],
   },
-]
+];
