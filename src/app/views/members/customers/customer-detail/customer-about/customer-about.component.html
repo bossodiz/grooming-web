@@ -1,0 +1,141 @@
+<div class="tab-pane pt-4" id="customer_about" role="tabpanel">
+  <div class="row">
+    <div class="row">
+      <div class="col-lg-6 col-xl-6">
+        <div class="card border">
+          <div class="card-header">
+            <div class="row align-items-center">
+              <div class="col">
+                <h4 class="card-title mb-0">Personal Information</h4>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-body">
+            <form
+              class="row g-2 needs-validation"
+              novalidate
+              [formGroup]="personalInformationForm"
+            >
+              <div class="col-md-12">
+                <label for="nameInput" class="form-label"
+                  >Name <span class="text-danger">*</span></label
+                >
+                <input
+                  formControlName="name"
+                  [ngClass]="{
+                    'is-invalid': submit && form['name'].errors,
+                  }"
+                  type="text"
+                  class="form-control"
+                  id="nameInput"
+                  required
+                />
+                <div class="invalid-feedback">Please enter a name</div>
+              </div>
+              <div class="col-md-12">
+                <label for="firstnameInput" class="form-label"
+                  >First Name
+                </label>
+                <input
+                  formControlName="firstname"
+                  type="text"
+                  class="form-control"
+                  id="firstnameInput"
+                />
+              </div>
+              <div class="col-md-12">
+                <label for="lastnameInput" class="form-label">Last Name</label>
+                <input
+                  formControlName="lastname"
+                  type="text"
+                  class="form-control"
+                  id="lastnameInput"
+                />
+              </div>
+              <div class="col-md-12">
+                <label for="phoneInput" class="form-label"
+                  >Phone <span class="text-danger">*</span></label
+                >
+                <div class="col-lg-12 col-xl-12">
+                  <div class="input-group">
+                    <span class="input-group-text"
+                      ><i class="mdi mdi-phone-outline"></i
+                    ></span>
+                    <input
+                      formControlName="phone"
+                      [ngClass]="{
+                        'is-invalid': submit && form['phone'].errors,
+                      }"
+                      type="text"
+                      class="form-control"
+                      (input)="onPhoneInput($event)"
+                      id="phoneInput"
+                      required
+                    />
+                    <div class="invalid-feedback">{{ phoneError }}</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <label for="phone2Input" class="form-label">Phone 2</label>
+                <div class="col-lg-12 col-xl-12">
+                  <div class="input-group">
+                    <span class="input-group-text"
+                      ><i class="mdi mdi-phone-outline"></i
+                    ></span>
+                    <input
+                      formControlName="phone2"
+                      type="text"
+                      class="form-control"
+                      (input)="onPhoneInput($event)"
+                      id="phone2Input"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <label for="emailInput" class="form-label">Email</label>
+                <div class="col-lg-12 col-xl-12">
+                  <div class="input-group">
+                    <span class="input-group-text"
+                      ><i class="mdi mdi-email"></i
+                    ></span>
+                    <input
+                      formControlName="email"
+                      [ngClass]="{
+                        'is-invalid': submit && form['email'].errors,
+                      }"
+                      type="email"
+                      class="form-control"
+                      id="emailInput"
+                    />
+                    <div class="invalid-feedback">Email is invalid format</div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="card-footer text-end">
+            <button
+              type="button"
+              class="btn btn-light"
+              (click)="reset()"
+              style="margin-right: 20px"
+            >
+              Reset
+            </button>
+            <button
+              type="submit"
+              class="btn btn-primary"
+              (click)="validSubmit()"
+            >
+              Save
+            </button>
+            <!--end card-body-->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,14 @@
+<div class="toast-container position-fixed top-0 end-0 p-3">
+  <ngb-toast
+    *ngFor="let toast of toastService.toasts()"
+    [autohide]="true"
+    [delay]="toast.delay || 5000"
+    [class]="toast.classname || 'bg-primary text-white'"
+    (hidden)="toastService.remove(toast)"
+  >
+    <div *ngIf="toast.header" class="toast-header">
+      <span [innerHTML]="toast.header"></span>
+    </div>
+    <div class="toast-body" [innerHTML]="toast.textOrTpl"></div>
+  </ngb-toast>
+</div>

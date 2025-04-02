@@ -1,0 +1,66 @@
+import { Response, MemberService } from '@/app/services/member.service';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { BreadcrumbComponent } from '@components/breadcrumb/breadcrumb.component';
+import { catchError, tap, throwError } from 'rxjs';
+import { CustomerPetComponent } from './customer-pet/customer-pet.component';
+import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
+import { CustomerAboutComponent } from './customer-about/customer-about.component';
+import { CustomerServiceHistoryComponent } from './customer-service-history/customer-service-history.component';
+import { CustomerPurchaseHistoryComponent } from './customer-purchase-history/customer-purchase-history.component';
+
+@Component({
+  selector: 'app-customer-detail',
+  imports: [
+    BreadcrumbComponent,
+    NgbNavModule,
+    CustomerPetComponent,
+    CustomerAboutComponent,
+    CustomerServiceHistoryComponent,
+    CustomerPurchaseHistoryComponent,
+  ],
+  templateUrl: './customer-detail.component.html',
+  styleUrl: './customer-detail.component.scss',
+})
+export class CustomerDetailComponent implements OnInit {
+  customerId: string | null = null;
+  name!: string;
+  phone!: string;
+  phoneOther!: string;
+  lastedDate!: string;
+  createdDate!: string;
+  selectedAboutId!: string;
+
+  constructor(
+    private route: ActivatedRoute,
+    private memberService: MemberService,
+  ) {}
+
+  ngOnInit(): void {
+    this.route.paramMap.subscribe((params) => {
+      this.customerId = params.get('id');
+      if (this.customerId) {
+        this.selectedAboutId = this.customerId;
+        this.getData();
+      }
+    });
+  }
+
+  getData() {
+    this.memberService
+      .getCustomerId(Number(this.customerId))
+      .pipe(
+        tap((response: Response<any>) => {
+          this.name = response.data?.name ?? '';
+          this.phone = response.data?.phone ?? '';
+          this.phoneOther = response.data?.phoneOther ?? '';
+          this.lastedDate = response.data?.lastedDate ?? '';
+          this.createdDate = response.data?.createdDate ?? '';
+        }),
+        catchError((error) => {
+          return throwError(() => error);
+        }),
+      )
+      .subscribe();
+  }
+}

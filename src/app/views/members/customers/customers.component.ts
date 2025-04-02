@@ -1,5 +1,5 @@
 import {
-  CustomerResponse,
+  Response,
   CustomerTableList,
   MemberService,
 } from '@/app/services/member.service';
@@ -21,10 +21,12 @@ import { NgbHighlight, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 import { catchError, Observable, tap, throwError } from 'rxjs';
 import { BreadcrumbComponent } from '@components/breadcrumb/breadcrumb.component';
 import { TableService } from '@/app/services/table.service';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-datatable',
   imports: [
+    RouterModule,
     NgbPaginationModule,
     CommonModule,
     FormsModule,
@@ -96,7 +98,7 @@ export class CustomersComponent {
     this.memberService
       .getCustomers()
       .pipe(
-        tap((response: CustomerResponse) => {
+        tap((response: Response<CustomerTableList>) => {
           this.originalData = response.data ?? [];
           this.tableService.setItems(this.originalData, this.pageSize);
           this.collectionSize = this.originalData.length;

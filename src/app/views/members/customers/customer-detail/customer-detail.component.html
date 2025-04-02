@@ -1,0 +1,134 @@
+<breadcrumb
+  [title]="'Customers'"
+  [titleLink]="'/member/customers'"
+  [subtitle]="'Detail'"
+/>
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="align-items-center">
+          <div class="hando-main-sections">
+            <div class="hando-profile-main">
+              <img
+                src="assets/images/users/customer.png"
+                class="rounded-circle img-fluid avatar-xxl img-thumbnail float-start"
+                alt="image profile"
+              />
+            </div>
+            <div class="overflow-hidden ms-md-4 ms-0">
+              <h4 class="m-0 text-dark fs-20 mt-2 mt-md-0">{{ name }}</h4>
+              <p class="my-1 text-muted fs-16">
+                {{ phone }}
+                @if (phoneOther) {
+                  , {{ phoneOther }}
+                }
+              </p>
+              <span class="fs-15"
+                >Last Service Date :
+                <span>{{ lastedDate }} </span>
+              </span>
+              <br />
+              <span class="fs-15"
+                >Register Date :
+                <span>{{ createdDate }} </span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body pt-0">
+        <ul
+          ngbNav
+          #nav="ngbNav"
+          class="nav nav-underline border-bottom pt-2"
+          id="pills-tab"
+          role="tablist"
+        >
+          <li class="nav-item" ngbNavItem role="presentation">
+            <a
+              ngbNavLink
+              class="nav-link p-2"
+              id="customer_pet_tab"
+              data-bs-toggle="tab"
+              href="#customer_pet"
+              role="tab"
+            >
+              <span class="d-block d-sm-none"
+                ><i class="mdi mdi-information"></i
+              ></span>
+              <span class="d-none d-sm-block">Pet</span>
+            </a>
+            <ng-template ngbNavContent>
+              <app-customer-pet />
+            </ng-template>
+          </li>
+
+          <li class="nav-item" ngbNavItem>
+            <a
+              class="nav-link p-2"
+              ngbNavLink
+              id="customer_about_tab"
+              data-bs-toggle="tab"
+              href="#customer_about"
+              role="tab"
+            >
+              <span class="d-block d-sm-none"
+                ><i class="mdi mdi-sitemap-outline"></i
+              ></span>
+              <span class="d-none d-sm-block">Service History</span>
+            </a>
+            <ng-template ngbNavContent>
+              <app-customer-service-history />
+            </ng-template>
+          </li>
+          <li class="nav-item" ngbNavItem>
+            <a
+              class="nav-link p-2"
+              ngbNavLink
+              id="customer_about_tab"
+              data-bs-toggle="tab"
+              href="#customer_about"
+              role="tab"
+            >
+              <span class="d-block d-sm-none"
+                ><i class="mdi mdi-sitemap-outline"></i
+              ></span>
+              <span class="d-none d-sm-block">Purchase History</span>
+            </a>
+            <ng-template ngbNavContent>
+              <app-customer-purchase-history />
+            </ng-template>
+          </li>
+          <li class="nav-item" ngbNavItem>
+            <a
+              class="nav-link p-2"
+              ngbNavLink
+              id="customer_about_tab"
+              data-bs-toggle="tab"
+              href="#customer_about"
+              role="tab"
+            >
+              <span class="d-block d-sm-none"
+                ><i class="mdi mdi-sitemap-outline"></i
+              ></span>
+              <span class="d-none d-sm-block">About</span>
+            </a>
+            <ng-template ngbNavContent>
+              <app-customer-about [id]="selectedAboutId" />
+            </ng-template>
+          </li>
+        </ul>
+        <div class="tab-content text-muted bg-white" [ngbNavOutlet]="nav"></div>
+        <!-- Tab panes -->
+      </div>
+    </div>
+  </div>
+</div>

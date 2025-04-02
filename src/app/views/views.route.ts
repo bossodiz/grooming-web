@@ -13,7 +13,7 @@ import { JobsComponent } from './dashboards/jobs/jobs.component';
 export const VIEWS_ROUTES: Route[] = [
   {
     path: '',
-    redirectTo: 'dashboards',
+    redirectTo: 'dashboard',
     pathMatch: 'full',
   },
   {

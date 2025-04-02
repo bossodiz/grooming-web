@@ -1,4 +1,3 @@
-import { data } from './../../apex-charts/line/data';
 import { Component, inject, TemplateRef, ViewChild } from '@angular/core';
 import { BreadcrumbComponent } from '../../../components/breadcrumb/breadcrumb.component';
 import {
@@ -8,14 +7,13 @@ import {
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
-import {
-  NgbModal,
-  NgbModalModule,
-  NgbModalOptions,
-} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { CommonModule } from '@angular/common';
-import { Phone } from 'angular-feather/icons';
-import { MemberService, RegisterResponse } from '@/app/services/member.service';
+import {
+  Response,
+  CustomerDetail,
+  MemberService,
+} from '@/app/services/member.service';
 import { catchError, tap, throwError } from 'rxjs';
 
 @Component({
@@ -103,7 +101,7 @@ export class RegisterComponent {
     this.service
       .register(request)
       .pipe(
-        tap((response: RegisterResponse) => {
+        tap((response: Response<CustomerDetail>) => {
           this.isSuccess = true;
           let contentModal =
             (this.registerForm.get('username')?.value ?? '') +

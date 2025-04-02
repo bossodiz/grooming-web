@@ -1,4 +1,8 @@
-<breadcrumb [title]="'Customers'" [subtitle]="'Customers'" />
+<breadcrumb
+  [title]="'Customers'"
+  [titleLink]="'/member/customers'"
+  [subtitle]="'List'"
+/>
 
 <div class="row">
   <div class="col-lg-12">
@@ -9,7 +13,7 @@
 
       <div class="card-body">
         <div class="mb-3 row">
-          <div class="col-xs-3 col-sm-auto">
+          <div class="col-xl-3">
             <input
               id="table-filtering-search"
               class="form-control"
@@ -54,7 +58,18 @@
                 </td>
                 <td style="text-align: center">{{ item.phoneOther }}</td>
                 <td style="text-align: center">{{ item.createdDate }}</td>
-                <td style="text-align: center"></td>
+                <td class="text-center">
+                  <a
+                    [routerLink]="['/member/customers', item.id]"
+                    class="btn btn-sm bg-primary-subtle me-1"
+                    data-bs-toggle="tooltip"
+                    data-bs-original-title="View"
+                  >
+                    <i
+                      class="mdi mdi-text-box-search-outline fs-14 text-primary"
+                    ></i>
+                  </a>
+                </td>
               </tr>
             }
           </tbody>

@@ -1,14 +1,14 @@
-import { Router, Routes } from '@angular/router'
-import { LayoutComponent } from './layout/layout.component'
-import { AuthLayoutComponent } from './auth-layout/auth-layout.component'
-import { ErrorLayoutComponent } from './error-layout/error-layout.component'
-import { AuthenticationService } from './services/auth.service'
-import { inject } from '@angular/core'
+import { Router, Routes } from '@angular/router';
+import { LayoutComponent } from './layout/layout.component';
+import { AuthLayoutComponent } from './auth-layout/auth-layout.component';
+import { ErrorLayoutComponent } from './error-layout/error-layout.component';
+import { AuthenticationService } from './services/auth.service';
+import { inject } from '@angular/core';
 
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'index',
+    redirectTo: '/dashboard/overview',
     pathMatch: 'full',
   },
   {
@@ -18,16 +18,16 @@ export const routes: Routes = [
       import('./views/views.route').then((mod) => mod.VIEWS_ROUTES),
     canActivate: [
       (url: any) => {
-        const router = inject(Router)
-        const authService = inject(AuthenticationService)
+        const router = inject(Router);
+        const authService = inject(AuthenticationService);
         if (!authService.session) {
           return router.createUrlTree(['/auth/login'], {
             queryParams: { returnUrl: url._routerState.url },
-          })
+          });
         }
-        return true
-      }
-    ]
+        return true;
+      },
+    ],
   },
 
   {
@@ -41,7 +41,7 @@ export const routes: Routes = [
     component: ErrorLayoutComponent,
     loadChildren: () =>
       import('./views/errors/error.route').then(
-        (mod) => mod.ERROR_PAGES_ROUTES
+        (mod) => mod.ERROR_PAGES_ROUTES,
       ),
-  }
-]
+  },
+];
