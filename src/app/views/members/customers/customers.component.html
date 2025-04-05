@@ -45,7 +45,10 @@
                 </td>
                 <td style="text-align: center">{{ item.id }}</td>
                 <td style="text-align: center">
-                  <ngb-highlight [result]="item.phone" [term]="filter" />
+                  <ngb-highlight
+                    [result]="item.phone | phoneFormat"
+                    [term]="filter"
+                  />
                 </td>
                 <td style="text-align: center">
                   <ngb-highlight [result]="item.name" [term]="filter" />
@@ -56,7 +59,9 @@
                 <td style="text-align: center">
                   <ngb-highlight [result]="item.lastname" [term]="filter" />
                 </td>
-                <td style="text-align: center">{{ item.phoneOther }}</td>
+                <td style="text-align: center">
+                  {{ item.phoneOther | phoneFormat }}
+                </td>
                 <td style="text-align: center">{{ item.createdDate }}</td>
                 <td class="text-center">
                   <a

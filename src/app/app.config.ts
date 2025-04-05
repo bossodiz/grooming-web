@@ -34,6 +34,7 @@ import { ErrorInterceptor } from './helper/error.interceptor';
 import { FeatherModule } from 'angular-feather';
 import { icons } from 'feather-icons';
 import { allIcons } from 'angular-feather/icons';
+import { PhoneFormatPipe } from './services/format.service';
 const scrollConfig: InMemoryScrollingOptions = {
   scrollPositionRestoration: 'top',
   anchorScrolling: 'enabled',

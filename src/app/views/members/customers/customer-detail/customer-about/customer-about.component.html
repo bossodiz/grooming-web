@@ -67,6 +67,7 @@
                       [ngClass]="{
                         'is-invalid': submit && form['phone'].errors,
                       }"
+                      mask="000-000-0000"
                       type="text"
                       class="form-control"
                       (input)="onPhoneInput($event)"
@@ -86,11 +87,16 @@
                     ></span>
                     <input
                       formControlName="phone2"
+                      mask="000-000-0000"
                       type="text"
                       class="form-control"
                       (input)="onPhoneInput($event)"
+                      [ngClass]="{
+                        'is-invalid': submit && form['phone2'].errors,
+                      }"
                       id="phone2Input"
                     />
+                    <div class="invalid-feedback">{{ phone2Error }}</div>
                   </div>
                 </div>
               </div>

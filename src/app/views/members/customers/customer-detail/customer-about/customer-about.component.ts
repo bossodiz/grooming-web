@@ -1,5 +1,6 @@
 import {
   Component,
+  EventEmitter,
   inject,
   Input,
   TemplateRef,
@@ -17,12 +18,20 @@ import { MemberService, Response } from '@/app/services/member.service';
 import { catchError, tap, throwError } from 'rxjs';
 import { ToastService } from '@/app/services/toast.service';
 import { ERROR, SUCCESS } from '@common/constants';
+import { NgxMaskDirective, NGX_MASK_CONFIG, initialConfig } from 'ngx-mask';
 
 @Component({
   selector: 'app-customer-about',
-  imports: [FormsModule, ReactiveFormsModule, CommonModule],
+  imports: [FormsModule, ReactiveFormsModule, CommonModule, NgxMaskDirective],
   templateUrl: './customer-about.component.html',
   styleUrl: './customer-about.component.scss',
+  standalone: true,
+  providers: [
+    {
+      provide: NGX_MASK_CONFIG,
+      useValue: initialConfig,
+    },
+  ],
 })
 export class CustomerAboutComponent {
   @Input() id: any;
@@ -32,6 +41,7 @@ export class CustomerAboutComponent {
   personalInformationForm!: UntypedFormGroup;
   submit!: boolean;
   phoneError: string = '';
+  phone2Error: string = '';
   show1 = true;
 
   toastService = inject(ToastService);
@@ -66,8 +76,8 @@ export class CustomerAboutComponent {
             name: response.data.name ?? '',
             firstname: response.data.firstname ?? '',
             lastname: response.data.lastname ?? '',
-            phone: this.phoneFormat(response.data.phone) ?? '',
-            phone2: this.phoneFormat(response.data.phoneOther) ?? '',
+            phone: response.data.phone ?? '',
+            phone2: response.data.phoneOther ?? '',
             email: response.data.email ?? '',
           });
         }),
@@ -84,27 +94,19 @@ export class CustomerAboutComponent {
 
   onPhoneInput(event: any): void {
     this.submit = false;
-    const input = event.target.value.replace(/\D/g, ''); // Remove all non-digit characters
-    event.target.value = this.phoneFormat(input);
-  }
-
-  phoneFormat(value: any): string {
-    if (value) {
-      if (value.length <= 3) {
-        return value;
-      } else if (value.length <= 6) {
-        return `${value.slice(0, 3)}-${value.slice(3)}`;
-      } else {
-        return `${value.slice(0, 3)}-${value.slice(3, 6)}-${value.slice(6, 10)}`;
-      }
-    }
-    return '';
   }
 
   validSubmit() {
     this.submit = true;
+    console.log(this.personalInformationForm);
     if (this.personalInformationForm.get('phone')?.value.length == 0) {
       this.phoneError = 'Please enter a phone';
+    }
+    if (this.personalInformationForm.get('phone')?.errors?.['mask'] !== null) {
+      this.phoneError = 'Please enter a phone format : 000-000-0000';
+    }
+    if (this.personalInformationForm.get('phone2')?.errors?.['mask'] !== null) {
+      this.phone2Error = 'Please enter a phone 2 format: 000-000-0000';
     }
     if (this.personalInformationForm.valid) {
       this.save();

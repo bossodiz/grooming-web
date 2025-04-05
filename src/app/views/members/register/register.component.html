@@ -12,7 +12,7 @@
           [formGroup]="registerForm"
           (ngSubmit)="validSubmit()"
         >
-          <div class="col-md-6">
+          <div class="col-md-12">
             <label for="usernameInput" class="form-label"
               >Phone <span class="text-danger">*</span></label
             >
@@ -20,7 +20,7 @@
               formControlName="username"
               [ngClass]="{ 'is-invalid': submit && form['username'].errors }"
               type="text"
-              class="form-control"
+              class="form-control form-control-lg"
               id="usernameInput"
               (input)="onPhoneInput($event)"
               maxlength="12"
@@ -31,7 +31,7 @@
             </div>
             <div class="valid-feedback"></div>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-12">
             <label for="nicknameInput" class="form-label"
               >Name <span class="text-danger">*</span></label
             >
@@ -39,41 +39,41 @@
               formControlName="nickname"
               [ngClass]="{ 'is-invalid': submit && form['nickname'].errors }"
               type="text"
-              class="form-control"
+              class="form-control form-control-lg"
               id="nicknameInput"
               required
             />
             <div class="invalid-feedback">Please enter a name</div>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-12">
             <label for="firstnameInput" class="form-label">First name</label>
             <input
               formControlName="firstname"
               type="text"
-              class="form-control"
+              class="form-control form-control-lg"
               id="firstnameInput"
             />
           </div>
-          <div class="col-md-6">
+          <div class="col-md-12">
             <label for="lastNameInput" class="form-label">Last name</label>
             <input
               formControlName="lastname"
               type="text"
-              class="form-control"
+              class="form-control form-control-lg"
               id="lastNameInput"
             />
           </div>
-          <div class="col-md-6">
+          <div class="col-md-12">
             <label for="phoneOtherInput" class="form-label">Phone Other</label>
             <input
               formControlName="phone2"
               type="text"
-              class="form-control"
+              class="form-control form-control-lg"
               id="phoneOtherInput"
             />
           </div>
           <div class="row g-3 justify-content-center mx-auto">
-            <div class="col-md-6 d-flex justify-content-between">
+            <div class="col-md-12 d-flex justify-content-between">
               <button class="btn btn-primary w-50 me-2" type="submit">
                 Register
               </button>

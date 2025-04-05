@@ -1,3 +1,4 @@
+import { PhoneFormatPipe } from '../../../services/format.service';
 import {
   Response,
   CustomerTableList,
@@ -32,6 +33,7 @@ import { RouterModule } from '@angular/router';
     FormsModule,
     BreadcrumbComponent,
     NgbHighlight,
+    PhoneFormatPipe,
   ],
   templateUrl: './customers.component.html',
   styleUrl: './customers.component.scss',

@@ -7,8 +7,7 @@ import { CustomerPetComponent } from './customer-pet/customer-pet.component';
 import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { CustomerAboutComponent } from './customer-about/customer-about.component';
 import { CustomerServiceHistoryComponent } from './customer-service-history/customer-service-history.component';
-import { CustomerPurchaseHistoryComponent } from './customer-purchase-history/customer-purchase-history.component';
-
+import { CustomerProductHistoryComponent } from './customer-product-history/customer-product-history.component';
 @Component({
   selector: 'app-customer-detail',
   imports: [
@@ -17,7 +16,7 @@ import { CustomerPurchaseHistoryComponent } from './customer-purchase-history/cu
     CustomerPetComponent,
     CustomerAboutComponent,
     CustomerServiceHistoryComponent,
-    CustomerPurchaseHistoryComponent,
+    CustomerProductHistoryComponent,
   ],
   templateUrl: './customer-detail.component.html',
   styleUrl: './customer-detail.component.scss',
