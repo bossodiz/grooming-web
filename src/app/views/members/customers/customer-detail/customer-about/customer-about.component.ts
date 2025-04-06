@@ -1,6 +1,5 @@
 import {
   Component,
-  EventEmitter,
   inject,
   Input,
   TemplateRef,
@@ -14,7 +13,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { MemberService, Response } from '@/app/services/member.service';
+import { MemberService } from '@/app/services/member.service';
 import { catchError, tap, throwError } from 'rxjs';
 import { ToastService } from '@/app/services/toast.service';
 import { ERROR, SUCCESS } from '@common/constants';
@@ -43,6 +42,7 @@ export class CustomerAboutComponent {
   phoneError: string = '';
   phone2Error: string = '';
   show1 = true;
+  remark: string = '';
 
   toastService = inject(ToastService);
 
@@ -71,7 +71,7 @@ export class CustomerAboutComponent {
     this.memberService
       .getCustomerId(Number(this.id))
       .pipe(
-        tap((response: Response<any>) => {
+        tap((response) => {
           this.personalInformationForm.patchValue({
             name: response.data.name ?? '',
             firstname: response.data.firstname ?? '',
@@ -80,6 +80,22 @@ export class CustomerAboutComponent {
             phone2: response.data.phoneOther ?? '',
             email: response.data.email ?? '',
           });
+          this.remark = response.data.remark ?? '';
+        }),
+        catchError((error) => {
+          return throwError(() => error);
+        }),
+      )
+      .subscribe();
+  }
+
+  getDataRemark()
+  {
+    this.memberService
+      .getCustomerRemark(Number(this.id))
+      .pipe(
+        tap((response) => {
+          this.remark = response.data.remark ?? '';
         }),
         catchError((error) => {
           return throwError(() => error);
@@ -92,13 +108,16 @@ export class CustomerAboutComponent {
     this.getData();
   }
 
+  resetRemark() {
+    this.getDataRemark();
+  }
+
   onPhoneInput(event: any): void {
     this.submit = false;
   }
 
   validSubmit() {
     this.submit = true;
-    console.log(this.personalInformationForm);
     if (this.personalInformationForm.get('phone')?.value.length == 0) {
       this.phoneError = 'Please enter a phone';
     }
@@ -128,7 +147,7 @@ export class CustomerAboutComponent {
     this.memberService
       .updateProfile(request)
       .pipe(
-        tap((response: Response<any>) => {
+        tap((response) => {
           if (response.code !== 200) {
             this.phoneError = response.message ?? '';
             this.personalInformationForm.get('phone')?.setErrors({
@@ -136,8 +155,28 @@ export class CustomerAboutComponent {
             });
             this.personalInformationForm.get('phone')?.markAsTouched();
           } else {
-            this.showToast('Successfully updated', SUCCESS);
+            this.showToast('Successfully updated profile', SUCCESS);
           }
+        }),
+        catchError((error) => {
+          return throwError(() => error);
+        }),
+      )
+      .subscribe();
+  }
+
+  saveRemark() {
+    const request = {
+      id: this.id,
+      remark: this.remark,
+    };
+    this.memberService
+      .updateProfileRemark(request)
+      .pipe(
+        tap((response) => {
+          if (response.code == 200) {
+            this.showToast('Successfully updated remark', SUCCESS);
+          } 
         }),
         catchError((error) => {
           return throwError(() => error);

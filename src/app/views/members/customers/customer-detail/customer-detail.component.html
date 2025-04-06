@@ -67,7 +67,7 @@
               <span class="d-none d-sm-block">Pet</span>
             </a>
             <ng-template ngbNavContent>
-              <app-customer-pet />
+              <app-customer-pet [id]="customerId"/>
             </ng-template>
           </li>
 
@@ -86,7 +86,7 @@
               <span class="d-none d-sm-block">Service History</span>
             </a>
             <ng-template ngbNavContent>
-              <app-customer-service-history />
+              <app-customer-service-history [id]="customerId"/>
             </ng-template>
           </li>
           <li class="nav-item" ngbNavItem>
@@ -104,7 +104,7 @@
               <span class="d-none d-sm-block">Product History</span>
             </a>
             <ng-template ngbNavContent>
-              <app-customer-product-history />
+              <app-customer-product-history [id]="customerId"/>
             </ng-template>
           </li>
           <li class="nav-item" ngbNavItem>
@@ -122,7 +122,7 @@
               <span class="d-none d-sm-block">About</span>
             </a>
             <ng-template ngbNavContent>
-              <app-customer-about [id]="selectedAboutId" />
+              <app-customer-about [id]="customerId" />
             </ng-template>
           </li>
         </ul>

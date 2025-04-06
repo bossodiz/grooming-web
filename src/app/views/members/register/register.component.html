@@ -1,4 +1,8 @@
-<breadcrumb [title]="'Forms'" [subtitle]="'Register Customer'" />
+<breadcrumb
+  [title]="'Register Customer'"
+  [titleLink]="'/member/register'"
+/>
+
 <div class="row">
   <div class="col-xl-8 justify-content-center mx-auto">
     <div class="card">
@@ -128,9 +132,12 @@
       Close
     </button>
     @if (isSuccess) {
+      <button type="button" class="btn btn-info" (click)="info(modalData.data)">
+        Go to Profile
+      </button>
       <button
         type="button"
-        class="btn btn-primary"
+        class="btn btn-success"
         (click)="payment(modalData.data)"
       >
         Go to payment

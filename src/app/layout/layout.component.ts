@@ -4,6 +4,7 @@ import { SidebarComponent } from './components/sidebar/sidebar.component'
 import { RouterModule } from '@angular/router'
 import feather from 'feather-icons'
 import { credits, currentYear } from '@common/constants'
+import { TranslateService } from '@ngx-translate/core'
 
 @Component({
     selector: 'app-layout',

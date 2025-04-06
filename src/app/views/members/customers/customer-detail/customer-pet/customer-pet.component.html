@@ -1,1 +1,265 @@
-<p>customer-pet works!</p>
+<div class="card">
+  <div class="card-body">
+    <div class="row">
+      <div class="row mb-2">
+        <div class="col-12">
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="openModal()"
+            data-bs-toggle="modal"
+          >
+            <i class="mdi mdi-plus"></i> Add
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <div class="table-responsive">
+          <table class="table table-enhanced table-hover">
+            <thead>
+              <tr>
+                <th scope="col" class="text-center">
+                  {{ "no" | translate }}
+                </th>
+                <th scope="col" class="text-center">
+                  {{ "name" | translate }}
+                </th>
+                <th scope="col" class="text-center">
+                  {{ "age" | translate }}
+                </th>
+                <th scope="col" class="text-center">
+                  {{ "gender" | translate }}
+                </th>
+                <th scope="col" class="text-center">
+                  {{ "type" | translate }}
+                </th>
+                <th scope="col" class="text-center">
+                  {{ "breed" | translate }}
+                </th>
+                <th scope="col" class="text-center">
+                  {{ "weight" | translate }}
+                </th>
+                <th scope="col" class="text-center">
+                  {{ "service" | translate }}
+                </th>
+                <th scope="col" class="text-center">
+                  {{ "detail" | translate }}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              @if (dataList.length == 0) {
+                <tr>
+                  <td colspan="9" class="text-center">
+                    <span>{{ "no_data" | translate }}</span>
+                  </td>
+                </tr>
+              }
+              @for (item of dataList; track item.id; let i = $index) {
+                <tr>
+                  <td class="text-center">
+                    <span
+                      class="table-detail-link"
+                      (click)="viewDetail(item.id!)"
+                      >{{ i + 1 }}</span
+                    >
+                  </td>
+                  <td class="text-center">
+                    <span
+                      class="table-detail-link"
+                      (click)="viewDetail(item.id!)"
+                      >{{ item.name }}</span
+                    >
+                  </td>
+                  <td class="text-center">
+                    <span
+                      class="table-detail-link"
+                      (click)="viewDetail(item.id!)"
+                      >{{ item.age }}</span
+                    >
+                  </td>
+                  <td class="text-center">
+                    <span
+                      class="table-detail-link"
+                      (click)="viewDetail(item.id!)"
+                      >{{ item.gender }}</span
+                    >
+                  </td>
+                  <td class="text-center">
+                    <span
+                      class="table-detail-link"
+                      (click)="viewDetail(item.id!)"
+                      >{{ item.type }}</span
+                    >
+                  </td>
+                  <td class="text-center">
+                    <span
+                      class="table-detail-link"
+                      (click)="viewDetail(item.id!)"
+                      >{{ item.breed }}</span
+                    >
+                  </td>
+                  <td class="text-center">
+                    <span
+                      class="table-detail-link"
+                      (click)="viewDetail(item.id!)"
+                      >{{ item.weight }}</span
+                    >
+                  </td>
+                  <td class="text-center">
+                    <span
+                      class="table-detail-link"
+                      (click)="viewDetail(item.id!)"
+                      >{{ item.service }}</span
+                    >
+                  </td>
+                  <td class="text-center">
+                    <a
+                      [routerLink]="['/member/pets', item.id]"
+                      class="btn btn-sm bg-primary-subtle me-1"
+                      data-bs-toggle="tooltip"
+                      data-bs-original-title="View"
+                    >
+                      <i
+                        class="mdi mdi-text-box-search-outline fs-14 text-primary"
+                      ></i>
+                    </a>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template
+  #standardModal
+  let-modal
+  class="modal fade"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="standard-modalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-header">
+    <h1 class="modal-title fs-5" id="standard-modalLabel">Add pet</h1>
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="modal"
+      (click)="modalclose()"
+      aria-label="Close"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <form class="row g-3 needs-validation" novalidate [formGroup]="petForm">
+      <div class="col-md-12">
+        <label for="nameInput" class="form-label"
+          >Name <span class="text-danger">*</span></label
+        >
+        <input
+          formControlName="name"
+          [ngClass]="{ 'is-invalid': submit && form['name'].errors }"
+          type="text"
+          class="form-control form-control-lg"
+          id="nameInput"
+          required
+        />
+        <div class="invalid-feedback">Please enter a name.</div>
+      </div>
+      <div class="col-md-12">
+        <label for="ageInput" class="form-label">Age</label>
+        <input
+          formControlName="age"
+          type="text"
+          class="form-control form-control-lg"
+          id="ageInput"
+        />
+      </div>
+      <div class="col-md-12">
+        <label for="genderInput" class="form-label">Gender</label>
+        <div class="form-check radio-lg">
+          <input
+            class="form-check-input"
+            type="radio"
+            formControlName="gender"
+            id="genderRadios1"
+            value="MALE"
+          />
+          <label class="form-check-label" for="genderRadios1"> Male </label>
+        </div>
+        <div class="form-check radio-lg">
+          <input
+            class="form-check-input"
+            type="radio"
+            formControlName="gender"
+            id="genderRadios2"
+            value="FEMALE"
+          />
+          <label class="form-check-label" for="genderRadios2"> Female </label>
+        </div>
+      </div>
+      <!-- Type -->
+      <div class="col-md-12">
+        <label for="typeInput" class="form-label">Type</label>
+        <ng-select
+          [items]="petTypeList"
+          bindLabel="label"
+          bindValue="key"
+          [searchable]="true"
+          formControlName="type"
+          (change)="onTypeChange($event)"
+        >
+          <ng-template ng-option-tmp let-item="item">
+            <div class="option-content">
+              {{ locale === "th" ? item.value_th : item.value_en }}
+            </div>
+          </ng-template>
+        </ng-select>
+      </div>
+
+      <!-- Breed -->
+      <div class="col-md-12">
+        <label for="breedInput" class="form-label">Breed</label>
+        <ng-select
+          [items]="filteredBreedList"
+          bindLabel="label"
+          bindValue="key"
+          [searchable]="true"
+          formControlName="breed"
+        >
+          <ng-template ng-option-tmp let-item="item">
+            <div class="option-content">
+              <img
+                *ngIf="item.image_url"
+                [src]="item.image_url"
+                width="100"
+                height="100"
+                class="me-2 rounded-circle"
+              />
+              {{ locale === "th" ? item.value_th : item.value_en }}
+            </div>
+          </ng-template>
+        </ng-select>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-light"
+      data-bs-dismiss="modal"
+      (click)="modalclose()"
+    >
+      Close
+    </button>
+    <button type="button" class="btn btn-success" (click)="addPet()">
+      Add
+    </button>
+  </div>
+</ng-template>

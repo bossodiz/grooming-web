@@ -9,12 +9,10 @@ import {
 } from '@angular/forms';
 import { NgbModal, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { CommonModule } from '@angular/common';
-import {
-  Response,
-  CustomerDetail,
-  MemberService,
-} from '@/app/services/member.service';
+import { MemberService } from '@/app/services/member.service';
 import { catchError, tap, throwError } from 'rxjs';
+import { ApiResponse } from '@/app/services/model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -41,6 +39,7 @@ export class RegisterComponent {
   public formBuilder = inject(UntypedFormBuilder);
   public service = inject(MemberService);
   private modalService = inject(NgbModal);
+  private router = inject(Router);
 
   ngOnInit(): void {
     this.registerForm = this.formBuilder.group({
@@ -101,7 +100,7 @@ export class RegisterComponent {
     this.service
       .register(request)
       .pipe(
-        tap((response: Response<CustomerDetail>) => {
+        tap((response) => {
           this.isSuccess = true;
           let contentModal =
             (this.registerForm.get('username')?.value ?? '') +
@@ -121,11 +120,16 @@ export class RegisterComponent {
       message: message,
       data: data,
     };
-    this.modalService.open(content);
+    this.modalService.open(content, { centered: true });
+  }
+
+  info(data: any) {
+    this.modalService.dismissAll();
+    this.router.navigate(['/member/customers', data.id]);
   }
 
   payment(data: any) {
-    console.log(data);
+    this.modalService.dismissAll();
     alert('Go to payment');
   }
 }

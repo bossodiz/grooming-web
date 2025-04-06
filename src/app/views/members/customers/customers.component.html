@@ -1,7 +1,6 @@
 <breadcrumb
   [title]="'Customers'"
   [titleLink]="'/member/customers'"
-  [subtitle]="'List'"
 />
 
 <div class="row">
@@ -17,68 +16,62 @@
             <input
               id="table-filtering-search"
               class="form-control"
+              placeholder="{{'search' | translate }}"
               type="text"
               [(ngModel)]="filter"
               (ngModelChange)="onSearch()"
             />
           </div>
         </div>
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col" style="text-align: center">No.</th>
-              <th scope="col" style="text-align: center">Customer ID.</th>
-              <th scope="col" style="text-align: center">Phone</th>
-              <th scope="col" style="text-align: center">Name</th>
-              <th scope="col" style="text-align: center">First Name</th>
-              <th scope="col" style="text-align: center">Last Name</th>
-              <th scope="col" style="text-align: center">Phone Other</th>
-              <th scope="col" style="text-align: center">Created Date</th>
-              <th scope="col" style="text-align: center">Details</th>
-            </tr>
-          </thead>
-          <tbody>
-            @for (item of searchCountries; track item.id; let i = $index) {
+        
+        <div class="table-responsive">
+          <table class="table table-enhanced table-hover">
+            <thead>
               <tr>
-                <td style="text-align: center">
-                  {{ (page - 1) * pageSize + (i + 1) }}
-                </td>
-                <td style="text-align: center">{{ item.id }}</td>
-                <td style="text-align: center">
-                  <ngb-highlight
-                    [result]="item.phone | phoneFormat"
-                    [term]="filter"
-                  />
-                </td>
-                <td style="text-align: center">
-                  <ngb-highlight [result]="item.name" [term]="filter" />
-                </td>
-                <td style="text-align: center">
-                  <ngb-highlight [result]="item.firstname" [term]="filter" />
-                </td>
-                <td style="text-align: center">
-                  <ngb-highlight [result]="item.lastname" [term]="filter" />
-                </td>
-                <td style="text-align: center">
-                  {{ item.phoneOther | phoneFormat }}
-                </td>
-                <td style="text-align: center">{{ item.createdDate }}</td>
-                <td class="text-center">
-                  <a
-                    [routerLink]="['/member/customers', item.id]"
-                    class="btn btn-sm bg-primary-subtle me-1"
-                    data-bs-toggle="tooltip"
-                    data-bs-original-title="View"
-                  >
-                    <i
-                      class="mdi mdi-text-box-search-outline fs-14 text-primary"
-                    ></i>
-                  </a>
-                </td>
+                <th scope="col" class="text-center">{{"no" | translate }}</th>
+                <th scope="col" class="text-center">{{"phone" | translate }}</th>
+                <th scope="col" class="text-center">{{"name" | translate }}</th>
+                <th scope="col" class="text-center">{{"total_pets" | translate }}</th>
+                <th scope="col" class="text-center">{{"register_date" | translate }}</th>
+                <th scope="col" class="text-center">{{"detail" | translate }}</th>
               </tr>
-            }
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              @for (item of searchCountries; track item.id; let i = $index) {
+                <tr>
+                  <td class="text-center">
+                    <span class="table-detail-link" (click)="viewDetail(item.id!)">{{ (page - 1) * pageSize + (i + 1) }}</span>
+                  </td>
+                  <td class="text-center">
+                    <span class="table-detail-link" (click)="viewDetail(item.id!)"><ngb-highlight
+                      [result]="item.phone | phone_format"
+                      [term]="filter"
+                    /></span>
+                  </td>
+                  <td class="text-center">
+                    <span class="table-detail-link" (click)="viewDetail(item.id!)"><ngb-highlight [result]="item.name" [term]="filter" /></span>
+                  </td>
+                  <td class="text-center">
+                    <span class="table-detail-link" (click)="viewDetail(item.id!)">{{ item.pets?.length }}</span>
+                  </td>
+                  <td class="text-center" (click)="viewDetail(item.id!)"><span class="table-detail-link">{{ item.createdDate | date_full :translate.currentLang  }}</span></td>
+                  <td class="text-center">
+                    <a
+                      [routerLink]="['/member/customers', item.id]"
+                      class="btn btn-sm bg-primary-subtle me-1"
+                      data-bs-toggle="tooltip"
+                      data-bs-original-title="View"
+                    >
+                      <i
+                        class="mdi mdi-text-box-search-outline fs-14 text-primary"
+                      ></i>
+                    </a>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
         <ngb-pagination
           class="d-flex justify-content-end"
           [collectionSize]="collectionSize"

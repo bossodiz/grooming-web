@@ -1,4 +1,4 @@
-import { Response, MemberService } from '@/app/services/member.service';
+import { MemberService } from '@/app/services/member.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BreadcrumbComponent } from '@components/breadcrumb/breadcrumb.component';
@@ -28,7 +28,6 @@ export class CustomerDetailComponent implements OnInit {
   phoneOther!: string;
   lastedDate!: string;
   createdDate!: string;
-  selectedAboutId!: string;
 
   constructor(
     private route: ActivatedRoute,
@@ -39,7 +38,6 @@ export class CustomerDetailComponent implements OnInit {
     this.route.paramMap.subscribe((params) => {
       this.customerId = params.get('id');
       if (this.customerId) {
-        this.selectedAboutId = this.customerId;
         this.getData();
       }
     });
@@ -49,7 +47,7 @@ export class CustomerDetailComponent implements OnInit {
     this.memberService
       .getCustomerId(Number(this.customerId))
       .pipe(
-        tap((response: Response<any>) => {
+        tap((response) => {
           this.name = response.data?.name ?? '';
           this.phone = response.data?.phone ?? '';
           this.phoneOther = response.data?.phoneOther ?? '';

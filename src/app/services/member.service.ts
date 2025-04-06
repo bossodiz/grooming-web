@@ -3,16 +3,16 @@ import { HttpClient } from '@angular/common/http';
 import { catchError, map } from 'rxjs/operators';
 import { Config } from '../app.config';
 import { throwError, type Observable } from 'rxjs';
-import { PetDetaile } from './pet.service';
+import { ApiResponse } from './model';
 
 @Injectable({ providedIn: 'root' })
 export class MemberService {
   constructor(private http: HttpClient) {}
 
-  register(request: any): Observable<Response<CustomerDetail>> {
+  register(request: any): Observable<ApiResponse> {
     return this.http
       .post<
-        Response<CustomerDetail>
+      ApiResponse
       >(`${Config.apiUrl}/member/register`, request)
       .pipe(
         map((response) => response),
@@ -22,9 +22,9 @@ export class MemberService {
       );
   }
 
-  getCustomers(): Observable<Response<CustomerTableList>> {
+  getCustomers(): Observable<ApiResponse> {
     return this.http
-      .get<Response<CustomerTableList>>(`${Config.apiUrl}/member/customers`)
+      .get<ApiResponse>(`${Config.apiUrl}/member/customers`)
       .pipe(
         map((response) => response),
         catchError((error) => {
@@ -32,9 +32,9 @@ export class MemberService {
         }),
       );
   }
-  getCustomerId(id: number): Observable<Response<CustomerDetail>> {
+  getCustomerId(id: number): Observable<ApiResponse> {
     return this.http
-      .get<Response<CustomerDetail>>(`${Config.apiUrl}/member/customers/` + id)
+      .get<ApiResponse>(`${Config.apiUrl}/member/customers/` + id)
       .pipe(
         map((response) => response),
         catchError((error) => {
@@ -43,10 +43,10 @@ export class MemberService {
       );
   }
 
-  updateProfile(request: any): Observable<Response<CustomerDetail>> {
+  updateProfile(request: any): Observable<ApiResponse> {
     return this.http
       .patch<
-        Response<CustomerDetail>
+      ApiResponse
       >(`${Config.apiUrl}/member/customers/` + request.id, request)
       .pipe(
         map((response) => response),
@@ -55,35 +55,41 @@ export class MemberService {
         }),
       );
   }
-}
+  
+  updateProfileRemark(request: any): Observable<ApiResponse> {
+    return this.http
+      .patch<
+      ApiResponse
+      >(`${Config.apiUrl}/member/customers/remark/` + request.id, request)
+      .pipe(
+        map((response) => response),
+        catchError((error) => {
+          return throwError(() => error);
+        }),
+      );
+  }
 
-export class Response<T> {
-  code?: number;
-  message?: string;
-  data?: any;
-}
+  getCustomerRemark(id: number): Observable<ApiResponse> {
+    return this.http
+      .get<ApiResponse>(
+        `${Config.apiUrl}/member/customers/remark/` + id,
+      )
+      .pipe(
+        map((response) => response),
+        catchError((error) => {
+          return throwError(() => error);
+        }),
+      );
+  }
 
-export class CustomerTableList {
-  id?: number;
-  name?: string;
-  firstname?: string;
-  lastname?: string;
-  phone?: string;
-  phoneOther?: string;
-  serviceCount?: number;
-  createdDate?: string;
-  lastedDate?: string;
-}
-
-export class CustomerDetail {
-  id?: number;
-  name?: string;
-  firstname?: string;
-  lastname?: string;
-  phone?: string;
-  phoneOther?: string;
-  serviceCount?: number;
-  createdDate?: string;
-  lastedDate?: string;
-  pets?: PetDetaile[];
+  getCustomerPet(id: number): Observable<ApiResponse> {
+    return this.http
+      .get<ApiResponse>(`${Config.apiUrl}/member/customers/` + id + '/pets')
+      .pipe(
+        map((response) => response),
+        catchError((error) => {
+          return throwError(() => error);
+        }),
+      );
+  }
 }

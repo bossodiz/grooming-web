@@ -10,7 +10,6 @@
               </div>
             </div>
           </div>
-
           <div class="card-body">
             <form
               class="row g-2 needs-validation"
@@ -135,6 +134,46 @@
               type="submit"
               class="btn btn-primary"
               (click)="validSubmit()"
+            >
+              Save
+            </button>
+            <!--end card-body-->
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6 col-xl-6">
+        <div class="card border">
+          <div class="card-header">
+            <div class="row align-items-center">
+              <div class="col">
+                <h4 class="card-title mb-0">Remark</h4>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-body">
+              <div class="col-md-12">
+                <textarea
+                  class="form-control"
+                  id="example-textarea"
+                  rows="5"
+                  [(ngModel)]="remark"
+                ></textarea>
+              </div>
+          </div>
+          <div class="card-footer text-end">
+            <button
+              type="button"
+              class="btn btn-light"
+              (click)="resetRemark()"
+              style="margin-right: 20px"
+            >
+              Reset
+            </button>
+            <button
+              type="submit"
+              class="btn btn-primary"
+              (click)="saveRemark()"
             >
               Save
             </button>

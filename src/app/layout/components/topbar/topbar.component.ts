@@ -8,6 +8,7 @@ import {
   CUSTOM_ELEMENTS_SCHEMA,
   ElementRef,
   HostListener,
+  inject,
   Inject,
   OnInit,
   Renderer2,
@@ -15,6 +16,7 @@ import {
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import * as feather from 'feather-icons';
 import { SimplebarAngularModule } from 'simplebar-angular';
 
@@ -25,6 +27,7 @@ import { SimplebarAngularModule } from 'simplebar-angular';
     SimplebarAngularModule,
     RouterLink,
     CommonModule,
+    TranslateModule
   ],
   templateUrl: './topbar.component.html',
   styles: ``,
@@ -44,6 +47,8 @@ export class TopbarComponent {
   ) {
     this.renderer = rendererFactory.createRenderer(null, null);
   }
+
+  translate = inject(TranslateService);
 
   elem: any;
 
@@ -110,5 +115,9 @@ export class TopbarComponent {
         feather.replace();
       }
     });
+  }
+
+  changeLanguage(language: string) {
+    this.translate.use(language);
   }
 }

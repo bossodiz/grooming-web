@@ -88,13 +88,11 @@
     border-radius: 0 0px 0px 0;
 }
 
-// .table-responsive .table-hover{
-//     tbody > tr{
-//         &:hover {
-//             background-color: rgba($primary, 0.5) !important;
-//         }
-//     }
-// }
+.table .table-detail-link:hover{
+    cursor: pointer;
+    text-decoration: underline;
+    color: var(--#{$prefix}primary);
+}
 
 // html {
 //     .table-light {
@@ -122,3 +120,60 @@ html[data-bs-theme=dark] .datatable-container thead,html[data-bs-theme=dark] .ta
     --#{$prefix}table-hover-bg: #3b3d4a;
     --#{$prefix}table-hover-color: #ffffff
 }
+
+.table-enhanced {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 1px solid #dee2e6;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    background-color: #fff;
+  
+    thead {
+      background-color: #f5f7fa;
+  
+      th {
+        font-weight: 600;
+        padding: 0.75rem 1rem;
+        text-align: left;
+        background-color: #e9ecef;
+        color: #333;
+        border-bottom: 1px solid #dee2e6;
+  
+        &:first-child {
+          border-top-left-radius: 0.75rem;
+        }
+  
+        &:last-child {
+          border-top-right-radius: 0.75rem;
+        }
+      }
+    }
+  
+    tbody {
+      tr {
+        transition: background-color 0.2s ease-in-out;
+  
+        &:nth-child(even) {
+          background-color: #f8f9fa; // สีสลับ
+        }
+  
+        &:hover {
+          background-color: #eef1f4;
+        }
+  
+        td {
+          padding: 0.75rem 1rem;
+          font-size: 14px;
+          color: #333;
+          border-bottom: 1px solid #dee2e6;
+          vertical-align: middle;
+        }
+  
+        &:last-child td {
+          border-bottom: none;
+        }
+      }
+    }
+  }

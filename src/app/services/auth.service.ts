@@ -11,7 +11,9 @@ import { Config } from '../app.config';
 export class AuthenticationService {
   user: UserProfile | null = null;
 
-  public readonly authSessionKey = 'token';
+  public readonly token = 'token';
+  public readonly refreshToken = 'refreshToken';
+  public readonly userprofile = 'userprofile';
 
   constructor(
     private http: HttpClient,
@@ -33,7 +35,7 @@ export class AuthenticationService {
             response.profile
           ) {
             this.user = response.profile;
-            this.saveSession(response.token);
+            this.saveSession(response);
           }
           return response;
         }),
@@ -46,14 +48,18 @@ export class AuthenticationService {
   }
 
   get session(): string {
-    return this.cookieService.get(this.authSessionKey);
+    return this.cookieService.get(this.token);
   }
 
-  saveSession(token: string): void {
-    this.cookieService.set(this.authSessionKey, token);
+  saveSession(response: any): void {
+    this.cookieService.set(this.token, response!.token!);
+    this.cookieService.set(this.refreshToken, response!.refreshToken!);
+    this.cookieService.set(this.userprofile, response!.profile!);
   }
 
   removeSession(): void {
-    this.cookieService.delete(this.authSessionKey);
+    this.cookieService.delete(this.token);
+    this.cookieService.delete(this.refreshToken);
+    this.cookieService.delete(this.userprofile);
   }
 }

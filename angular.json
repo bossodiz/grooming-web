@@ -20,20 +20,19 @@
             "outputPath": "dist/hando",
             "index": "src/index.html",
             "browser": "src/main.ts",
-            "polyfills": [
-              "zone.js",
-              "@angular/localize/init"
-            ],
+            "polyfills": ["zone.js", "@angular/localize/init"],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
               {
                 "glob": "**/*",
                 "input": "public"
-              }
+              },
+              "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "node_modules/@ng-select/ng-select/themes/default.theme.css"
             ],
             "scripts": [],
             "stylePreprocessorOptions": {
@@ -103,7 +102,8 @@
               }
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "node_modules/@ng-select/ng-select/themes/default.theme.css"
             ],
             "scripts": []
           }

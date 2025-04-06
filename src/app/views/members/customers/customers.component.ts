@@ -1,16 +1,17 @@
-import { PhoneFormatPipe } from '../../../services/format.service';
+import { DateFullFormatPipe, PhoneFormatPipe } from '../../../services/format.service';
 import {
-  Response,
-  CustomerTableList,
   MemberService,
 } from '@/app/services/member.service';
-import { CommonModule, DecimalPipe } from '@angular/common';
+import { CommonModule, DatePipe, DecimalPipe } from '@angular/common';
 import {
+  ChangeDetectorRef,
   Component,
   Directive,
   EventEmitter,
+  Inject,
   inject,
   Input,
+  LOCALE_ID,
   Output,
   ViewChildren,
   type PipeTransform,
@@ -22,7 +23,9 @@ import { NgbHighlight, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 import { catchError, Observable, tap, throwError } from 'rxjs';
 import { BreadcrumbComponent } from '@components/breadcrumb/breadcrumb.component';
 import { TableService } from '@/app/services/table.service';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { CustomerTableList } from '@/app/services/model';
 
 @Component({
   selector: 'app-datatable',
@@ -34,7 +37,10 @@ import { RouterModule } from '@angular/router';
     BreadcrumbComponent,
     NgbHighlight,
     PhoneFormatPipe,
-  ],
+    TranslateModule,
+    DateFullFormatPipe
+],
+
   templateUrl: './customers.component.html',
   styleUrl: './customers.component.scss',
   styles: ``,
@@ -48,20 +54,18 @@ export class CustomersComponent {
 
   originalData!: CustomerTableList[];
 
-  records$: Observable<CustomerTableList[]>;
-  total$: Observable<number>;
+  records$: Observable<CustomerTableList[]> | undefined;
+  total$: Observable<number> | undefined;
 
-  public tableService = inject(TableService<CustomerTableList>);
-
-  constructor(
-    public pipe: DecimalPipe,
-    private memberService: MemberService,
-  ) {
-    this.records$ = this.tableService.items$;
-    this.total$ = this.tableService.total$;
-  }
+  public tableService = inject(TableService);
+  private pipe = inject(DecimalPipe);
+  private memberService = inject(MemberService);
+  translate = inject(TranslateService);
+  private router = inject(Router);
 
   ngOnInit(): void {
+     this.records$ = this.tableService.items$;
+    this.total$ = this.tableService.total$;
     this.getData();
   }
 
@@ -100,7 +104,7 @@ export class CustomersComponent {
     this.memberService
       .getCustomers()
       .pipe(
-        tap((response: Response<CustomerTableList>) => {
+        tap((response) => {
           this.originalData = response.data ?? [];
           this.tableService.setItems(this.originalData, this.pageSize);
           this.collectionSize = this.originalData.length;
@@ -112,4 +116,11 @@ export class CustomersComponent {
       )
       .subscribe();
   }
+
+  viewDetail(itemId: number) {
+    this.router.navigate(['/member/customers', itemId]);
+  }
+
+
+
 }

@@ -23,6 +23,11 @@
             max-height: $topbar-height;
             position: relative;
         }
+
+        .nav-link:hover {
+            color: red; /* สีที่ต้องการเมื่อ hover (สีแดงในตัวอย่างนี้) */
+        }
+
         .topbar-search {
             padding: 0 15px;
             .form-control {
@@ -55,7 +60,6 @@
         top: 16px;
         right: 10px;
     }
-
     .notify-item {
         padding: 12px 20px;
 
