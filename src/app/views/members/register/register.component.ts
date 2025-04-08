@@ -11,8 +11,8 @@ import { NgbModal, NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { CommonModule } from '@angular/common';
 import { MemberService } from '@/app/services/member.service';
 import { catchError, tap, throwError } from 'rxjs';
-import { ApiResponse } from '@/app/services/model';
 import { Router } from '@angular/router';
+import { NgxMaskDirective, NGX_MASK_CONFIG, initialConfig } from 'ngx-mask';
 
 @Component({
   selector: 'app-register',
@@ -22,9 +22,16 @@ import { Router } from '@angular/router';
     ReactiveFormsModule,
     CommonModule,
     NgbModalModule,
+    NgxMaskDirective,
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
+  providers: [
+    {
+      provide: NGX_MASK_CONFIG,
+      useValue: initialConfig,
+    },
+  ],
 })
 export class RegisterComponent {
   @ViewChild('standardModal') standardModal!: TemplateRef<any>;

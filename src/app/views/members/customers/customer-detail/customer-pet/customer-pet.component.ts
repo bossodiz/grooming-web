@@ -62,6 +62,7 @@ export class CustomerPetComponent {
   locale!: string;
 
   selectType!: string;
+  nameError!: string;
 
   ngOnInit(): void {
     this.locale = this.translate.currentLang;
@@ -106,7 +107,8 @@ export class CustomerPetComponent {
   openModal() {
     this.petForm = this.formBuilder.group({
       name: ['', [Validators.required]],
-      age: [''],
+      ageYear: [null],
+      ageMonth: [null],
       gender: [''],
       type: [null],
       breed: [null],
@@ -123,18 +125,31 @@ export class CustomerPetComponent {
   addPet() {
     this.submit = true;
     if (this.petForm.invalid) {
+      this.nameError = this.translate.instant('customer.pet.name_error');
       this.petForm.markAllAsTouched(); // เพื่อแสดง validation error
       return;
     }
     const formData = {
       name: this.petForm.get('name')?.value,
-      age: this.petForm.get('age')?.value,
+      ageYear: this.petForm.get('ageYear')?.value,
+      ageMonth: this.petForm.get('ageMonth')?.value,
       gender: this.petForm.get('gender')?.value,
       type: this.petForm.get('type')?.value,
       breed: this.petForm.get('breed')?.value,
       customerId: Number(this.id),
     };
-    console.log(formData);
+    // this.masterService
+    //   .addPet(formData)
+    //   .pipe(
+    //     tap((response) => {
+    //       this.petTypeList = response.data ?? [];
+    //       this.sortPetTypes();
+    //     }),
+    //     catchError((error) => {
+    //       return throwError(() => error);
+    //     }),
+    //   )
+    //   .subscribe();
   }
 
   loadPetTypes() {
@@ -142,10 +157,7 @@ export class CustomerPetComponent {
       .getPetTypes()
       .pipe(
         tap((response) => {
-          this.petTypeList = (response.data ?? []).map((b: any) => ({
-            ...b,
-            label: this.locale === 'th' ? b.value_th : b.value_en,
-          }));
+          this.petTypeList = response.data ?? [];
           this.sortPetTypes();
         }),
         catchError((error) => {
@@ -171,28 +183,34 @@ export class CustomerPetComponent {
   }
 
   onTypeChange(item: any) {
-    this.filteredBreedList = this.breedList
-      .filter((b) => b.ref_key === item.key)
-      .map((b) => ({
-        ...b,
-        label: this.locale === 'th' ? b.value_th : b.value_en,
-      }));
+    this.filteredBreedList = this.breedList.filter(
+      (b) => b.ref_key === item.key,
+    );
+    this.sortBreeds();
     this.petForm.get('breed')?.setValue('');
   }
 
   sortPetTypes() {
-    this.petTypeList.sort((a, b) =>
-      this.locale === 'th'
-        ? a.value_th.localeCompare(b.value_th)
-        : a.value_en.localeCompare(b.value_en),
-    );
+    this.petTypeList
+      .sort((a, b) =>
+        this.locale === 'th'
+          ? a.value_th.localeCompare(b.value_th)
+          : a.value_en.localeCompare(b.value_en),
+      )
+      .map((item) => {
+        item.label = this.locale === 'th' ? item.value_th : item.value_en;
+      });
   }
 
   sortBreeds() {
-    this.breedList.sort((a, b) =>
-      this.locale === 'th'
-        ? a.value_th.localeCompare(b.value_th)
-        : a.value_en.localeCompare(b.value_en),
-    );
+    this.breedList
+      .sort((a, b) =>
+        this.locale === 'th'
+          ? a.value_th.localeCompare(b.value_th)
+          : a.value_en.localeCompare(b.value_en),
+      )
+      .map((item) => {
+        item.label = this.locale === 'th' ? item.value_th : item.value_en;
+      });
   }
 }

@@ -13,24 +13,27 @@ export class PhoneFormatPipe implements PipeTransform {
 }
 
 @Pipe({
-  name: 'date_full'
+  name: 'date_full',
 })
 export class DateFullFormatPipe implements PipeTransform {
-
   private translate = inject(TranslateService);
 
   transform(date: any, locale: string = this.translate.currentLang): string {
+    if (!date) return '-';
     const dateObj = new Date(date);
     const formatter = new Intl.DateTimeFormat(locale, {
-      day: 'numeric',     // วัน
-      month: 'long',      // เดือน
-      year: 'numeric',    // ปี
+      day: 'numeric', // วัน
+      month: 'long', // เดือน
+      year: 'numeric', // ปี
     });
     let formattedDate = formatter.format(dateObj);
     if (locale === 'th') {
       const year = dateObj.getFullYear();
-      const buddhistYear = year + 543; 
-      formattedDate = formattedDate.replace(year.toString(), buddhistYear.toString());
+      const buddhistYear = year + 543;
+      formattedDate = formattedDate.replace(
+        year.toString(),
+        buddhistYear.toString(),
+      );
     }
     if (locale === 'en') {
       const day = dateObj.getDate();

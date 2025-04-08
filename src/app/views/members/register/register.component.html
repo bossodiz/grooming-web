@@ -1,7 +1,4 @@
-<breadcrumb
-  [title]="'Register Customer'"
-  [titleLink]="'/member/register'"
-/>
+<breadcrumb [title]="'Register Customer'" [titleLink]="'/member/register'" />
 
 <div class="row">
   <div class="col-xl-8 justify-content-center mx-auto">
@@ -22,11 +19,14 @@
             >
             <input
               formControlName="username"
-              [ngClass]="{ 'is-invalid': submit && form['username'].errors }"
+              [ngClass]="{
+                'is-invalid': submit && form['username'].errors,
+              }"
+              mask="000-000-0000"
               type="text"
-              class="form-control form-control-lg"
-              id="usernameInput"
+              class="form-control"
               (input)="onPhoneInput($event)"
+              id="usernameInput"
               maxlength="12"
               required
             />

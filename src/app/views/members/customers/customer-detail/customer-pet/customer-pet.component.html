@@ -77,8 +77,14 @@
                     <span
                       class="table-detail-link"
                       (click)="viewDetail(item.id!)"
-                      >{{ item.age }}</span
                     >
+                      @if (item.ageYear && item.ageYear > 0) {
+                        {{ item.ageYear }} {{ "year" | translate }}
+                      }
+                      @if (item.ageMouth && item.ageMouth > 0) {
+                        {{ item.ageMouth }} {{ "mouth" | translate }}
+                      }
+                    </span>
                   </td>
                   <td class="text-center">
                     <span
@@ -170,17 +176,41 @@
           id="nameInput"
           required
         />
-        <div class="invalid-feedback">Please enter a name.</div>
+        <div class="invalid-feedback">{{ nameError }}</div>
       </div>
       <div class="col-md-12">
         <label for="ageInput" class="form-label">Age</label>
-        <input
-          formControlName="age"
-          type="text"
-          class="form-control form-control-lg"
-          id="ageInput"
-        />
+        <div class="d-flex gap-3">
+          <div class="input-group">
+            <input
+              formControlName="ageYear"
+              type="text"
+              class="form-control form-control-lg"
+              aria-label="ageYear"
+              aria-describedby="ageYearSpan"
+              id="ageInput"
+            />
+            <span class="input-group-text" id="ageYearSpan">
+              {{ "year" | translate }}
+            </span>
+          </div>
+
+          <div class="input-group">
+            <input
+              formControlName="ageMonth"
+              type="text"
+              class="form-control form-control-lg"
+              aria-label="ageMouth"
+              aria-describedby="ageMonthSpan"
+              id="ageMonthInput"
+            />
+            <span class="input-group-text" id="ageMonthSpan">
+              {{ "month" | translate }}
+            </span>
+          </div>
+        </div>
       </div>
+
       <div class="col-md-12">
         <label for="genderInput" class="form-label">Gender</label>
         <div class="form-check radio-lg">

@@ -1,5 +1,5 @@
 import { MemberService } from '@/app/services/member.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BreadcrumbComponent } from '@components/breadcrumb/breadcrumb.component';
 import { catchError, tap, throwError } from 'rxjs';
@@ -8,6 +8,12 @@ import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { CustomerAboutComponent } from './customer-about/customer-about.component';
 import { CustomerServiceHistoryComponent } from './customer-service-history/customer-service-history.component';
 import { CustomerProductHistoryComponent } from './customer-product-history/customer-product-history.component';
+import {
+  PhoneFormatPipe,
+  DateFullFormatPipe,
+} from '../../../../services/format.service';
+import { TranslateService } from '@ngx-translate/core';
+
 @Component({
   selector: 'app-customer-detail',
   imports: [
@@ -17,6 +23,8 @@ import { CustomerProductHistoryComponent } from './customer-product-history/cust
     CustomerAboutComponent,
     CustomerServiceHistoryComponent,
     CustomerProductHistoryComponent,
+    PhoneFormatPipe,
+    DateFullFormatPipe,
   ],
   templateUrl: './customer-detail.component.html',
   styleUrl: './customer-detail.component.scss',
@@ -29,10 +37,9 @@ export class CustomerDetailComponent implements OnInit {
   lastedDate!: string;
   createdDate!: string;
 
-  constructor(
-    private route: ActivatedRoute,
-    private memberService: MemberService,
-  ) {}
+  translate = inject(TranslateService);
+  route = inject(ActivatedRoute);
+  memberService = inject(MemberService);
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {

@@ -19,19 +19,23 @@
             <div class="overflow-hidden ms-md-4 ms-0">
               <h4 class="m-0 text-dark fs-20 mt-2 mt-md-0">{{ name }}</h4>
               <p class="my-1 text-muted fs-16">
-                {{ phone }}
-                @if (phoneOther) {
-                  , {{ phoneOther }}
+                {{ phone | phone_format }}
+                @if (phoneOther && phoneOther.length > 0) {
+                  , {{ phoneOther | phone_format }}
                 }
               </p>
               <span class="fs-15"
-                >Last Service Date :
-                <span>{{ lastedDate }} </span>
+                >Last Visit Date :
+                <span
+                  >{{ lastedDate | date_full: translate.currentLang }}
+                </span>
               </span>
               <br />
               <span class="fs-15"
                 >Register Date :
-                <span>{{ createdDate }} </span>
+                <span
+                  >{{ createdDate | date_full: translate.currentLang }}
+                </span>
               </span>
             </div>
           </div>
@@ -67,7 +71,7 @@
               <span class="d-none d-sm-block">Pet</span>
             </a>
             <ng-template ngbNavContent>
-              <app-customer-pet [id]="customerId"/>
+              <app-customer-pet [id]="customerId" />
             </ng-template>
           </li>
 
@@ -86,7 +90,7 @@
               <span class="d-none d-sm-block">Service History</span>
             </a>
             <ng-template ngbNavContent>
-              <app-customer-service-history [id]="customerId"/>
+              <app-customer-service-history [id]="customerId" />
             </ng-template>
           </li>
           <li class="nav-item" ngbNavItem>
@@ -104,7 +108,7 @@
               <span class="d-none d-sm-block">Product History</span>
             </a>
             <ng-template ngbNavContent>
-              <app-customer-product-history [id]="customerId"/>
+              <app-customer-product-history [id]="customerId" />
             </ng-template>
           </li>
           <li class="nav-item" ngbNavItem>
