@@ -9,8 +9,8 @@ import { ApiResponse } from './model';
 export class PetService {
   constructor(private http: HttpClient) {}
 
-  getPetList(id: number): Observable<ApiResponse> {
-    return this.http.get<ApiResponse>(`${Config.apiUrl}/pet/${id}`).pipe(
+  getPetList(): Observable<ApiResponse> {
+    return this.http.get<ApiResponse>(`${Config.apiUrl}/pet/list`).pipe(
       map((response) => {
         return response;
       }),

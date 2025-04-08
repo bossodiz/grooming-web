@@ -35,8 +35,14 @@ export class PetTableList {
   ageYear?: number;
   ageMouth?: number;
   gender?: string;
+  genderTh?: string;
+  genderEn?: string;
   breed?: string;
+  breedNameTh?: string;
+  breedNameEn?: string;
   type?: string;
+  typeNameTh?: string;
+  typeNameEn?: string;
   weight?: number;
   service?: string;
 }

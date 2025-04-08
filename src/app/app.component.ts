@@ -14,10 +14,9 @@ export class AppComponent {
   title = 'hando-angular';
   private titleService = inject(TitleService);
   private translate = inject(TranslateService);
-  
+
   ngOnInit(): void {
     this.titleService.init();
-    this.translate.use('en');
+    this.translate.use('th');
   }
-
 }

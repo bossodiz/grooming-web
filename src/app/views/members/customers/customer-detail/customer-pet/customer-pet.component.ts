@@ -25,6 +25,7 @@ import {
 } from '@ngx-translate/core';
 import { catchError, Observable, Subscription, tap, throwError } from 'rxjs';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { PetService } from '@/app/services/pet.service';
 
 @Component({
   selector: 'app-customer-pet',
@@ -46,6 +47,7 @@ export class CustomerPetComponent {
   modalData: any = null;
   petForm!: UntypedFormGroup;
   private memberService = inject(MemberService);
+  private petService = inject(PetService);
   private modalService = inject(NgbModal);
   public formBuilder = inject(UntypedFormBuilder);
   private router = inject(RouterModule);
@@ -92,9 +94,10 @@ export class CustomerPetComponent {
       .pipe(
         tap((response) => {
           this.dataList = response.data ?? [];
-        }),
-        catchError((error) => {
-          return throwError(() => error);
+          catchError((error) => {
+            return throwError(() => error);
+          });
+          console.log(this.dataList);
         }),
       )
       .subscribe();
@@ -138,18 +141,18 @@ export class CustomerPetComponent {
       breed: this.petForm.get('breed')?.value,
       customerId: Number(this.id),
     };
-    // this.masterService
-    //   .addPet(formData)
-    //   .pipe(
-    //     tap((response) => {
-    //       this.petTypeList = response.data ?? [];
-    //       this.sortPetTypes();
-    //     }),
-    //     catchError((error) => {
-    //       return throwError(() => error);
-    //     }),
-    //   )
-    //   .subscribe();
+    this.petService
+      .addPet(formData)
+      .pipe(
+        tap((response) => {
+          this.petTypeList = response.data ?? [];
+          this.sortPetTypes();
+        }),
+        catchError((error) => {
+          return throwError(() => error);
+        }),
+      )
+      .subscribe();
   }
 
   loadPetTypes() {

@@ -90,22 +90,37 @@
                     <span
                       class="table-detail-link"
                       (click)="viewDetail(item.id!)"
-                      >{{ item.gender }}</span
                     >
+                      @if (locale === "th") {
+                        {{ item.genderTh }}
+                      } @else {
+                        {{ item.genderEn }}
+                      }
+                    </span>
                   </td>
                   <td class="text-center">
                     <span
                       class="table-detail-link"
                       (click)="viewDetail(item.id!)"
-                      >{{ item.type }}</span
                     >
+                      @if (locale === "th") {
+                        {{ item.typeNameTh }}
+                      } @else {
+                        {{ item.typeNameEn }}
+                      }
+                    </span>
                   </td>
                   <td class="text-center">
                     <span
                       class="table-detail-link"
                       (click)="viewDetail(item.id!)"
-                      >{{ item.breed }}</span
                     >
+                      @if (locale === "th") {
+                        {{ item.breedNameTh }}
+                      } @else {
+                        {{ item.breedNameEn }}
+                      }
+                    </span>
                   </td>
                   <td class="text-center">
                     <span

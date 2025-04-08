@@ -34,5 +34,7 @@
   "service": "Number of service visits",
   "year": "Years",
   "month": "Month",
-  "customer.pet.name_error": "Please enter pet name"
+  "customer.pet.name_error": "Please enter pet name",
+  "MALE": "Male",
+  "FEMALE": "Female"
 }

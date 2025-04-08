@@ -11,9 +11,7 @@ export class MemberService {
 
   register(request: any): Observable<ApiResponse> {
     return this.http
-      .post<
-      ApiResponse
-      >(`${Config.apiUrl}/member/register`, request)
+      .post<ApiResponse>(`${Config.apiUrl}/member/register`, request)
       .pipe(
         map((response) => response),
         catchError((error) => {
@@ -23,14 +21,12 @@ export class MemberService {
   }
 
   getCustomers(): Observable<ApiResponse> {
-    return this.http
-      .get<ApiResponse>(`${Config.apiUrl}/member/customers`)
-      .pipe(
-        map((response) => response),
-        catchError((error) => {
-          return throwError(() => error);
-        }),
-      );
+    return this.http.get<ApiResponse>(`${Config.apiUrl}/member/customers`).pipe(
+      map((response) => response),
+      catchError((error) => {
+        return throwError(() => error);
+      }),
+    );
   }
   getCustomerId(id: number): Observable<ApiResponse> {
     return this.http
@@ -45,9 +41,10 @@ export class MemberService {
 
   updateProfile(request: any): Observable<ApiResponse> {
     return this.http
-      .patch<
-      ApiResponse
-      >(`${Config.apiUrl}/member/customers/` + request.id, request)
+      .patch<ApiResponse>(
+        `${Config.apiUrl}/member/customers/` + request.id,
+        request,
+      )
       .pipe(
         map((response) => response),
         catchError((error) => {
@@ -55,12 +52,13 @@ export class MemberService {
         }),
       );
   }
-  
+
   updateProfileRemark(request: any): Observable<ApiResponse> {
     return this.http
-      .patch<
-      ApiResponse
-      >(`${Config.apiUrl}/member/customers/remark/` + request.id, request)
+      .patch<ApiResponse>(
+        `${Config.apiUrl}/member/customers/remark/` + request.id,
+        request,
+      )
       .pipe(
         map((response) => response),
         catchError((error) => {
@@ -71,9 +69,7 @@ export class MemberService {
 
   getCustomerRemark(id: number): Observable<ApiResponse> {
     return this.http
-      .get<ApiResponse>(
-        `${Config.apiUrl}/member/customers/remark/` + id,
-      )
+      .get<ApiResponse>(`${Config.apiUrl}/member/customers/remark/` + id)
       .pipe(
         map((response) => response),
         catchError((error) => {
