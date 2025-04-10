@@ -30,11 +30,26 @@
   "gender": "Gender",
   "breed": "Breed",
   "type": "Type",
-  "weight": "Weight (KG)",
+  "weight": "Weight",
+  "weight_kg": "Weight (Kg)",
   "service": "Number of service visits",
   "year": "Years",
   "month": "Month",
-  "customer.pet.name_error": "Please enter pet name",
+  "error": {
+    "require": {
+      "name": "Please enter name"
+    },
+    "validate": {
+      "age_year_min": "Please enter year >= 0",
+      "age_month_min": "Please enter month >= 0",
+      "age_month_max": "Please enter month 0-11"
+    }
+  },
   "MALE": "Male",
-  "FEMALE": "Female"
+  "FEMALE": "Female",
+  "lastVisitDate": "Last Visit Date",
+  "registerDate": "Register Date",
+  "kg": "Kg",
+  "pet_male": "Male",
+  "pet_female": "Female"
 }

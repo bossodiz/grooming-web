@@ -30,11 +30,26 @@
   "gender": "เพศ",
   "breed": "สายพันธุ์",
   "type": "ประเภท",
-  "weight": "น้ำหนัก (KG)",
+  "weight": "น้ำหนัก",
+  "weight_kg": "น้ำหนัก (Kg)",
   "service": "จำนวนการเข้าใช้บริการ",
   "year": "ปี",
   "month": "เดือน",
-  "customer.pet.name_error": "กรุณากรอกชื่อสัตว์เลี้ยง",
+  "error": {
+    "require": {
+      "name": "กรุณากรอกชื่อ"
+    },
+    "validate": {
+      "age_year_min": "กรุณากรอกปี >= 0",
+      "age_month_min": "กรุณากรอกเดือน >= 0",
+      "age_month_max": "กรุณากรอกเดือน 0-11"
+    }
+  },
   "MALE": "ผู้ชาย",
-  "FEMALE": "ผู้หญิง"
+  "FEMALE": "ผู้หญิง",
+  "lastVisitDate": "วันที่เข้าใช้บริการล่าสุด",
+  "registerDate": "วันที่สมัครสมาชิก",
+  "kg": "กิโลกรัม",
+  "pet_male": "ผู้",
+  "pet_female": "เมีย"
 }

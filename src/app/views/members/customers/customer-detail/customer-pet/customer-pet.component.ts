@@ -16,16 +16,13 @@ import {
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import {
-  LangChangeEvent,
-  TranslateModule,
-  TranslateService,
-} from '@ngx-translate/core';
-import { catchError, Observable, Subscription, tap, throwError } from 'rxjs';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { catchError, tap, throwError } from 'rxjs';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { PetService } from '@/app/services/pet.service';
+import { LocaleService } from '@/app/services/locale.service';
 
 @Component({
   selector: 'app-customer-pet',
@@ -41,47 +38,36 @@ import { PetService } from '@/app/services/pet.service';
   styleUrl: './customer-pet.component.scss',
 })
 export class CustomerPetComponent {
-  @Input() id: any;
-
-  @ViewChild('standardModal') standardModal!: TemplateRef<any>;
-  modalData: any = null;
-  petForm!: UntypedFormGroup;
+  getNameLocale() {
+    throw new Error('Method not implemented.');
+  }
   private memberService = inject(MemberService);
   private petService = inject(PetService);
   private modalService = inject(NgbModal);
   public formBuilder = inject(UntypedFormBuilder);
-  private router = inject(RouterModule);
   private translate = inject(TranslateService);
   private masterService = inject(MasterService);
-  private langChangeSubscription!: Subscription;
+  private localeService = inject(LocaleService);
+  private router = inject(Router);
 
+  @Input() id: any;
+  @ViewChild('standardModal') standardModal!: TemplateRef<any>;
+  modalData: any = null;
+  petForm!: UntypedFormGroup;
   dataList: PetTableList[] = [];
   filteredBreedList: any[] = [];
   breedList: any[] = [];
   petTypeList: any[] = [];
-
   submit!: boolean;
-  locale!: string;
-
+  locale = this.localeService.getLocale();
   selectType!: string;
   nameError!: string;
+  ageMonthError!: string;
 
   ngOnInit(): void {
-    this.locale = this.translate.currentLang;
     this.getData();
     this.loadPetTypes();
     this.loadAllBreeds();
-    this.langChangeSubscription = this.translate.onLangChange.subscribe(
-      (event: LangChangeEvent) => {
-        this.locale = event.lang;
-        this.sortPetTypes(); // เรียงใหม่ตามภาษา
-        this.sortBreeds(); // เรียง breed ด้วยถ้าต้อง
-      },
-    );
-  }
-
-  ngOnDestroy(): void {
-    this.langChangeSubscription?.unsubscribe();
   }
 
   get form() {
@@ -97,24 +83,24 @@ export class CustomerPetComponent {
           catchError((error) => {
             return throwError(() => error);
           });
-          console.log(this.dataList);
         }),
       )
       .subscribe();
   }
 
   viewDetail(id: number) {
-    console.log(id);
+    this.router.navigate([`/member/pets/detail`, id]);
   }
 
   openModal() {
     this.petForm = this.formBuilder.group({
       name: ['', [Validators.required]],
       ageYear: [null],
-      ageMonth: [null],
-      gender: [''],
+      ageMonth: [null, [Validators.max(11)]],
+      gender: ['UNKNOWN'],
       type: [null],
       breed: [null],
+      weight: [''],
     });
     this.modalService.open(this.standardModal, { centered: true });
   }
@@ -128,7 +114,10 @@ export class CustomerPetComponent {
   addPet() {
     this.submit = true;
     if (this.petForm.invalid) {
-      this.nameError = this.translate.instant('customer.pet.name_error');
+      this.nameError = this.translate.instant('error.require.name');
+      this.ageMonthError = this.translate.instant(
+        'error.validate.age_month_max',
+      );
       this.petForm.markAllAsTouched(); // เพื่อแสดง validation error
       return;
     }
@@ -186,34 +175,64 @@ export class CustomerPetComponent {
   }
 
   onTypeChange(item: any) {
-    this.filteredBreedList = this.breedList.filter(
-      (b) => b.ref_key === item.key,
-    );
-    this.sortBreeds();
+    if (item) {
+      this.filteredBreedList = this.breedList.filter(
+        (b) => b.ref_key === item.key,
+      );
+      this.sortBreeds();
+    } else {
+      this.filteredBreedList = [];
+    }
     this.petForm.get('breed')?.setValue('');
   }
 
   sortPetTypes() {
     this.petTypeList
       .sort((a, b) =>
-        this.locale === 'th'
+        this.locale() === 'th'
           ? a.value_th.localeCompare(b.value_th)
           : a.value_en.localeCompare(b.value_en),
       )
       .map((item) => {
-        item.label = this.locale === 'th' ? item.value_th : item.value_en;
+        item.label = this.locale() === 'th' ? item.value_th : item.value_en;
       });
   }
 
   sortBreeds() {
     this.breedList
       .sort((a, b) =>
-        this.locale === 'th'
+        this.locale() === 'th'
           ? a.value_th.localeCompare(b.value_th)
           : a.value_en.localeCompare(b.value_en),
       )
       .map((item) => {
-        item.label = this.locale === 'th' ? item.value_th : item.value_en;
+        item.label = this.locale() === 'th' ? item.value_th : item.value_en;
       });
+  }
+  validateNumber(event: KeyboardEvent, dot: boolean = false) {
+    const allowedKeys = [
+      'Backspace',
+      'ArrowLeft',
+      'ArrowRight',
+      'Tab',
+      'Enter',
+    ];
+
+    if (dot) {
+      const isNumber = /^[0-9.]$/.test(event.key);
+      if (!isNumber && !allowedKeys.includes(event.key)) {
+        event.preventDefault();
+      }
+      const isDot = event.key === '.';
+      const inputElement = event.target as HTMLInputElement;
+      if (isDot && inputElement.value.includes('.')) {
+        event.preventDefault(); // หากมีจุดทศนิยมอยู่แล้ว ไม่ให้กรอกเพิ่ม
+      }
+    } else {
+      const isNumber = /^[0-9]$/.test(event.key);
+      if (!isNumber && !allowedKeys.includes(event.key)) {
+        event.preventDefault();
+      }
+    }
   }
 }

@@ -1,0 +1,332 @@
+<breadcrumb
+  [title]="'Pets'"
+  [titleLink]="'/member/pets'"
+  [subtitle]="'Detail'"
+/>
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="align-items-center">
+          <div class="hando-main-sections">
+            <div class="hando-profile-main">
+              <img
+                src="assets/images/users/customer.png"
+                class="rounded-circle img-fluid avatar-xxl img-thumbnail float-start"
+                alt="image profile"
+              />
+            </div>
+            <div class="overflow-hidden ms-md-4 ms-0">
+              <h4 class="m-0 text-dark fs-28 mt-2 mt-md-0">
+                {{ petDetail.name }}
+                <h5 class="text-dark fs-15 mt-2 mt-md-0">
+                  <a class="text-link" (click)="goToCustomer()"
+                    >( {{ petDetail.customerName }}
+                    {{ petDetail.customerPhone | phone_format }} )</a
+                  >
+                </h5>
+              </h4>
+              <span class="fs-15"
+                >{{ "breed" | translate }} :
+                <span>
+                  @if (locale() === "th") {
+                    {{ petDetail.typeNameTh || "-" }},
+                    {{ petDetail.breedNameTh || "-" }}
+                  } @else {
+                    {{ petDetail.typeNameEn || "-" }},
+                    {{ petDetail.breedNameEn || "-" }}
+                  }
+                </span>
+              </span>
+              <br />
+              <span class="fs-15"
+                >{{ "age" | translate }} :
+                <span>
+                  @if (petDetail.ageYear && petDetail.ageYear > 0) {
+                    {{ petDetail.ageYear }} {{ "year" | translate }}
+                  }
+                  @if (petDetail.ageMonth && petDetail.ageMonth > 0) {
+                    {{ petDetail.ageMonth }} {{ "month" | translate }}
+                  }
+                  @if (!petDetail.ageYear && !petDetail.ageMonth) {
+                    -
+                  }
+                </span>
+              </span>
+              <br />
+              <span class="fs-15"
+                >{{ "gender" | translate }} :
+                <span>
+                  @if (locale() === "th") {
+                    {{ petDetail.genderTh || "-" }}
+                  } @else {
+                    {{ petDetail.genderEn || "-" }}
+                  }
+                </span>
+              </span>
+              <br />
+              <span class="fs-15"
+                >{{ "weight" | translate }} :
+                @if (petDetail.weight) {
+                  {{ petDetail.weight }} {{ "kg" | translate }}
+                }
+              </span>
+              <br />
+              <span class="fs-15"
+                >{{ "lastVisitDate" | translate }} :
+                <span
+                  >{{
+                    petDetail.lastedServiceDate
+                      | date_full: translate.currentLang
+                  }}
+                </span>
+              </span>
+              <br />
+              <button
+                type="button"
+                class="btn btn-warning btn-sm mt-2"
+                (click)="goToEditPet()"
+              >
+                แก้ไข
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body pt-0">
+        <ul
+          ngbNav
+          #nav="ngbNav"
+          class="nav nav-underline border-bottom pt-2"
+          id="pills-tab"
+          role="tablist"
+        >
+          <li class="nav-item" ngbNavItem role="presentation">
+            <a
+              class="nav-link p-2"
+              ngbNavLink
+              id="customer_about_tab"
+              data-bs-toggle="tab"
+              href="#customer_about"
+              role="tab"
+            >
+              <span class="d-block d-sm-none"
+                ><i class="mdi mdi-sitemap-outline"></i
+              ></span>
+              <span class="d-none d-sm-block">Service History</span>
+            </a>
+            <ng-template ngbNavContent>
+              <!-- <app-customer-service-history [id]="customerId" /> -->
+            </ng-template>
+          </li>
+          <li class="nav-item" ngbNavItem>
+            <a
+              class="nav-link p-2"
+              ngbNavLink
+              id="customer_about_tab"
+              data-bs-toggle="tab"
+              href="#customer_about"
+              role="tab"
+            >
+              <span class="d-block d-sm-none"
+                ><i class="mdi mdi-sitemap-outline"></i
+              ></span>
+              <span class="d-none d-sm-block">Photo</span>
+            </a>
+            <ng-template ngbNavContent>
+              <!-- <app-customer-product-history [id]="customerId" /> -->
+            </ng-template>
+          </li>
+        </ul>
+        <div class="tab-content text-muted bg-white" [ngbNavOutlet]="nav"></div>
+        <!-- Tab panes -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template
+  #standardModal
+  let-modal
+  class="modal fade"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="standard-modalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-header">
+    <h1 class="modal-title fs-5" id="standard-modalLabel">Add pet</h1>
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="modal"
+      (click)="modalclose()"
+      aria-label="Close"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <form class="row g-3 needs-validation" novalidate [formGroup]="petForm">
+      <div class="col-md-12">
+        <label for="nameInput" class="form-label"
+          >Name <span class="text-danger">*</span></label
+        >
+        <input
+          formControlName="name"
+          [ngClass]="{ 'is-invalid': submit && form['name'].errors }"
+          type="text"
+          class="form-control form-control-lg"
+          id="nameInput"
+          required
+        />
+        <div class="invalid-feedback">{{ nameError }}</div>
+      </div>
+      <!-- Type -->
+      <div class="col-md-12">
+        <label for="typeInput" class="form-label">Type</label>
+        <ng-select
+          [items]="petTypeList"
+          bindLabel="label"
+          bindValue="key"
+          [searchable]="true"
+          formControlName="type"
+          (change)="onTypeChange($event)"
+        >
+          <ng-template ng-option-tmp let-item="item">
+            <div class="option-content">
+              {{ locale() === "th" ? item.value_th : item.value_en }}
+            </div>
+          </ng-template>
+        </ng-select>
+      </div>
+
+      <!-- Breed -->
+      <div class="col-md-12">
+        <label for="breedInput" class="form-label">Breed</label>
+        <ng-select
+          [items]="filteredBreedList"
+          bindLabel="label"
+          bindValue="key"
+          [searchable]="true"
+          formControlName="breed"
+        >
+          <ng-template ng-option-tmp let-item="item">
+            <div class="option-content">
+              <img
+                *ngIf="item.image_url"
+                [src]="item.image_url"
+                width="100"
+                height="100"
+                class="me-2 rounded-circle"
+              />
+              {{ locale() === "th" ? item.value_th : item.value_en }}
+            </div>
+          </ng-template>
+        </ng-select>
+      </div>
+      <div class="col-md-12">
+        <label for="genderInput" class="form-label">{{
+          "gender" | translate
+        }}</label>
+        <div class="form-check radio-lg">
+          <input
+            class="form-check-input"
+            type="radio"
+            formControlName="gender"
+            id="genderRadios1"
+            value="MALE"
+          />
+          <label class="form-check-label" for="genderRadios1">
+            {{ "pet_male" | translate }}
+          </label>
+        </div>
+        <div class="form-check radio-lg">
+          <input
+            class="form-check-input"
+            type="radio"
+            formControlName="gender"
+            id="genderRadios2"
+            value="FEMALE"
+          />
+          <label class="form-check-label" for="genderRadios2">
+            {{ "pet_female" | translate }}
+          </label>
+        </div>
+      </div>
+      <!-- Age -->
+      <div class="col-md-12">
+        <label for="ageInput" class="form-label">Age</label>
+        <div class="d-flex gap-3">
+          <div class="input-group">
+            <input
+              formControlName="ageYear"
+              type="text"
+              class="form-control form-control-lg"
+              aria-label="ageYear"
+              aria-describedby="ageYearSpan"
+              id="ageInput"
+              (keydown)="validateNumber($event)"
+            />
+            <span class="input-group-text" id="ageYearSpan">
+              {{ "year" | translate }}
+            </span>
+          </div>
+
+          <div class="input-group">
+            <input
+              formControlName="ageMonth"
+              type="text"
+              class="form-control form-control-lg"
+              aria-label="ageMonth"
+              aria-describedby="ageMonthSpan"
+              id="ageMonthInput"
+              (keydown)="validateNumber($event)"
+              [ngClass]="{ 'is-invalid': submit && form['ageMonth'].errors }"
+            />
+            <span class="input-group-text" id="ageMonthSpan">
+              {{ "month" | translate }}
+            </span>
+            <div class="invalid-feedback">{{ ageMonthError }}</div>
+          </div>
+        </div>
+      </div>
+      <!-- weight -->
+      <div class="col-md-12">
+        <label for="weightInput" class="form-label">Weight</label>
+        <div class="d-flex gap-3">
+          <div class="input-group">
+            <input
+              formControlName="weight"
+              type="text"
+              class="form-control form-control-lg"
+              aria-label="weight"
+              aria-describedby="weightSpan"
+              id="weightInput"
+              (keydown)="validateNumber($event, true)"
+            />
+            <span class="input-group-text" id="weightSpan">
+              {{ "kg" | translate }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-success" (click)="save()">Save</button>
+    <button
+      type="button"
+      class="btn btn-light"
+      data-bs-dismiss="modal"
+      (click)="modalclose()"
+    >
+      Close
+    </button>
+  </div>
+</ng-template>

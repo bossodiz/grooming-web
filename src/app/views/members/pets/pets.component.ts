@@ -1,7 +1,4 @@
-import {
-  DateFullFormatPipe,
-  PhoneFormatPipe,
-} from '@/app/services/format.service';
+import { LocaleService } from '@/app/services/locale.service';
 import { PetTableList } from '@/app/services/model';
 import { PetService } from '@/app/services/pet.service';
 import { TableService } from '@/app/services/table.service';
@@ -11,12 +8,8 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { BreadcrumbComponent } from '@components/breadcrumb/breadcrumb.component';
 import { NgbHighlight, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
-import {
-  LangChangeEvent,
-  TranslateModule,
-  TranslateService,
-} from '@ngx-translate/core';
-import { catchError, Observable, Subscription, tap, throwError } from 'rxjs';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { catchError, Observable, tap, throwError } from 'rxjs';
 
 @Component({
   selector: 'app-pets',
@@ -33,35 +26,27 @@ import { catchError, Observable, Subscription, tap, throwError } from 'rxjs';
   styleUrl: './pets.component.scss',
 })
 export class PetsComponent {
+  public tableService = inject(TableService);
+  private pipe = inject(DecimalPipe);
+  private petService = inject(PetService);
+  public translate = inject(TranslateService);
+  private router = inject(Router);
+  private localeService = inject(LocaleService);
+
   filter = '';
   page = 1;
   pageSize = 5;
   searchCountries!: PetTableList[];
   collectionSize = 0;
-
   originalData!: PetTableList[];
-  locale!: string;
-
   records$: Observable<PetTableList[]> | undefined;
   total$: Observable<number> | undefined;
-
-  public tableService = inject(TableService);
-  private pipe = inject(DecimalPipe);
-  private petService = inject(PetService);
-  translate = inject(TranslateService);
-  private router = inject(Router);
-  private langChangeSubscription!: Subscription;
+  locale = this.localeService.getLocale();
 
   ngOnInit(): void {
     this.records$ = this.tableService.items$;
     this.total$ = this.tableService.total$;
     this.getData();
-    this.locale = this.translate.currentLang;
-    this.langChangeSubscription = this.translate.onLangChange.subscribe(
-      (event: LangChangeEvent) => {
-        this.locale = event.lang;
-      },
-    );
   }
 
   onSearch() {
@@ -120,6 +105,6 @@ export class PetsComponent {
   }
 
   viewDetail(itemId: number) {
-    this.router.navigate(['/pet/detail', itemId]);
+    this.router.navigate(['/member/pets/detail', itemId]);
   }
 }

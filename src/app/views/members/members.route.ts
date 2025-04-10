@@ -3,6 +3,7 @@ import { RegisterComponent } from './register/register.component';
 import { CustomersComponent } from './customers/customers.component';
 import { PetsComponent } from './pets/pets.component';
 import { CustomerDetailComponent } from './customers/customer-detail/customer-detail.component';
+import { PetDetailComponent } from './pets/pet-detail/pet-detail.component';
 
 export const MEMBERS_ROUTES: Route[] = [
   {
@@ -16,7 +17,7 @@ export const MEMBERS_ROUTES: Route[] = [
     data: { title: 'Customers' },
   },
   {
-    path: 'customers/:id',
+    path: 'customers/detail/:id',
     component: CustomerDetailComponent,
     data: { title: 'Customer Detail' },
   },
@@ -24,5 +25,10 @@ export const MEMBERS_ROUTES: Route[] = [
     path: 'pets',
     component: PetsComponent,
     data: { title: 'Pets' },
+  },
+  {
+    path: 'pets/detail/:id',
+    component: PetDetailComponent,
+    data: { title: 'Pet Detail' },
   },
 ];

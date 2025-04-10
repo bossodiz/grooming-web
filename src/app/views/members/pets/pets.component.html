@@ -44,7 +44,7 @@
                   {{ "breed" | translate }}
                 </th>
                 <th scope="col" class="text-center">
-                  {{ "weight" | translate }}
+                  {{ "weight_kg" | translate }}
                 </th>
                 <th scope="col" class="text-center">
                   {{ "service" | translate }}
@@ -55,7 +55,7 @@
               </tr>
             </thead>
             <tbody>
-              @if (searchCountries.length == 0) {
+              @if (searchCountries && searchCountries.length == 0) {
                 <tr>
                   <td colspan="9" class="text-center">
                     <span>{{ "no_data" | translate }}</span>
@@ -86,8 +86,11 @@
                       @if (item.ageYear && item.ageYear > 0) {
                         {{ item.ageYear }} {{ "year" | translate }}
                       }
-                      @if (item.ageMouth && item.ageMouth > 0) {
-                        {{ item.ageMouth }} {{ "mouth" | translate }}
+                      @if (item.ageMonth && item.ageMonth > 0) {
+                        {{ item.ageMonth }} {{ "month" | translate }}
+                      }
+                      @if (!item.ageYear && !item.ageMonth) {
+                        -
                       }
                     </span>
                   </td>
@@ -96,7 +99,7 @@
                       class="table-detail-link"
                       (click)="viewDetail(item.id!)"
                     >
-                      @if (locale === "th") {
+                      @if (locale() === "th") {
                         <ngb-highlight
                           [result]="item.genderTh"
                           [term]="filter"
@@ -114,7 +117,7 @@
                       class="table-detail-link"
                       (click)="viewDetail(item.id!)"
                     >
-                      @if (locale === "th") {
+                      @if (locale() === "th") {
                         <ngb-highlight
                           [result]="item.typeNameTh"
                           [term]="filter"
@@ -132,7 +135,7 @@
                       class="table-detail-link"
                       (click)="viewDetail(item.id!)"
                     >
-                      @if (locale === "th") {
+                      @if (locale() === "th") {
                         <ngb-highlight
                           [result]="item.breedNameTh"
                           [term]="filter"
@@ -161,7 +164,7 @@
                   </td>
                   <td class="text-center">
                     <a
-                      [routerLink]="['/member/pets', item.id]"
+                      (click)="viewDetail(item.id!)"
                       class="btn btn-sm bg-primary-subtle me-1"
                       data-bs-toggle="tooltip"
                       data-bs-original-title="View"

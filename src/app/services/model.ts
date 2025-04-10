@@ -11,7 +11,7 @@ export class CustomerTableList {
   lastname?: string;
   phone?: string;
   phoneOther?: string;
-  pets?: PetDetaile[];
+  pets?: PetDetail[];
   serviceCount?: number;
   createdDate?: string;
   lastedDate?: string;
@@ -27,13 +27,13 @@ export class CustomerDetail {
   serviceCount?: number;
   createdDate?: string;
   lastedDate?: string;
-  pets?: PetDetaile[];
+  pets?: PetDetail[];
 }
 export class PetTableList {
   id?: number;
   name?: string;
   ageYear?: number;
-  ageMouth?: number;
+  ageMonth?: number;
   gender?: string;
   genderTh?: string;
   genderEn?: string;
@@ -47,13 +47,24 @@ export class PetTableList {
   service?: string;
 }
 
-export class PetDetaile {
+export class PetDetail {
   id?: number;
   name?: string;
-  age?: string;
+  ageYear?: number;
+  ageMonth?: number;
   gender?: string;
-  breed?: string;
-  type?: string;
-  weight?: number;
+  genderTh?: string;
+  genderEn?: string;
+  breedId?: number;
+  breedNameTh?: string;
+  breedNameEn?: string;
+  typeId?: number;
+  typeNameTh?: string;
+  typeNameEn?: string;
+  weight?: string;
   service?: string;
+  lastedServiceDate?: string;
+  customerId?: number;
+  customerName?: string;
+  customerPhone?: string;
 }

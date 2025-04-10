@@ -17,22 +17,23 @@
               />
             </div>
             <div class="overflow-hidden ms-md-4 ms-0">
-              <h4 class="m-0 text-dark fs-20 mt-2 mt-md-0">{{ name }}</h4>
-              <p class="my-1 text-muted fs-16">
-                {{ phone | phone_format }}
+              <h4 class="m-0 text-dark fs-28 mt-2 mt-md-0">{{ name }}</h4>
+              <p class="my-1 text-muted fs-15">
+                ( {{ phone | phone_format }}
                 @if (phoneOther && phoneOther.length > 0) {
                   , {{ phoneOther | phone_format }}
                 }
+                )
               </p>
               <span class="fs-15"
-                >Last Visit Date :
+                >{{ "lastVisitDate" | translate }} :
                 <span
                   >{{ lastedDate | date_full: translate.currentLang }}
                 </span>
               </span>
               <br />
               <span class="fs-15"
-                >Register Date :
+                >{{ "registerDate" | translate }} :
                 <span
                   >{{ createdDate | date_full: translate.currentLang }}
                 </span>
@@ -65,10 +66,8 @@
               href="#customer_pet"
               role="tab"
             >
-              <span class="d-block d-sm-none"
-                ><i class="mdi mdi-information"></i
-              ></span>
-              <span class="d-none d-sm-block">Pet</span>
+              <span class="d-block d-sm-none">Pets</span>
+              <span class="d-none d-sm-block">Pets</span>
             </a>
             <ng-template ngbNavContent>
               <app-customer-pet [id]="customerId" />
@@ -84,10 +83,8 @@
               href="#customer_about"
               role="tab"
             >
-              <span class="d-block d-sm-none"
-                ><i class="mdi mdi-sitemap-outline"></i
-              ></span>
-              <span class="d-none d-sm-block">Service History</span>
+              <span class="d-block d-sm-none">Service</span>
+              <span class="d-none d-sm-block">Service</span>
             </a>
             <ng-template ngbNavContent>
               <app-customer-service-history [id]="customerId" />
@@ -102,10 +99,8 @@
               href="#customer_about"
               role="tab"
             >
-              <span class="d-block d-sm-none"
-                ><i class="mdi mdi-sitemap-outline"></i
-              ></span>
-              <span class="d-none d-sm-block">Product History</span>
+              <span class="d-block d-sm-none">Product</span>
+              <span class="d-none d-sm-block">Product</span>
             </a>
             <ng-template ngbNavContent>
               <app-customer-product-history [id]="customerId" />
@@ -120,9 +115,7 @@
               href="#customer_about"
               role="tab"
             >
-              <span class="d-block d-sm-none"
-                ><i class="mdi mdi-sitemap-outline"></i
-              ></span>
+              <span class="d-block d-sm-none">About</span>
               <span class="d-none d-sm-block">About</span>
             </a>
             <ng-template ngbNavContent>

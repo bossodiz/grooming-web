@@ -12,7 +12,7 @@ import {
   PhoneFormatPipe,
   DateFullFormatPipe,
 } from '../../../../services/format.service';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-customer-detail',
@@ -25,6 +25,7 @@ import { TranslateService } from '@ngx-translate/core';
     CustomerProductHistoryComponent,
     PhoneFormatPipe,
     DateFullFormatPipe,
+    TranslateModule,
   ],
   templateUrl: './customer-detail.component.html',
   styleUrl: './customer-detail.component.scss',

@@ -30,4 +30,26 @@ export class PetService {
       }),
     );
   }
+
+  getPetId(id: number): Observable<ApiResponse> {
+    return this.http.get<ApiResponse>(`${Config.apiUrl}/pet/${id}`).pipe(
+      map((response) => {
+        return response;
+      }),
+      catchError((error) => {
+        return throwError(() => error);
+      }),
+    );
+  }
+
+  updatePet(data: any): Observable<ApiResponse> {
+    return this.http.put<ApiResponse>(`${Config.apiUrl}/pet/update`, data).pipe(
+      map((response) => {
+        return response;
+      }),
+      catchError((error) => {
+        return throwError(() => error);
+      }),
+    );
+  }
 }

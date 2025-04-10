@@ -1,8 +1,10 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { TitleService } from './services/title.service';
 import { ToastComponent } from '@components/toast/toast.component';
 import { TranslateService } from '@ngx-translate/core';
+import { Subscription } from 'rxjs';
+import { LocaleService } from './services/locale.service';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +12,7 @@ import { TranslateService } from '@ngx-translate/core';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'hando-angular';
   private titleService = inject(TitleService);
   private translate = inject(TranslateService);

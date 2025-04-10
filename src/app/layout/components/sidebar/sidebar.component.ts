@@ -80,10 +80,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
       for (let i = 0; i < items.length; ++i) {
         if (
           this.trimmedURL === items[i].pathname ||
-          (this.trimmedURL.startsWith('/invoice/') &&
-            items[i].pathname === '/invoice/RB6985') ||
-          (this.trimmedURL.startsWith('/ecommerce/product/') &&
-            items[i].pathname === '/ecommerce/product/1')
+          (this.trimmedURL.startsWith('/member/customers/') &&
+            items[i].pathname === '/member/customers') ||
+          (this.trimmedURL.startsWith('/member/pets/') &&
+            items[i].pathname === '/member/pets')
         ) {
           matchingMenuItem = items[i];
           break;

@@ -39,7 +39,7 @@
                   {{ "breed" | translate }}
                 </th>
                 <th scope="col" class="text-center">
-                  {{ "weight" | translate }}
+                  {{ "weight_kg" | translate }}
                 </th>
                 <th scope="col" class="text-center">
                   {{ "service" | translate }}
@@ -81,8 +81,11 @@
                       @if (item.ageYear && item.ageYear > 0) {
                         {{ item.ageYear }} {{ "year" | translate }}
                       }
-                      @if (item.ageMouth && item.ageMouth > 0) {
-                        {{ item.ageMouth }} {{ "mouth" | translate }}
+                      @if (item.ageMonth && item.ageMonth > 0) {
+                        {{ item.ageMonth }} {{ "month" | translate }}
+                      }
+                      @if (!item.ageYear && !item.ageMonth) {
+                        -
                       }
                     </span>
                   </td>
@@ -91,7 +94,7 @@
                       class="table-detail-link"
                       (click)="viewDetail(item.id!)"
                     >
-                      @if (locale === "th") {
+                      @if (locale() === "th") {
                         {{ item.genderTh }}
                       } @else {
                         {{ item.genderEn }}
@@ -103,7 +106,7 @@
                       class="table-detail-link"
                       (click)="viewDetail(item.id!)"
                     >
-                      @if (locale === "th") {
+                      @if (locale() === "th") {
                         {{ item.typeNameTh }}
                       } @else {
                         {{ item.typeNameEn }}
@@ -115,7 +118,7 @@
                       class="table-detail-link"
                       (click)="viewDetail(item.id!)"
                     >
-                      @if (locale === "th") {
+                      @if (locale() === "th") {
                         {{ item.breedNameTh }}
                       } @else {
                         {{ item.breedNameEn }}
@@ -138,7 +141,7 @@
                   </td>
                   <td class="text-center">
                     <a
-                      [routerLink]="['/member/pets', item.id]"
+                      (click)="viewDetail(item.id!)"
                       class="btn btn-sm bg-primary-subtle me-1"
                       data-bs-toggle="tooltip"
                       data-bs-original-title="View"
@@ -193,62 +196,6 @@
         />
         <div class="invalid-feedback">{{ nameError }}</div>
       </div>
-      <div class="col-md-12">
-        <label for="ageInput" class="form-label">Age</label>
-        <div class="d-flex gap-3">
-          <div class="input-group">
-            <input
-              formControlName="ageYear"
-              type="text"
-              class="form-control form-control-lg"
-              aria-label="ageYear"
-              aria-describedby="ageYearSpan"
-              id="ageInput"
-            />
-            <span class="input-group-text" id="ageYearSpan">
-              {{ "year" | translate }}
-            </span>
-          </div>
-
-          <div class="input-group">
-            <input
-              formControlName="ageMonth"
-              type="text"
-              class="form-control form-control-lg"
-              aria-label="ageMouth"
-              aria-describedby="ageMonthSpan"
-              id="ageMonthInput"
-            />
-            <span class="input-group-text" id="ageMonthSpan">
-              {{ "month" | translate }}
-            </span>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-12">
-        <label for="genderInput" class="form-label">Gender</label>
-        <div class="form-check radio-lg">
-          <input
-            class="form-check-input"
-            type="radio"
-            formControlName="gender"
-            id="genderRadios1"
-            value="MALE"
-          />
-          <label class="form-check-label" for="genderRadios1"> Male </label>
-        </div>
-        <div class="form-check radio-lg">
-          <input
-            class="form-check-input"
-            type="radio"
-            formControlName="gender"
-            id="genderRadios2"
-            value="FEMALE"
-          />
-          <label class="form-check-label" for="genderRadios2"> Female </label>
-        </div>
-      </div>
       <!-- Type -->
       <div class="col-md-12">
         <label for="typeInput" class="form-label">Type</label>
@@ -262,7 +209,7 @@
         >
           <ng-template ng-option-tmp let-item="item">
             <div class="option-content">
-              {{ locale === "th" ? item.value_th : item.value_en }}
+              {{ locale() === "th" ? item.value_th : item.value_en }}
             </div>
           </ng-template>
         </ng-select>
@@ -287,14 +234,102 @@
                 height="100"
                 class="me-2 rounded-circle"
               />
-              {{ locale === "th" ? item.value_th : item.value_en }}
+              {{ locale() === "th" ? item.value_th : item.value_en }}
             </div>
           </ng-template>
         </ng-select>
       </div>
+      <div class="col-md-12">
+        <label for="genderInput" class="form-label">{{
+          "gender" | translate
+        }}</label>
+        <div class="form-check radio-lg">
+          <input
+            class="form-check-input"
+            type="radio"
+            formControlName="gender"
+            id="genderRadios1"
+            value="MALE"
+          />
+          <label class="form-check-label" for="genderRadios1">
+            {{ "pet_male" | translate }}
+          </label>
+        </div>
+        <div class="form-check radio-lg">
+          <input
+            class="form-check-input"
+            type="radio"
+            formControlName="gender"
+            id="genderRadios2"
+            value="FEMALE"
+          />
+          <label class="form-check-label" for="genderRadios2">
+            {{ "pet_female" | translate }}
+          </label>
+        </div>
+      </div>
+      <!-- Age -->
+      <div class="col-md-12">
+        <label for="ageInput" class="form-label">Age</label>
+        <div class="d-flex gap-3">
+          <div class="input-group">
+            <input
+              formControlName="ageYear"
+              type="text"
+              class="form-control form-control-lg"
+              aria-label="ageYear"
+              aria-describedby="ageYearSpan"
+              id="ageInput"
+              (keydown)="validateNumber($event)"
+            />
+            <span class="input-group-text" id="ageYearSpan">
+              {{ "year" | translate }}
+            </span>
+          </div>
+
+          <div class="input-group">
+            <input
+              formControlName="ageMonth"
+              type="text"
+              class="form-control form-control-lg"
+              aria-label="ageMonth"
+              aria-describedby="ageMonthSpan"
+              id="ageMonthInput"
+              (keydown)="validateNumber($event)"
+              [ngClass]="{ 'is-invalid': submit && form['ageMonth'].errors }"
+            />
+            <span class="input-group-text" id="ageMonthSpan">
+              {{ "month" | translate }}
+            </span>
+            <div class="invalid-feedback">{{ ageMonthError }}</div>
+          </div>
+        </div>
+      </div>
+      <!-- weight -->
+      <div class="col-md-12">
+        <label for="weightInput" class="form-label">Weight</label>
+        <div class="d-flex gap-3">
+          <div class="input-group">
+            <input
+              formControlName="weight"
+              type="text"
+              class="form-control form-control-lg"
+              aria-label="weight"
+              aria-describedby="weightSpan"
+              id="weightInput"
+            />
+            <span class="input-group-text" id="weightSpan">
+              {{ "weight_kg" | translate }}
+            </span>
+          </div>
+        </div>
+      </div>
     </form>
   </div>
   <div class="modal-footer">
+    <button type="button" class="btn btn-success" (click)="addPet()">
+      Add
+    </button>
     <button
       type="button"
       class="btn btn-light"
@@ -302,9 +337,6 @@
       (click)="modalclose()"
     >
       Close
-    </button>
-    <button type="button" class="btn btn-success" (click)="addPet()">
-      Add
     </button>
   </div>
 </ng-template>

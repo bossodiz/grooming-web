@@ -1,7 +1,8 @@
-import { DateFullFormatPipe, PhoneFormatPipe } from '../../../services/format.service';
 import {
-  MemberService,
-} from '@/app/services/member.service';
+  DateFullFormatPipe,
+  PhoneFormatPipe,
+} from '../../../services/format.service';
+import { MemberService } from '@/app/services/member.service';
 import { CommonModule, DatePipe, DecimalPipe } from '@angular/common';
 import {
   ChangeDetectorRef,
@@ -38,8 +39,8 @@ import { CustomerTableList } from '@/app/services/model';
     NgbHighlight,
     PhoneFormatPipe,
     TranslateModule,
-    DateFullFormatPipe
-],
+    DateFullFormatPipe,
+  ],
 
   templateUrl: './customers.component.html',
   styleUrl: './customers.component.scss',
@@ -64,7 +65,7 @@ export class CustomersComponent {
   private router = inject(Router);
 
   ngOnInit(): void {
-     this.records$ = this.tableService.items$;
+    this.records$ = this.tableService.items$;
     this.total$ = this.tableService.total$;
     this.getData();
   }
@@ -118,9 +119,6 @@ export class CustomersComponent {
   }
 
   viewDetail(itemId: number) {
-    this.router.navigate(['/member/customers', itemId]);
+    this.router.navigate(['/member/customers/detail', itemId]);
   }
-
-
-
 }
