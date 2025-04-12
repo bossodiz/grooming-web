@@ -134,8 +134,8 @@ export class CustomerPetComponent {
       .addPet(formData)
       .pipe(
         tap((response) => {
-          this.petTypeList = response.data ?? [];
-          this.sortPetTypes();
+          this.getData();
+          this.modalclose();
         }),
         catchError((error) => {
           return throwError(() => error);

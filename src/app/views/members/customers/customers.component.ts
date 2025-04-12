@@ -3,21 +3,8 @@ import {
   PhoneFormatPipe,
 } from '../../../services/format.service';
 import { MemberService } from '@/app/services/member.service';
-import { CommonModule, DatePipe, DecimalPipe } from '@angular/common';
-import {
-  ChangeDetectorRef,
-  Component,
-  Directive,
-  EventEmitter,
-  Inject,
-  inject,
-  Input,
-  LOCALE_ID,
-  Output,
-  ViewChildren,
-  type PipeTransform,
-  type QueryList,
-} from '@angular/core';
+import { CommonModule, DecimalPipe } from '@angular/common';
+import { Component, inject, type PipeTransform } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
 import { NgbHighlight, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';

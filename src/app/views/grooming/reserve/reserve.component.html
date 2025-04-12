@@ -1,1 +1,19 @@
-<p>reserve works!</p>
+<breadcrumb [title]="'Reserve '" [titleLink]="'/grooming/reserve'" />
+
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-header">
+        <h4 class="card-title mb-0">Schedule</h4>
+      </div>
+
+      <div class="card-body app-calendar">
+        <full-calendar
+          #calendarRef
+          [options]="calendarOptions"
+          [events]="this.calendarEvents"
+        ></full-calendar>
+      </div>
+    </div>
+  </div>
+</div>

@@ -29,12 +29,16 @@
               <span class="fs-15"
                 >{{ "breed" | translate }} :
                 <span>
-                  @if (locale() === "th") {
-                    {{ petDetail.typeNameTh || "-" }},
-                    {{ petDetail.breedNameTh || "-" }}
+                  @if (!petDetail.typeId) {
+                    -
                   } @else {
-                    {{ petDetail.typeNameEn || "-" }},
-                    {{ petDetail.breedNameEn || "-" }}
+                    @if (locale() === "th") {
+                      {{ petDetail.typeNameTh || "-" }},
+                      {{ petDetail.breedNameTh || "-" }}
+                    } @else {
+                      {{ petDetail.typeNameEn || "-" }},
+                      {{ petDetail.breedNameEn || "-" }}
+                    }
                   }
                 </span>
               </span>
@@ -69,6 +73,8 @@
                 >{{ "weight" | translate }} :
                 @if (petDetail.weight) {
                   {{ petDetail.weight }} {{ "kg" | translate }}
+                } @else {
+                  -
                 }
               </span>
               <br />
