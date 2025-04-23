@@ -1,0 +1,12 @@
+.tooltip {
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  padding: 5px 10px;
+  font-size: 0.875rem;
+  border-radius: 4px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.tooltip-arrow::before {
+  border-color: rgba(0, 0, 0, 0.7);
+}

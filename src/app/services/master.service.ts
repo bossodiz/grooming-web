@@ -9,6 +9,15 @@ import { ApiResponse } from './model';
 export class MasterService {
   constructor(private http: HttpClient) {}
 
+  getPetList(): Observable<ApiResponse> {
+    return this.http.get<ApiResponse>(`${Config.apiUrl}/master/pet-list`).pipe(
+      map((response) => response),
+      catchError((error) => {
+        return throwError(() => error);
+      }),
+    );
+  }
+
   getPetTypes(): Observable<ApiResponse> {
     return this.http.get<ApiResponse>(`${Config.apiUrl}/master/pet-types`).pipe(
       map((response) => response),
