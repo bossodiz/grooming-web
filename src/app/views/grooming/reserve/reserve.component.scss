@@ -10,3 +10,17 @@
 .tooltip-arrow::before {
   border-color: rgba(0, 0, 0, 0.7);
 }
+
+.color-box {
+  width: 35px;
+  height: 35px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: box-shadow 0.2s ease;
+  position: relative;
+
+  &.selected {
+    outline: 3px solid #000; // หรือใช้ border ก็ได้ถ้าอยากเปลี่ยนขอบ
+    outline-offset: 2px;
+  }
+}

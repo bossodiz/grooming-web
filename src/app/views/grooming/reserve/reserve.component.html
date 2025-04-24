@@ -103,6 +103,24 @@
         </ng-select>
       </div>
 
+      <!-- Grooming Service -->
+      <div class="col-md-12">
+        <label for="groomingInput" class="form-label">Grooming Service</label>
+        <ng-select
+          [items]="filteredGroomingServiceList"
+          bindLabel="label"
+          bindValue="key"
+          [searchable]="true"
+          formControlName="grooming"
+        >
+          <ng-template ng-option-tmp let-item="item">
+            <div class="option-content">
+              {{ locale() === "th" ? item.value_th : item.value_en }}
+            </div>
+          </ng-template>
+        </ng-select>
+      </div>
+
       <!-- Start -->
       <div class="col-md-12">
         <label class="form-label">Start</label>
@@ -146,6 +164,26 @@
               id="phoneInput"
             />
           </div>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <label for="noteInput" class="form-label">Note</label>
+        <textarea
+          formControlName="note"
+          class="form-control"
+          id="noteInput"
+          rows="3"
+        ></textarea>
+      </div>
+      <div class="col-md-12">
+        <label class="form-label">Color</label>
+        <div class="d-flex gap-2 flex-wrap">
+          <div
+            *ngFor="let color of colorOptions"
+            class="color-box"
+            [ngClass]="[color, selectedColor === color ? 'selected' : '']"
+            (click)="selectColor(color)"
+          ></div>
         </div>
       </div>
     </form>

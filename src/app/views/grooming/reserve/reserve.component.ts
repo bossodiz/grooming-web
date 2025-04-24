@@ -47,13 +47,22 @@ import { Tooltip } from 'bootstrap';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MasterService } from '@/app/services/master.service';
-import { catchError, tap, throwError } from 'rxjs';
+import {
+  catchError,
+  lastValueFrom,
+  map,
+  Observable,
+  tap,
+  throwError,
+} from 'rxjs';
 import { PetService } from '@/app/services/pet.service';
 import { FlatpickrDirective } from '@common/flatpickr.directive';
 import { Options } from 'flatpickr/dist/types/options';
 import confirmDatePlugin from 'flatpickr/dist/plugins/confirmDate/confirmDate';
 import { Thai } from 'flatpickr/dist/l10n/th.js';
 import { NgxMaskDirective, NGX_MASK_CONFIG, initialConfig } from 'ngx-mask';
+import { ReserveService } from '@/app/services/reserve.service';
+import { PhoneFormatPipe } from '@/app/services/format.service';
 
 @Component({
   selector: 'app-reserve',
@@ -76,6 +85,7 @@ import { NgxMaskDirective, NGX_MASK_CONFIG, initialConfig } from 'ngx-mask';
       provide: NGX_MASK_CONFIG,
       useValue: initialConfig,
     },
+    PhoneFormatPipe,
   ],
 })
 export class ReserveComponent implements OnInit {
@@ -86,6 +96,8 @@ export class ReserveComponent implements OnInit {
   private masterService = inject(MasterService);
   private petService = inject(PetService);
   private tooltipMap = new Map<string, Tooltip>();
+  private reserveService = inject(ReserveService);
+  private phoneFormatPipe = inject(PhoneFormatPipe);
 
   @ViewChild('calendarRef') calendarComponent!: FullCalendarComponent;
   @ViewChild('standardModal') standardModal!: TemplateRef<any>;
@@ -101,110 +113,20 @@ export class ReserveComponent implements OnInit {
     });
   }
 
-  data = [
-    {
-      className: 'event-pastel-1',
-      title: 'Grooming',
-      start: '2025-04-23T09:00:00',
-      end: '2025-04-23T09:45:00',
-      extendedProps: {
-        id: '1',
-        customerId: '1',
-        petName: 'Fluffy',
-        phone: '123456789',
-        petType: 'cat',
-        service: 'Full grooming premium package 2',
-        tooltip: Tooltip,
-      },
-    },
-    {
-      className: 'event-pastel-2',
-      title: 'Grooming',
-      start: '2025-04-23T10:00:00',
-      end: '2025-04-23T11:00:00',
-      extendedProps: {
-        id: '2',
-        customerId: '2',
-        petName: 'Buddy',
-        phone: '123456789',
-        petType: 'cat',
-        service: 'grooming',
-        tooltip: Tooltip,
-      },
-    },
-    {
-      className: 'event-pastel-3',
-      title: 'Bathing',
-      start: '2025-04-23T11:00:00',
-      end: '2025-04-23T12:00:00',
-      extendedProps: {
-        id: '3',
-        customerId: '3',
-        petName: 'Mittens',
-        phone: '123456789',
-        petType: 'dog',
-        service: 'bathing',
-        tooltip: Tooltip,
-      },
-    },
-    {
-      className: 'event-pastel-4',
-      title: 'Bathing',
-      start: '2025-04-23T14:00:00',
-      end: '2025-04-23T15:00:00',
-      extendedProps: {
-        id: '4',
-        customerId: '4',
-        petName: 'Max',
-        phone: '123456789',
-        petType: 'dog',
-        service: 'bathing',
-        tooltip: Tooltip,
-      },
-    },
+  colorOptions: string[] = [
+    'event-pastel-1',
+    'event-pastel-2',
+    'event-pastel-3',
+    'event-pastel-4',
+    'event-pastel-5',
+    'event-pastel-6',
+    'event-pastel-7',
+    'event-pastel-8',
+    'event-pastel-9',
+    'event-pastel-10',
   ];
-  colors = [
-    {
-      backgroundColor: ' #aedff7',
-      borderLeft: ' #4fc3f7',
-    },
-    {
-      backgroundColor: ' #c0f2d8',
-      borderLeft: ' #4db6ac',
-    },
-    {
-      backgroundColor: ' #fff7ae',
-      borderLeft: ' #ffee58',
-    },
-    {
-      backgroundColor: ' #ffd8a8',
-      borderLeft: ' #ffb74d',
-    },
-    {
-      backgroundColor: ' #e3d1f9',
-      borderLeft: ' #ba68c8',
-    },
-    {
-      backgroundColor: ' #fad4d4',
-      borderLeft: ' #e57373',
-    },
-    {
-      backgroundColor: ' #d0f0f7',
-      borderLeft: ' #4dd0e1',
-    },
-    {
-      backgroundColor: ' #e6f9af',
-      borderLeft: ' #c0ca33',
-    },
-    {
-      backgroundColor: ' #fadadd',
-      borderLeft: ' #f48fb1',
-    },
-    {
-      backgroundColor: ' #ffe0cc',
-      borderLeft: ' #ffb74d',
-    },
-  ];
+
+  selectedColor: string = '';
 
   locale = this.localeService.getLocale();
   noteForm!: UntypedFormGroup;
@@ -259,8 +181,13 @@ export class ReserveComponent implements OnInit {
     navLinks: true,
     events: (info, successCallback, failureCallback) => {
       this.loadEventsFromApi()
-        .then((events) => successCallback(events))
-        .catch();
+        .then((events) => {
+          successCallback(events);
+        })
+        .catch((error) => {
+          console.error('Error loading events:', error); // Log error
+          failureCallback(error);
+        });
     },
     slotLabelFormat: [
       { hour: '2-digit', minute: '2-digit' }, // top level of text
@@ -272,21 +199,28 @@ export class ReserveComponent implements OnInit {
     select: (arg) => this.handleTimeRangeSelect(arg),
     eventDisplay: 'list-item',
     eventContent: (arg) => {
-      if (arg.view.type === 'dayGridMonth') {
-        return true; // ใช้ renderer default
-      }
-      const icon = arg.event.extendedProps['petType'] === 'cat' ? '🐱' : '🐶';
+      const icon = arg.event.extendedProps['petType'] === '1' ? '🐶' : '🐱';
       const name = arg.event.extendedProps['petName'];
-      const service = arg.event.extendedProps['service'];
-      return {
-        html: `
-        <div class="event-container">
-          <div>${arg.timeText}</div>
-          <div style="font-weight: bold;">${icon} ${name}</div>
-          <div>${service}</div>
-        </div>
-        `,
-      };
+      const service = arg.event.extendedProps['serviceName'];
+      if (arg.view.type === 'dayGridMonth') {
+        return {
+          html: `
+          <div class="event-container" style="display: flex; align-items: left;">
+            <div>${icon}${arg.timeText}  ${name} </div>
+          </div>
+          `,
+        };
+      } else {
+        return {
+          html: `
+          <div class="event-container">
+            <div>${arg.timeText}</div>
+            <div style="font-weight: bold;">${icon} ${name} </div>
+            <div>${service}</div>
+          </div>
+          `,
+        };
+      }
     },
     eventDidMount: (info) => {
       this.setupTooltip(info);
@@ -309,7 +243,6 @@ export class ReserveComponent implements OnInit {
     dateFormat: 'Y-m-d\\TH:i:S',
     enableTime: true,
     time_24hr: true,
-    minDate: 'today',
     minTime: '09:00',
     maxTime: '19:00',
     plugins: [
@@ -321,7 +254,48 @@ export class ReserveComponent implements OnInit {
       }),
     ],
 
+    onOpen: [
+      (selectedDates, dateStr, instance) => {
+        const inputId = (instance.input as HTMLInputElement).id;
+        if (inputId === 'datetime-datepicker-start') {
+          const currentValue = this.reserveForm.get('start')?.value;
+          if (!currentValue) {
+            const now = new Date();
+            instance.setDate(now, true);
+          }
+        }
+        if (inputId === 'datetime-datepicker-end') {
+          const currentValue = this.reserveForm.get('end')?.value;
+          if (!currentValue) {
+            const now = new Date();
+            instance.setDate(now, true);
+          }
+        }
+      },
+    ],
+
     onReady: (selectedDates, dateStr, instance) => {
+      const inputId = (instance.input as HTMLInputElement).id;
+      const currentValueStart = this.reserveForm.get('start')?.value;
+      const currentValueEnd = this.reserveForm.get('end')?.value;
+      const now = new Date();
+      const todayStr = now.toISOString().split('T')[0]; // YYYY-MM-DD
+      if (inputId === 'datetime-datepicker-start') {
+        if (currentValueStart) {
+          instance.setDate(currentValueStart, true);
+          instance.set('minDate', currentValueStart);
+        } else {
+          instance.set('minDate', todayStr);
+        }
+      }
+      if (inputId === 'datetime-datepicker-end') {
+        if (currentValueStart) {
+          instance.setDate(currentValueEnd, true);
+          instance.set('minDate', currentValueEnd);
+        } else {
+          instance.set('minDate', todayStr);
+        }
+      }
       setTimeout(() => {
         const confirmBtns = document.querySelectorAll(
           '.flatpickr-confirm',
@@ -338,7 +312,6 @@ export class ReserveComponent implements OnInit {
           btn.style.display = 'block';
           btn.style.boxShadow = '0 2px 6px rgba(0, 0, 0, 0.1)';
           btn.innerHTML = 'ยืนยัน';
-
           btn.addEventListener('mouseenter', () => {
             btn.style.backgroundColor = '#f5c6cb';
           });
@@ -354,20 +327,35 @@ export class ReserveComponent implements OnInit {
     this.loadPetList();
     this.loadPetTypes();
     this.loadAllBreeds();
+    this.loadGroomingService();
+    this.reserveForm = this.formBuilder.group({
+      id: [null],
+      pet: [null],
+      type: [null],
+      breed: [null],
+      grooming: [null],
+      start: [null],
+      end: [null],
+      phone: [null],
+      note: [null],
+      color: [null],
+    });
   }
 
   setupTooltip(info: any) {
     const id = info.event.extendedProps['id'];
-    const icon = info.event.extendedProps['petType'] === 'cat' ? '🐱' : '🐶';
-    const name = info.event.extendedProps['petName'];
-    const phone = info.event.extendedProps['phone'];
-    const service = info.event.extendedProps['service'];
+    const icon = info.event.extendedProps['petType'] === '1' ? '🐶' : '🐱';
+    const name = info.event.extendedProps['petName'] || '';
+    const phone =
+      this.phoneFormatPipe.transform(info.event.extendedProps['phone']) || '';
+    const service = info.event.extendedProps['serviceName'] || '';
+    const note = info.event.extendedProps['note'] || '';
 
     // กำจัด tooltip เก่า (ถ้ามี)
     this.removeTooltip(id);
 
     const tooltipInstance = new Tooltip(info.el, {
-      title: `${icon} ${name}<br>${phone}<br>${service}`,
+      title: `${icon} ${name} ${icon}<br>${phone}<br>${service}<br>* ${note} *`,
       placement: 'right',
       trigger: 'hover',
       html: true,
@@ -385,22 +373,30 @@ export class ReserveComponent implements OnInit {
   }
 
   loadEventsFromApi(): Promise<EventInput[]> {
-    // ตัวอย่าง mock API
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(this.data);
-      }, 500);
-    });
+    return lastValueFrom(this.getData());
   }
 
   createReserve() {
-    this.openModal(new Date(), new Date());
+    this.openModal();
 
     // calendarApi.addEvent(newEvent);
   }
   handleEventClick(arg: EventClickArg) {
-    console.log('EventClickArg', arg);
-    console.log('Event: ' + arg.event.id);
+    this.openModal({
+      id: arg.event.extendedProps['id'],
+      pet: arg.event.extendedProps['pet'],
+      petName: arg.event.extendedProps['petName'],
+      phone: arg.event.extendedProps['phone'],
+      type: arg.event.extendedProps['petType'],
+      breed: arg.event.extendedProps['petBreed'],
+      service: arg.event.extendedProps['serviceId'],
+      note: arg.event.extendedProps['note'],
+      start: arg.event.start
+        ? arg.event.start.toISOString().slice(0, 19)
+        : null,
+      end: arg.event.end ? arg.event.end.toISOString().slice(0, 19) : null,
+      className: arg.event.classNames[0],
+    });
   }
 
   handleDateClick(arg: DateClickArg) {
@@ -415,20 +411,33 @@ export class ReserveComponent implements OnInit {
 
   handleEventDragStop(arg: EventDragStopArg) {}
 
-  openModal(start?: Date, end?: Date) {
+  openModal(obj?: any) {
+    if (obj) {
+      if (obj.type) {
+        this.filteredBreedList = this.breedList.filter(
+          (b) => b.ref_key === obj.type,
+        );
+        this.filteredGroomingServiceList = this.groomingServiceList.filter(
+          (b) => b.ref_key === obj.type,
+        );
+      }
+      this.reserveForm.patchValue({
+        id: obj.id,
+        start: obj.start,
+        end: obj.end,
+        pet: obj.pet,
+        type: obj.type,
+        breed: obj.breed,
+        grooming: obj.service,
+        nameOther: obj.petName,
+        phone: obj.phone,
+        color: obj.className,
+        note: obj.note,
+      });
+    }
     this.sortPetList();
     this.sortPetTypes();
     this.sortBreeds();
-    this.reserveForm = this.formBuilder.group({
-      start: [start],
-      end: [end],
-      nameOther: [null],
-      grooming: [null],
-      breed: [null],
-      type: [null],
-      pet: [null],
-      phone: [''],
-    });
     this.modalService.open(this.standardModal, { centered: true });
   }
 
@@ -438,6 +447,8 @@ export class ReserveComponent implements OnInit {
   petTypeList: any[] = [];
   breedList: any[] = [];
   filteredBreedList: any[] = [];
+  groomingServiceList: any[] = [];
+  filteredGroomingServiceList: any[] = [];
 
   modalclose() {
     this.modalService.dismissAll();
@@ -446,7 +457,6 @@ export class ReserveComponent implements OnInit {
   }
 
   onPetChange(item: any) {
-    console.log('onPetChange', item);
     if (item) {
       this.reserveForm.patchValue({
         pet: item.key,
@@ -458,11 +468,16 @@ export class ReserveComponent implements OnInit {
         this.filteredBreedList = this.breedList.filter(
           (b) => b.ref_key === item.ref_key,
         );
+        this.filteredGroomingServiceList = this.groomingServiceList.filter(
+          (b) => b.ref_key === item.key,
+        );
         this.sortBreeds();
+        this.sortGrooming();
       }
       if (item.ref_key3) {
         this.onPhoneInput({ target: { value: item.ref_key3 } });
       }
+
       this.reserveForm.get('type')?.markAsTouched();
       this.reserveForm.get('breed')?.markAsTouched();
     }
@@ -473,11 +488,17 @@ export class ReserveComponent implements OnInit {
       this.filteredBreedList = this.breedList.filter(
         (b) => b.ref_key === item.key,
       );
+      this.filteredGroomingServiceList = this.groomingServiceList.filter(
+        (b) => b.ref_key === item.key,
+      );
       this.sortBreeds();
+      this.sortGrooming();
     } else {
       this.filteredBreedList = [];
+      this.filteredGroomingServiceList = [];
     }
     this.reserveForm.get('breed')?.setValue('');
+    this.reserveForm.get('grooming')?.setValue('');
   }
 
   sortPetList() {
@@ -515,6 +536,12 @@ export class ReserveComponent implements OnInit {
         item.label = this.locale() === 'th' ? item.value_th : item.value_en;
       });
   }
+
+  sortGrooming() {
+    this.groomingServiceList.map((item) => {
+      item.label = this.locale() === 'th' ? item.value_th : item.value_en;
+    });
+  }
   // todo fix
   onAddNewPet(term: string) {
     const newPet = {
@@ -533,7 +560,48 @@ export class ReserveComponent implements OnInit {
     if (this.reserveForm.invalid) {
       return;
     }
-    console.log(this.reserveForm.value);
+    const formData = {
+      id: this.reserveForm.value.id,
+      pet: this.reserveForm.value.pet,
+      nameOther: this.reserveForm.value.nameOther,
+      grooming: this.reserveForm.value.grooming,
+      breed: this.reserveForm.value.breed,
+      type: this.reserveForm.value.type,
+      phone: this.reserveForm.value.phone,
+      start: this.reserveForm.value.start,
+      end: this.reserveForm.value.end,
+      color: this.reserveForm.value.color,
+      note: this.reserveForm.value.note,
+    };
+    this.reserveService
+      .reserveGrooming(formData)
+      .pipe(
+        tap((response) => {
+          this.calendarOptions.events = (
+            info,
+            successCallback,
+            failureCallback,
+          ) => {
+            this.loadEventsFromApi()
+              .then(successCallback)
+              .catch(failureCallback);
+          };
+          this.modalclose();
+        }),
+        catchError((error) => {
+          return throwError(() => error);
+        }),
+      )
+      .subscribe();
+  }
+
+  getData(): Observable<EventInput[]> {
+    return this.reserveService.getReserveGrooming().pipe(
+      map((response) => response.data ?? []),
+      catchError((error) => {
+        return throwError(() => error);
+      }),
+    );
   }
 
   loadPetList() {
@@ -581,6 +649,21 @@ export class ReserveComponent implements OnInit {
       .subscribe();
   }
 
+  loadGroomingService() {
+    this.masterService
+      .getGroomingServices()
+      .pipe(
+        tap((response) => {
+          this.groomingServiceList = response.data ?? [];
+          this.sortGrooming();
+        }),
+        catchError((error) => {
+          return throwError(() => error);
+        }),
+      )
+      .subscribe();
+  }
+
   onPhoneInput(event: any): void {
     this.submit = false;
     const input = event.target.value.replace(/\D/g, ''); // Remove all non-digit characters
@@ -591,5 +674,10 @@ export class ReserveComponent implements OnInit {
     } else {
       event.target.value = `${input.slice(0, 3)}-${input.slice(3, 6)}-${input.slice(6, 10)}`;
     }
+  }
+
+  selectColor(color: string) {
+    this.selectedColor = color;
+    this.reserveForm.get('color')?.setValue(color); // เซ็ตค่าเป็น class name
   }
 }

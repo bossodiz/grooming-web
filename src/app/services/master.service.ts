@@ -4,6 +4,7 @@ import { catchError, map } from 'rxjs/operators';
 import { Config } from '../app.config';
 import { throwError, type Observable } from 'rxjs';
 import { ApiResponse } from './model';
+import { param } from 'lightgallery/plugins/video/lg-video-utils';
 
 @Injectable({ providedIn: 'root' })
 export class MasterService {
@@ -35,6 +36,18 @@ export class MasterService {
         catchError((error) => {
           return throwError(() => error);
         }),
+      );
+  }
+
+  getGroomingServices(petTypeId?: number): Observable<ApiResponse> {
+    const options =
+      petTypeId !== undefined ? { params: { type: petTypeId } } : {};
+
+    return this.http
+      .get<ApiResponse>(`${Config.apiUrl}/master/grooming-list`, options)
+      .pipe(
+        map((response) => response),
+        catchError((error) => throwError(() => error)),
       );
   }
 }

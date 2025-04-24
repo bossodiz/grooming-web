@@ -332,53 +332,67 @@
 }
 
 .event-pastel-1 {
-  background-color: #aedff7 !important;
-  border-left: 5px solid #4fc3f7 !important;
+  background-color: #d6f0ff !important;
+  border-left: 5px solid #a0e1ff !important;
   color: #000;
 }
 
 .event-pastel-2 {
-  background-color: #c0f2d8 !important;
-  border-left: 5px solid #4db6ac !important;
+  background-color: #cbf7f0 !important;
+  border-left: 5px solid #7de8db !important;
   color: #000;
 }
+
 .event-pastel-3 {
-  background-color: #fff7ae !important;
-  border-left: 5px solid #ffee58 !important;
+  background-color: #d4fcd1 !important;
+  border-left: 5px solid #92ec93 !important;
   color: #000;
 }
+
 .event-pastel-4 {
-  background-color: #ffd8a8 !important;
-  border-left: 5px solid #ffb74d !important;
+  background-color: #f4fdd1 !important;
+  border-left: 5px solid #e1f593 !important;
   color: #000;
 }
+
 .event-pastel-5 {
-  background-color: #e3d1f9 !important;
-  border-left: 5px solid #ba68c8 !important;
+  background-color: #fff6cc !important;
+  border-left: 5px solid #ffe680 !important;
   color: #000;
 }
+
 .event-pastel-6 {
-  background-color: #fad4d4 !important;
-  border-left: 5px solid #e57373 !important;
+  background-color: #ffe5cc !important;
+  border-left: 5px solid #ffbf80 !important;
   color: #000;
 }
+
 .event-pastel-7 {
-  background-color: #d0f0f7 !important;
-  border-left: 5px solid #4dd0e1 !important;
+  background-color: #ffd6d6 !important;
+  border-left: 5px solid #ff9999 !important;
   color: #000;
 }
+
 .event-pastel-8 {
-  background-color: #e6f9af !important;
-  border-left: 5px solid #c0ca33 !important;
+  background-color: #fdd4ec !important;
+  border-left: 5px solid #f38fc1 !important;
   color: #000;
 }
+
 .event-pastel-9 {
-  background-color: #fadadd !important;
-  border-left: 5px solid #f48fb1 !important;
+  background-color: #ead4fb !important;
+  border-left: 5px solid #c18cf3 !important;
   color: #000;
 }
+
 .event-pastel-10 {
-  background-color: #ffe0cc !important;
-  border-left: 5px solid #ffb74d !important;
+  background-color: #d8d8f7 !important;
+  border-left: 5px solid #a6a6ff !important;
   color: #000;
+}
+
+.fc-dayGridMonth-view {
+  .fc-event .fc-daygrid-event {
+    padding: 0 !important;
+  }
 }
