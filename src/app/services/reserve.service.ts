@@ -32,4 +32,30 @@ export class ReserveService {
         }),
       );
   }
+
+  updateReserveGrooming(data: any): Observable<ApiResponse> {
+    return this.http
+      .put<ApiResponse>(`${Config.apiUrl}/reserve/grooming`, data)
+      .pipe(
+        map((response) => {
+          return response;
+        }),
+        catchError((error) => {
+          return throwError(() => error);
+        }),
+      );
+  }
+
+  deleteReserveGrooming(id: string): Observable<ApiResponse> {
+    return this.http
+      .delete<ApiResponse>(`${Config.apiUrl}/reserve/grooming/${id}`)
+      .pipe(
+        map((response) => {
+          return response;
+        }),
+        catchError((error) => {
+          return throwError(() => error);
+        }),
+      );
+  }
 }

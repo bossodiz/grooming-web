@@ -29,6 +29,7 @@ import {
   CalendarOptions,
   DateSelectArg,
   EventClickArg,
+  EventDropArg,
   EventInput,
 } from '@fullcalendar/core/index.js';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -38,6 +39,7 @@ import multiMonthPlugin from '@fullcalendar/multimonth';
 import interactionPlugin, {
   EventDragStartArg,
   EventDragStopArg,
+  EventResizeDoneArg,
 } from '@fullcalendar/interaction';
 import thLocale from '@fullcalendar/core/locales/th';
 import enLocale from '@fullcalendar/core/locales/es-us';
@@ -63,6 +65,8 @@ import { Thai } from 'flatpickr/dist/l10n/th.js';
 import { NgxMaskDirective, NGX_MASK_CONFIG, initialConfig } from 'ngx-mask';
 import { ReserveService } from '@/app/services/reserve.service';
 import { PhoneFormatPipe } from '@/app/services/format.service';
+import { ToastService } from '@/app/services/toast.service';
+import { ERROR, SUCCESS } from '@common/constants';
 
 @Component({
   selector: 'app-reserve',
@@ -98,6 +102,7 @@ export class ReserveComponent implements OnInit {
   private tooltipMap = new Map<string, Tooltip>();
   private reserveService = inject(ReserveService);
   private phoneFormatPipe = inject(PhoneFormatPipe);
+  toastService = inject(ToastService);
 
   @ViewChild('calendarRef') calendarComponent!: FullCalendarComponent;
   @ViewChild('standardModal') standardModal!: TemplateRef<any>;
@@ -174,10 +179,13 @@ export class ReserveComponent implements OnInit {
     nowIndicator: true,
     editable: true,
     selectable: true,
+    eventResizableFromStart: true,
     initialView: 'timeGridWeek',
     slotMinTime: '09:00:00',
     slotMaxTime: '20:00:00',
-    slotDuration: '00:15',
+    slotDuration: '00:30',
+    contentHeight: 'auto',
+    slotEventOverlap: false,
     navLinks: true,
     events: (info, successCallback, failureCallback) => {
       this.loadEventsFromApi()
@@ -192,20 +200,22 @@ export class ReserveComponent implements OnInit {
     slotLabelFormat: [
       { hour: '2-digit', minute: '2-digit' }, // top level of text
     ],
+    eventTimeFormat: {
+      hour: '2-digit',
+      minute: '2-digit',
+    },
     droppable: true,
     allDaySlot: false,
-    eventClick: (arg) => this.handleEventClick(arg),
-    dateClick: (arg) => this.handleDateClick(arg),
-    select: (arg) => this.handleTimeRangeSelect(arg),
     eventDisplay: 'list-item',
     eventContent: (arg) => {
       const icon = arg.event.extendedProps['petType'] === '1' ? '🐶' : '🐱';
       const name = arg.event.extendedProps['petName'];
       const service = arg.event.extendedProps['serviceName'];
       if (arg.view.type === 'dayGridMonth') {
+        console.log(arg);
         return {
           html: `
-          <div class="event-container" style="display: flex; align-items: left;">
+          <div class="event-container">
             <div>${icon}${arg.timeText}  ${name} </div>
           </div>
           `,
@@ -228,15 +238,78 @@ export class ReserveComponent implements OnInit {
     eventWillUnmount: (info) => {
       this.removeTooltip(info.event.extendedProps['id']);
     },
-    eventDragStart: (info) => {
-      this.removeTooltip(info.event.extendedProps['id']);
-    },
-    eventDragStop: (info) => {
-      this.removeTooltip(info.event.extendedProps['id']);
+    eventClick: (info) => this.handleEventClick(info),
+    select: (info) => this.handleTimeRangeSelect(info),
+    eventDrop: (info) => this.handleEventDrop(info),
+    eventResize: (info) => this.handleEventResize(info),
+  };
+
+  flatpickrStartOptions: Options = {
+    locale: this.locale() === 'th' ? Thai : 'en',
+    altInput: true,
+    altFormat: 'D d M Y | H:i',
+    dateFormat: 'Y-m-d\\TH:i:S',
+    enableTime: true,
+    time_24hr: true,
+    minTime: '09:00',
+    maxTime: '19:00',
+    plugins: [
+      confirmDatePlugin({
+        confirmIcon: '', // เปลี่ยน icon
+        confirmText: 'ตกลง', // เปลี่ยนข้อความปุ่ม
+        showAlways: true, // แสดงปุ่มเฉพาะตอนเปิด popup
+        theme: 'light', // หรือ dark
+      }),
+    ],
+
+    onOpen: [
+      (selectedDates, dateStr, instance) => {
+        const currentValue = this.reserveForm.get('start')?.value;
+        if (!currentValue) {
+          const now = new Date();
+          instance.setDate(now, true);
+        }
+      },
+    ],
+
+    onReady: (selectedDates, dateStr, instance) => {
+      const currentValueStart = this.reserveForm.get('start')?.value;
+      const now = new Date();
+      const todayStr = now.toISOString().split('T')[0]; // YYYY-MM-DD
+      if (currentValueStart) {
+        instance.setDate(currentValueStart, true);
+        instance.set('minDate', currentValueStart);
+      } else {
+        instance.set('minDate', todayStr);
+      }
+      setTimeout(() => {
+        const confirmBtns = document.querySelectorAll(
+          '.flatpickr-confirm',
+        ) as NodeListOf<HTMLElement>;
+        confirmBtns.forEach((btn) => {
+          btn.style.cursor = 'pointer';
+          btn.style.backgroundColor = '#f8d7da';
+          btn.style.color = '#721c24';
+          btn.style.padding = '8px 16px';
+          btn.style.borderRadius = '12px';
+          btn.style.fontSize = '14px';
+          btn.style.fontWeight = 'bold';
+          btn.style.margin = '8px auto 4px';
+          btn.style.display = 'block';
+          btn.style.boxShadow = '0 2px 6px rgba(0, 0, 0, 0.1)';
+          btn.innerHTML = 'ยืนยัน';
+          btn.addEventListener('mouseenter', () => {
+            btn.style.backgroundColor = '#f5c6cb';
+          });
+          btn.addEventListener('mouseleave', () => {
+            btn.style.backgroundColor = '#f8d7da';
+          });
+        });
+      }, 0);
     },
   };
 
-  flatpickrOptions: Options = {
+  flatpickrEndOptions: Options = {
     locale: this.locale() === 'th' ? Thai : 'en',
     altInput: true,
     altFormat: 'D d M Y | H:i',
@@ -289,11 +362,15 @@ export class ReserveComponent implements OnInit {
         }
       }
       if (inputId === 'datetime-datepicker-end') {
-        if (currentValueStart) {
+        if (currentValueEnd) {
           instance.setDate(currentValueEnd, true);
           instance.set('minDate', currentValueEnd);
         } else {
-          instance.set('minDate', todayStr);
+          if (currentValueStart) {
+            instance.set('minDate', currentValueStart);
+          } else {
+            instance.set('minDate', todayStr);
+          }
         }
       }
       setTimeout(() => {
@@ -323,23 +400,39 @@ export class ReserveComponent implements OnInit {
     },
   };
 
+  reserveForm: UntypedFormGroup = this.formBuilder.group({
+    id: [null],
+    pet: [null, [Validators.required]],
+    nameOther: [null],
+    type: [null, [Validators.required]],
+    breed: [null],
+    grooming: [null, [Validators.required]],
+    start: [null, [Validators.required]],
+    end: [null, [Validators.required]],
+    phone: [null, [Validators.required]],
+    note: [null],
+    color: [null],
+  });
+
+  get form() {
+    return this.reserveForm.controls;
+  }
+
+  submit!: boolean;
+  petList: any[] = [];
+  petTypeList: any[] = [];
+  breedList: any[] = [];
+  filteredBreedList: any[] = [];
+  groomingServiceList: any[] = [];
+  filteredGroomingServiceList: any[] = [];
+  showDelete!: boolean;
+  confirmBtn!: string;
+
   ngOnInit(): void {
     this.loadPetList();
     this.loadPetTypes();
     this.loadAllBreeds();
     this.loadGroomingService();
-    this.reserveForm = this.formBuilder.group({
-      id: [null],
-      pet: [null],
-      type: [null],
-      breed: [null],
-      grooming: [null],
-      start: [null],
-      end: [null],
-      phone: [null],
-      note: [null],
-      color: [null],
-    });
   }
 
   setupTooltip(info: any) {
@@ -377,15 +470,31 @@ export class ReserveComponent implements OnInit {
   }
 
   createReserve() {
-    this.openModal();
-
-    // calendarApi.addEvent(newEvent);
+    this.showDelete = false;
+    this.confirmBtn = 'Create';
+    this.openModal('createReserve');
   }
   handleEventClick(arg: EventClickArg) {
-    this.openModal({
+    var pet = arg.event.extendedProps['pet'];
+    var petName = arg.event.extendedProps['petName'];
+    if (pet == null) {
+      if (this.petList.filter((item) => item.key === pet).length == 0) {
+        pet = 'new-' + petName;
+        this.petList.push({
+          key: pet,
+          label: petName,
+          value_th: petName,
+          value_en: petName,
+          ref_key4: 'new',
+        });
+      }
+    }
+    this.showDelete = true;
+    this.confirmBtn = 'Update reserve';
+    this.openModal('handleEventClick', {
       id: arg.event.extendedProps['id'],
-      pet: arg.event.extendedProps['pet'],
-      petName: arg.event.extendedProps['petName'],
+      pet: pet,
+      petName: petName,
       phone: arg.event.extendedProps['phone'],
       type: arg.event.extendedProps['petType'],
       breed: arg.event.extendedProps['petBreed'],
@@ -399,19 +508,41 @@ export class ReserveComponent implements OnInit {
     });
   }
 
-  handleDateClick(arg: DateClickArg) {
-    console.log('DateClickArg', arg);
-  }
-
   handleTimeRangeSelect(arg: DateSelectArg) {
-    console.log('DateSelectArg', arg);
+    this.confirmBtn = 'Create';
+    this.showDelete = false;
+    this.openModal('handleTimeRangeSelect', {
+      id: null,
+      pet: null,
+      petName: null,
+      phone: null,
+      type: null,
+      breed: null,
+      service: null,
+      note: null,
+      start: arg.startStr,
+      end: arg.endStr,
+      className: null,
+    });
   }
 
-  handleEventDragStart(arg: EventDragStartArg) {}
+  handleEventDrop(arg: EventDropArg) {
+    this.updateReserve(
+      arg.event.extendedProps['id'],
+      arg.event.startStr,
+      arg.event.endStr,
+    );
+  }
 
-  handleEventDragStop(arg: EventDragStopArg) {}
+  handleEventResize(arg: EventResizeDoneArg) {
+    this.updateReserve(
+      arg.event.extendedProps['id'],
+      arg.event.startStr,
+      arg.event.endStr,
+    );
+  }
 
-  openModal(obj?: any) {
+  openModal(source: string, obj?: any) {
     if (obj) {
       if (obj.type) {
         this.filteredBreedList = this.breedList.filter(
@@ -438,17 +569,9 @@ export class ReserveComponent implements OnInit {
     this.sortPetList();
     this.sortPetTypes();
     this.sortBreeds();
+    this.selectedColor = this.reserveForm.get('color')?.value;
     this.modalService.open(this.standardModal, { centered: true });
   }
-
-  reserveForm!: UntypedFormGroup;
-  submit!: boolean;
-  petList: any[] = [];
-  petTypeList: any[] = [];
-  breedList: any[] = [];
-  filteredBreedList: any[] = [];
-  groomingServiceList: any[] = [];
-  filteredGroomingServiceList: any[] = [];
 
   modalclose() {
     this.modalService.dismissAll();
@@ -469,7 +592,7 @@ export class ReserveComponent implements OnInit {
           (b) => b.ref_key === item.ref_key,
         );
         this.filteredGroomingServiceList = this.groomingServiceList.filter(
-          (b) => b.ref_key === item.key,
+          (b) => b.ref_key === item.ref_key,
         );
         this.sortBreeds();
         this.sortGrooming();
@@ -510,6 +633,7 @@ export class ReserveComponent implements OnInit {
       )
       .map((item) => {
         item.label = this.locale() === 'th' ? item.value_th : item.value_en;
+        item.label += ' (' + item.ref_key4 + ')';
       });
   }
 
@@ -542,27 +666,28 @@ export class ReserveComponent implements OnInit {
       item.label = this.locale() === 'th' ? item.value_th : item.value_en;
     });
   }
-  // todo fix
-  onAddNewPet(term: string) {
-    const newPet = {
-      key: `new-${term}`, // หรือใช้ uuid ถ้าต้องการ
-      label: term,
-      value_th: term, // ตั้งค่าตามความเหมาะสม
-      value_en: term,
-    };
 
-    this.petList = [...this.petList, newPet];
-    this.reserveForm.get('pet')?.setValue(newPet.key); // เซ็ตค่าใหม่ให้ทันที
-  }
+  addCustomPet = (name: string) => {
+    this.reserveForm.get('nameOther')?.setValue(name);
+    return {
+      key: `new-${name}`,
+      label: name,
+      value_th: name,
+      value_en: name,
+    };
+  };
 
   reserve() {
     this.submit = true;
     if (this.reserveForm.invalid) {
       return;
     }
+    const color = this.reserveForm.value.color
+      ? this.reserveForm.value.color
+      : this.colorOptions[Math.floor(Math.random() * this.colorOptions.length)];
     const formData = {
       id: this.reserveForm.value.id,
-      pet: this.reserveForm.value.pet,
+      pet: this.reserveForm.value.nameOther ? null : this.reserveForm.value.pet,
       nameOther: this.reserveForm.value.nameOther,
       grooming: this.reserveForm.value.grooming,
       breed: this.reserveForm.value.breed,
@@ -570,9 +695,12 @@ export class ReserveComponent implements OnInit {
       phone: this.reserveForm.value.phone,
       start: this.reserveForm.value.start,
       end: this.reserveForm.value.end,
-      color: this.reserveForm.value.color,
+      color: color,
       note: this.reserveForm.value.note,
     };
+    const status = formData.id
+      ? 'Successfully update reserve'
+      : 'Successfully create reserve';
     this.reserveService
       .reserveGrooming(formData)
       .pipe(
@@ -587,6 +715,66 @@ export class ReserveComponent implements OnInit {
               .catch(failureCallback);
           };
           this.modalclose();
+          if (response.code == 200) {
+            this.showToast(status, SUCCESS);
+          }
+        }),
+        catchError((error) => {
+          return throwError(() => error);
+        }),
+      )
+      .subscribe();
+  }
+
+  updateReserve(reserveId: number, start: string, end: string) {
+    const formData = {
+      id: reserveId,
+      start: start,
+      end: end,
+    };
+    this.reserveService
+      .updateReserveGrooming(formData)
+      .pipe(
+        tap((response) => {
+          this.calendarOptions.events = (
+            info,
+            successCallback,
+            failureCallback,
+          ) => {
+            this.loadEventsFromApi()
+              .then(successCallback)
+              .catch(failureCallback);
+          };
+          this.modalclose();
+          if (response.code == 200) {
+            this.showToast('Successfully updated reserve', SUCCESS);
+          }
+        }),
+        catchError((error) => {
+          return throwError(() => error);
+        }),
+      )
+      .subscribe();
+  }
+
+  deleteReserve() {
+    this.reserveService
+      .deleteReserveGrooming(this.reserveForm.value.id)
+      .pipe(
+        tap((response) => {
+          this.calendarOptions.events = (
+            info,
+            successCallback,
+            failureCallback,
+          ) => {
+            this.loadEventsFromApi()
+              .then(successCallback)
+              .catch(failureCallback);
+          };
+          this.modalclose();
+          if (response.code == 200) {
+            this.showToast('Successfully delete reserve', SUCCESS);
+          }
         }),
         catchError((error) => {
           return throwError(() => error);
@@ -679,5 +867,21 @@ export class ReserveComponent implements OnInit {
   selectColor(color: string) {
     this.selectedColor = color;
     this.reserveForm.get('color')?.setValue(color); // เซ็ตค่าเป็น class name
+  }
+
+  showToast(msg: string, type: string) {
+    if (type === SUCCESS) {
+      this.toastService.show({
+        textOrTpl: msg,
+        classname: 'bg-success text-white',
+        delay: 3000,
+      });
+    } else if (type === ERROR) {
+      this.toastService.show({
+        textOrTpl: msg,
+        classname: 'bg-danger text-white',
+        delay: 3000,
+      });
+    }
   }
 }

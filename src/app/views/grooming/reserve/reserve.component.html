@@ -5,7 +5,15 @@
     <div class="card">
       <button
         class="btn mb-3"
-        style="background-color: #e695a3; color: #4c1c24"
+        style="
+          background-color: #e695a3;
+          color: #4c1c24;
+          min-height: 60px;
+          padding: 10px 20px;
+          margin-top: 20px;
+          margin-right: 20px;
+          margin-left: 20px;
+        "
         (click)="createReserve()"
       >
         Reserve
@@ -40,7 +48,9 @@
     <form class="row g-3 needs-validation" novalidate [formGroup]="reserveForm">
       <!-- Pet -->
       <div class="col-md-12">
-        <label for="typeInput" class="form-label">Pet Name</label>
+        <label for="typeInput" class="form-label"
+          >Pet Name <span class="text-danger">*</span></label
+        >
         <ng-select
           [items]="petList"
           bindLabel="label"
@@ -48,20 +58,31 @@
           [searchable]="true"
           formControlName="pet"
           (change)="onPetChange($event)"
-          [addTag]="true"
-          (add)="onAddNewPet($event)"
+          [addTag]="addCustomPet"
+          required
+          [ngClass]="{
+            'is-invalid': submit && form['pet'].errors,
+          }"
         >
           <ng-template ng-option-tmp let-item="item">
             <div class="option-content">
-              {{ locale() === "th" ? item.value_th : item.value_en }}
+              {{
+                (locale() === "th" ? item.value_th : item.value_en) +
+                  " (" +
+                  item.ref_key4 +
+                  ")"
+              }}
             </div>
           </ng-template>
         </ng-select>
+        <div class="invalid-feedback">Please select a pet name</div>
       </div>
 
       <!-- Type -->
       <div class="col-md-12">
-        <label for="typeInput" class="form-label">Type</label>
+        <label for="typeInput" class="form-label"
+          >Type <span class="text-danger">*</span></label
+        >
         <ng-select
           [items]="petTypeList"
           bindLabel="label"
@@ -69,6 +90,10 @@
           [searchable]="true"
           formControlName="type"
           (change)="onTypeChange($event)"
+          required
+          [ngClass]="{
+            'is-invalid': submit && form['type'].errors,
+          }"
         >
           <ng-template ng-option-tmp let-item="item">
             <div class="option-content">
@@ -76,6 +101,7 @@
             </div>
           </ng-template>
         </ng-select>
+        <div class="invalid-feedback">Please select a pet type</div>
       </div>
 
       <!-- Breed -->
@@ -105,13 +131,19 @@
 
       <!-- Grooming Service -->
       <div class="col-md-12">
-        <label for="groomingInput" class="form-label">Grooming Service</label>
+        <label for="groomingInput" class="form-label"
+          >Grooming Service <span class="text-danger">*</span></label
+        >
         <ng-select
           [items]="filteredGroomingServiceList"
           bindLabel="label"
           bindValue="key"
           [searchable]="true"
           formControlName="grooming"
+          required
+          [ngClass]="{
+            'is-invalid': submit && form['grooming'].errors,
+          }"
         >
           <ng-template ng-option-tmp let-item="item">
             <div class="option-content">
@@ -119,37 +151,52 @@
             </div>
           </ng-template>
         </ng-select>
+        <div class="invalid-feedback">Please select a service</div>
       </div>
 
       <!-- Start -->
       <div class="col-md-12">
-        <label class="form-label">Start</label>
+        <label class="form-label"
+          >Start <span class="text-danger">*</span></label
+        >
         <input
           mwlFlatpickr
-          [flatpickrOptions]="flatpickrOptions"
+          [flatpickrOptions]="flatpickrStartOptions"
           type="text"
           class="form-control"
           id="datetime-datepicker-start"
           formControlName="start"
+          required
+          [ngClass]="{
+            'is-invalid': submit && form['start'].errors,
+          }"
         />
+        <div class="invalid-feedback">Please select a start time</div>
       </div>
 
       <!-- End -->
       <div class="col-md-12">
-        <label class="form-label">End</label>
+        <label class="form-label">End <span class="text-danger">*</span></label>
         <input
           mwlFlatpickr
-          [flatpickrOptions]="flatpickrOptions"
+          [flatpickrOptions]="flatpickrEndOptions"
           type="text"
           class="form-control"
           id="datetime-datepicker-end"
           formControlName="end"
+          required
+          [ngClass]="{
+            'is-invalid': submit && form['end'].errors,
+          }"
         />
+        <div class="invalid-feedback">Please select a end time</div>
       </div>
 
       <!-- phone -->
       <div class="col-md-12">
-        <label for="phoneInput" class="form-label">Phone </label>
+        <label for="phoneInput" class="form-label"
+          >Phone <span class="text-danger">*</span></label
+        >
         <div class="col-lg-12 col-xl-12">
           <div class="input-group">
             <span class="input-group-text"
@@ -162,7 +209,12 @@
               class="form-control"
               (input)="onPhoneInput($event)"
               id="phoneInput"
+              required
+              [ngClass]="{
+                'is-invalid': submit && form['phone'].errors,
+              }"
             />
+            <div class="invalid-feedback">Please enter a phone</div>
           </div>
         </div>
       </div>
@@ -189,16 +241,18 @@
     </form>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-success" (click)="reserve()">
-      Confirm
-    </button>
-    <button
-      type="button"
-      class="btn btn-light"
-      data-bs-dismiss="modal"
-      (click)="modalclose()"
-    >
-      Close
-    </button>
+    @if (showDelete) {
+      <!-- ปุ่ม Delete ชิดซ้าย -->
+      <button type="button" class="btn btn-danger" (click)="deleteReserve()">
+        Delete
+      </button>
+    }
+
+    <!-- ปุ่ม Confirm กับ Close ชิดขวา -->
+    <div class="ms-auto">
+      <button type="button" class="btn btn-success" (click)="reserve()">
+        {{ confirmBtn }}
+      </button>
+    </div>
   </div>
 </ng-template>

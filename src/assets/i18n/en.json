@@ -32,7 +32,7 @@
   "type": "Type",
   "weight": "Weight",
   "weight_kg": "Weight (Kg)",
-  "service": "Number of service visits",
+  "service": "Service visits (Time)",
   "year": "Years",
   "month": "Month",
   "error": {

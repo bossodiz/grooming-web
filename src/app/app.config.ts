@@ -34,13 +34,16 @@ import { JwtInterceptor } from './helper/jwt.interceptor';
 import { ErrorInterceptor } from './helper/error.interceptor';
 import { FeatherModule } from 'angular-feather';
 import { allIcons } from 'angular-feather/icons';
-import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
+import {
+  TranslateLoader,
+  TranslateModule,
+  TranslateService,
+} from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
-
 
 const scrollConfig: InMemoryScrollingOptions = {
   scrollPositionRestoration: 'top',
@@ -57,9 +60,9 @@ export const appConfig: ApplicationConfig = {
       loader: {
         provide: TranslateLoader,
         useFactory: HttpLoaderFactory,
-        deps: [HttpClient]
+        deps: [HttpClient],
       },
-      defaultLanguage: 'en'
+      defaultLanguage: 'en',
     }).providers!,
     // FakeBackendProvider,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
@@ -78,10 +81,9 @@ export const appConfig: ApplicationConfig = {
     provideEffects(AuthenticationEffects, CalendarEffects),
     provideHttpClient(withFetch(), withInterceptorsFromDi()),
     importProvidersFrom(FeatherModule.pick(allIcons)),
-    
   ],
 };
 
 export const Config = {
-  apiUrl: `http://${window.location.hostname}:8081/api`,
+  apiUrl: `http://${window.location.hostname}:8080/api`,
 };
