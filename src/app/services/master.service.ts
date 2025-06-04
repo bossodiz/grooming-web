@@ -50,4 +50,14 @@ export class MasterService {
         catchError((error) => throwError(() => error)),
       );
   }
+
+  getPetTypeByName(name: string): Observable<ApiResponse> {
+    const params = new HttpParams().set('name', name);
+    return this.http
+      .get<ApiResponse>(`${Config.apiUrl}/master/pet-type`, { params })
+      .pipe(
+        map((response) => response),
+        catchError((error) => throwError(() => error)),
+      );
+  }
 }

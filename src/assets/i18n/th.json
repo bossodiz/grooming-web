@@ -37,7 +37,9 @@
   "month": "เดือน",
   "error": {
     "require": {
-      "name": "กรุณากรอกชื่อ"
+      "name": "กรุณากรอกชื่อ",
+      "service_name": "กรุณากรอกชื่อบริการ",
+      "pet_type": "กรุณาเลือกประเภทสัตว์เลี้ยง"
     },
     "validate": {
       "age_year_min": "กรุณากรอกปี >= 0",
@@ -51,5 +53,22 @@
   "registerDate": "วันที่สมัครสมาชิก",
   "kg": "กิโลกรัม",
   "pet_male": "ผู้",
-  "pet_female": "เมีย"
+  "pet_female": "เมีย",
+  "service_name": "ชื่อบริการ",
+  "service_price": "ค่าบริการ (บาท)",
+  "animalType": {
+    "cat": "แมว",
+    "dog": "สุนัข",
+    "other": "อื่นๆ"
+  },
+  "remark": "หมายเหตุ",
+  "add_service": "เพิ่มบริการ",
+  "service_name_th": "ชื่อบริการ (ไทย)",
+  "service_name_en": "ชื่อบริการ (อังกฤษ)",
+  "pet_type": "ประเภทสัตว์เลี้ยง",
+  "add": "เพิ่ม",
+  "update": "อัพเดต",
+  "delete": "ลบ",
+  "save": "บันทึก",
+  "cancel": "ยกเลิก"
 }

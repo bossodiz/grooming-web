@@ -1,1 +1,287 @@
-<p>service works!</p>
+<breadcrumb [title]="'Service'" [titleLink]="'/grooming/service'" />
+
+<div class="row">
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h4 class="card-title mb-0">{{ "animalType.dog" | translate }}</h4>
+      </div>
+      <div class="card-body">
+        <div class="mb-3 row">
+          <div class="col-xl-3">
+            <input
+              id="table-filtering-search"
+              class="form-control"
+              placeholder="{{ 'search' | translate }}"
+              type="text"
+              [(ngModel)]="filterDog"
+              (ngModelChange)="onSearch('dog')"
+            />
+          </div>
+          <div class="col-xl text-end">
+            <button
+              class="btn btn-primary"
+              (click)="openAddServiceModal('dog')"
+            >
+              {{ "add_service" | translate }}
+            </button>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table table-enhanced table-hover">
+            <thead>
+              <tr>
+                <th scope="col" class="text-center">{{ "no" | translate }}</th>
+                <th scope="col" class="text-center">
+                  {{ "service_name" | translate }}
+                </th>
+                <th scope="col" class="text-center">
+                  {{ "service_price" | translate }}
+                </th>
+                <th scope="col" class="text-center">
+                  {{ "details" | translate }}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (item of searchCountriesDog; track item.id; let i = $index) {
+                <tr (click)="viewDetail(item.id!)">
+                  <td class="table-detail-link text-center">
+                    {{ i + 1 }}
+                  </td>
+                  <td
+                    class="table-detail-link text-center"
+                    [innerHTML]="item.service_name! | multiHighlight: filterDog"
+                  ></td>
+                  <td
+                    class="table-detail-link text-center"
+                    [innerHTML]="
+                      item.service_price! | multiHighlight: filterDog
+                    "
+                  ></td>
+                  <td
+                    class="table-detail-link text-center"
+                    [innerHTML]="item.details! | multiHighlight: filterDog"
+                  ></td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+        <ngb-pagination
+          class="d-flex justify-content-end"
+          [collectionSize]="collectionSizeDog"
+          [(page)]="pageDog"
+          [pageSize]="pageSizeDog"
+          (pageChange)="onSearch('dog')"
+        >
+        </ngb-pagination>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h4 class="card-title mb-0">{{ "animalType.cat" | translate }}</h4>
+      </div>
+      <div class="card-body">
+        <div class="mb-3 row">
+          <div class="col-xl-3">
+            <input
+              id="table-filtering-search"
+              class="form-control"
+              placeholder="{{ 'search' | translate }}"
+              type="text"
+              [(ngModel)]="filterCat"
+              (ngModelChange)="onSearch('cat')"
+            />
+          </div>
+          <div class="col-xl text-end">
+            <button
+              class="btn btn-primary"
+              (click)="openAddServiceModal('cat')"
+            >
+              {{ "add_service" | translate }}
+            </button>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="table table-enhanced table-hover">
+            <thead>
+              <tr>
+                <th scope="col" class="text-center">{{ "no" | translate }}</th>
+                <th scope="col" class="text-center">
+                  {{ "service_name" | translate }}
+                </th>
+                <th scope="col" class="text-center">
+                  {{ "service_price" | translate }}
+                </th>
+                <th scope="col" class="text-center">
+                  {{ "details" | translate }}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (item of searchCountriesCat; track item.id; let i = $index) {
+                <tr (click)="viewDetail(item.id!)">
+                  <td class="table-detail-link text-center">
+                    {{ i + 1 }}
+                  </td>
+                  <td
+                    class="table-detail-link text-center"
+                    [innerHTML]="item.service_name! | multiHighlight: filterCat"
+                  ></td>
+                  <td
+                    class="table-detail-link text-center"
+                    [innerHTML]="
+                      item.service_price! | multiHighlight: filterCat
+                    "
+                  ></td>
+                  <td
+                    class="table-detail-link text-center"
+                    [innerHTML]="item.details! | multiHighlight: filterCat"
+                  ></td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+        <ngb-pagination
+          class="d-flex justify-content-end"
+          [collectionSize]="collectionSizeCat"
+          [(page)]="pageCat"
+          [pageSize]="pageSizeCat"
+          (pageChange)="onSearch('cat')"
+        >
+        </ngb-pagination>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template
+  #standardModal
+  let-modal
+  class="modal fade"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="standard-modalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-header">
+    <h1 class="modal-title fs-5" id="standard-modalLabel">
+      {{ headerModal }}
+    </h1>
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="modal"
+      (click)="modalclose()"
+      aria-label="Close"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <form class="row g-3 needs-validation" novalidate [formGroup]="serviceForm">
+      <div class="col-md-12">
+        <label for="nameThInput" class="form-label"
+          >{{ "service_name_th" | translate }}
+          <span class="text-danger">*</span></label
+        >
+        <input
+          formControlName="nameTh"
+          [ngClass]="{ 'is-invalid': submit && form['nameTh'].errors }"
+          type="text"
+          class="form-control form-control-lg"
+          id="nameThInput"
+          required
+        />
+        <div class="invalid-feedback">{{ nameError }}</div>
+      </div>
+      <div class="col-md-12">
+        <label for="nameEnInput" class="form-label">{{
+          "service_name_en" | translate
+        }}</label>
+        <input
+          formControlName="nameEn"
+          type="text"
+          class="form-control form-control-lg"
+          id="nameEnInput"
+        />
+      </div>
+      <!-- Type -->
+      <div class="col-md-12">
+        <label for="typeInput" class="form-label"
+          >{{ "pet_type" | translate }}
+        </label>
+        <ng-select
+          [items]="petTypeList"
+          bindLabel="label"
+          bindValue="key"
+          [searchable]="true"
+          formControlName="type"
+        >
+          <ng-template ng-option-tmp let-item="item">
+            <div class="option-content">
+              {{ locale() === "th" ? item.value_th : item.value_en }}
+            </div>
+          </ng-template>
+        </ng-select>
+      </div>
+
+      <!-- price -->
+      <div class="col-md-12">
+        <label for="priceInput" class="form-label">{{
+          "service_price" | translate
+        }}</label>
+        <div class="d-flex gap-3">
+          <div class="input-group">
+            <input
+              formControlName="price"
+              mask="separator.2"
+              thousandSeparator=","
+              [dropSpecialCharacters]="true"
+              type="text"
+              class="form-control form-control-lg"
+              id="priceInput"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <label for="remarkInput" class="form-label">{{
+          "remark" | translate
+        }}</label>
+        <textarea
+          formControlName="remark"
+          class="form-control"
+          id="remarkInput"
+          rows="3"
+        ></textarea>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer d-flex">
+    @if (isDelete) {
+      <button
+        type="button"
+        class="btn btn-danger me-auto"
+        (click)="deleteService()"
+      >
+        {{ "delete" | translate }}
+      </button>
+    }
+    <button type="button" class="btn btn-success" (click)="addService()">
+      {{ btnSave }}
+    </button>
+    <button
+      type="button"
+      class="btn btn-light"
+      data-bs-dismiss="modal"
+      (click)="modalclose()"
+    >
+      Close
+    </button>
+  </div>
+</ng-template>

@@ -44,3 +44,27 @@ export class DateFullFormatPipe implements PipeTransform {
     return formattedDate;
   }
 }
+
+@Pipe({
+  name: 'multiHighlight',
+  standalone: true,
+})
+export class MultiHighlightPipe implements PipeTransform {
+  transform(value: string, terms: string): string {
+    if (!terms || !value) return value;
+
+    // แยกคำด้วย | แล้วสร้าง regex แบบ global, case-insensitive
+    const termList = terms
+      .split('|')
+      .map((t) => t.trim())
+      .filter((t) => t.length > 0);
+    if (termList.length === 0) return value;
+
+    const pattern = termList
+      .map((term) => term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
+      .join('|');
+    const regex = new RegExp(`(${pattern})`, 'gi');
+
+    return value.replace(regex, '<mark>$1</mark>');
+  }
+}

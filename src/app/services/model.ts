@@ -68,3 +68,11 @@ export class PetDetail {
   customerName?: string;
   customerPhone?: string;
 }
+
+export class GroomingServiceTableList {
+  id?: number;
+  service_name?: string;
+  type?: string;
+  service_price?: string;
+  details?: string;
+}
