@@ -41,7 +41,6 @@ import { NgxMaskDirective, NGX_MASK_CONFIG, initialConfig } from 'ngx-mask';
     CommonModule,
     FormsModule,
     BreadcrumbComponent,
-    NgbHighlight,
     TranslateModule,
     MultiHighlightPipe,
     NgSelectModule,
