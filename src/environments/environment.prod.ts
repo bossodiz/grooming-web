@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://grooming-api.railway.internal',
+  apiUrl: 'https://boss-grooming.up.railway.app',
 };
