@@ -2,3 +2,5 @@
 .vscode
 .angular
 .idea
+/dist
+dist
