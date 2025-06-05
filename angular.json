@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "hando": {
+    "boss-grooming": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -80,10 +80,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "hando:build:production"
+              "buildTarget": "boss-grooming:build:production"
             },
             "development": {
-              "buildTarget": "hando:build:development"
+              "buildTarget": "boss-grooming:build:development"
             }
           },
           "defaultConfiguration": "development"

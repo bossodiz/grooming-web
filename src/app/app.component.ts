@@ -13,7 +13,7 @@ import { LocaleService } from './services/locale.service';
   styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnInit {
-  title = 'hando-angular';
+  title = 'boss-grooming';
   private titleService = inject(TitleService);
   private translate = inject(TranslateService);
 
