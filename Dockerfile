@@ -11,11 +11,10 @@ RUN npm run build -- --configuration production
 
 # Stage 2: Serve with Nginx
 FROM nginx:stable-alpine
-
+RUN rm -rf /etc/nginx/conf.d
+COPY nginx /etc/nginx
 COPY --from=build /app/dist/boss-grooming /usr/share/nginx/html
 
-# Optional: Replace default Nginx config (for Angular routing)
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-
 EXPOSE 80
+STOPSIGNAL SIGTERM
 CMD ["nginx", "-g", "daemon off;"]
