@@ -11,8 +11,7 @@ RUN npm run build -- --configuration production
 
 # Stage 2: Serve with Nginx
 FROM nginx:stable-alpine
-RUN rm -rf /etc/nginx/conf.d
-COPY nginx /etc/nginx
+
 COPY --from=build /app/dist/boss-grooming /usr/share/nginx/html
 
 EXPOSE 80
