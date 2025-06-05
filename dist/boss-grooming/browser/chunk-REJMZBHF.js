@@ -1,0 +1,1 @@
+import{Sa as s,na as o}from"./chunk-BXWDLBX3.js";var r=class a{toasts=s([]);show(e){this.toasts.update(t=>[...t,e])}remove(e){this.toasts.update(t=>t.filter(n=>n!==e))}static \u0275fac=function(t){return new(t||a)};static \u0275prov=o({token:a,factory:a.\u0275fac,providedIn:"root"})};export{r as a};
