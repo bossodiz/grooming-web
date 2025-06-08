@@ -93,11 +93,16 @@ export const MENU_ITEMS: MenuItemType[] = [
     url: '/promotion/list',
   },
   {
+    key: 'pos',
+    label: 'POS',
+    isTitle: true,
+  },
+  {
     key: 'payment-form',
     label: 'Payment',
     icon: 'mdi mdi-cash-multiple',
     icon_type: 'mdi',
-    url: '/payment/form',
+    url: '/payment',
   },
   {
     key: 'pages',

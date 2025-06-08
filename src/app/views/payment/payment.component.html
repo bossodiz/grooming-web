@@ -1,0 +1,117 @@
+<breadcrumb [title]="'Payment'" [titleLink]="'/payment'" />
+
+<div class="row">
+  <div class="col-lg-7">
+    <div class="card">
+      <div class="card-header">
+        <div class="d-flex align-items-center">
+          <h5 class="card-title mb-0">Shop</h5>
+          <div
+            class="btn-group ms-auto"
+            role="group"
+            aria-label="Basic radio toggle button group"
+          >
+            <input
+              type="radio"
+              class="btn-check"
+              name="btnradio"
+              id="btnradio4"
+              autocomplete="off"
+              checked=""
+            />
+            <label class="btn btn-outline-primary" for="btnradio4"
+              >Grooming</label
+            >
+
+            <input
+              type="radio"
+              class="btn-check"
+              name="btnradio"
+              id="btnradio5"
+              autocomplete="off"
+            />
+            <label class="btn btn-outline-primary" for="btnradio5"
+              >Pet Shop</label
+            >
+          </div>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <!-- Customer pet-->
+        <div class="row">
+          <div class="col-md-6 mb-3" s tyle="margin-top: 2em">
+            <h3 class="text-left"></h3>
+            <label for="typeInput" class="form-label"
+              >Customer {{ customerId }}</label
+            >
+            <ng-select
+              [items]="customerList"
+              bindLabel="label"
+              bindValue="key"
+              [searchable]="true"
+              (change)="onCustomerChange($event)"
+            >
+              <ng-template ng-option-tmp let-item="item">
+                <div class="option-content">
+                  {{ item.label }}
+                </div>
+              </ng-template>
+            </ng-select>
+          </div>
+          <div class="col-md-6 mb-3" s tyle="margin-top: 2em">
+            <h3 class="text-left"></h3>
+            <label for="typeInput" class="form-label">Pet {{ petId }}</label>
+            <ng-select
+              [items]="petList"
+              bindLabel="label"
+              bindValue="key"
+              [searchable]="true"
+              [searchFn]="customSearchFn"
+              (change)="onPetChange($event)"
+            >
+              <ng-template ng-option-tmp let-item="item">
+                <div class="option-content">
+                  {{ item.label }}
+                </div>
+              </ng-template>
+            </ng-select>
+          </div>
+        </div>
+        <!-- tag item -->
+        <div class="row">
+          <div class="d-flex flex-wrap gap-2 align-items-center">
+            @for (tag of tags; track $index) {
+              <button
+                type="button"
+                class="btn btn-sm"
+                [ngClass]="{
+                  'btn-success': isSelected(tag.tagId),
+                  'btn-outline-success': !isSelected(tag.tagId),
+                }"
+                (click)="toggleTag(tag.tagId)"
+              >
+                {{ tag.tagName }}
+              </button>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-5">
+    <div class="card">
+      <div class="card-header">
+        <div class="d-flex align-items-center">
+          <h5 class="card-title mb-0">Current Cart</h5>
+        </div>
+      </div>
+      <div class="card-body">
+        <p class="text-center">Thank you for your payment!</p>
+        <p class="text-center">
+          Your transaction has been successfully processed.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

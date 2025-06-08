@@ -6,6 +6,6 @@ export const PROMOTIONS_ROUTES: Route[] = [
   {
     path: 'list',
     component: ListComponent,
-    data: { title: 'List' },
+    data: { title: 'Promotion' },
   },
 ];
