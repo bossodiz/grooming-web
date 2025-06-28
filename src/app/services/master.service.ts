@@ -60,4 +60,14 @@ export class MasterService {
         catchError((error) => throwError(() => error)),
       );
   }
+
+  getTags(type: string): Observable<ApiResponse> {
+    const params = new HttpParams().set('type', type);
+    return this.http
+      .get<ApiResponse>(`${Config.apiUrl}/master/tags`, { params })
+      .pipe(
+        map((response) => response),
+        catchError((error) => throwError(() => error)),
+      );
+  }
 }

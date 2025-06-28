@@ -76,3 +76,35 @@ export class GroomingServiceTableList {
   service_price?: string;
   details?: string;
 }
+
+export class PromotionTableList {
+  id?: number;
+  name?: string;
+  discountCategory?: string;
+  discountType?: string;
+  amount?: number;
+  periodType?: string;
+  startDate?: string;
+  endDate?: string;
+  specificDays?: string;
+  customerOnly?: boolean;
+  status?: string;
+  quota?: number;
+}
+
+export class PromotionDiscount {
+  description?: string;
+  amount?: number;
+}
+
+export class CartItem {
+  key?: string;
+  type?: 'G' | 'P';
+  petId?: number;
+  itemId?: number;
+  name?: string;
+  price?: number;
+  quantity?: number;
+  total?: number;
+  // order: number;
+}

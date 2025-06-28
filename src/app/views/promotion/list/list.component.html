@@ -1,1 +1,135 @@
-<p>list works!</p>
+<breadcrumb [title]="'Promotions'" [titleLink]="'/promotion'" />
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card">
+      <div
+        class="card-header d-flex justify-content-between align-items-center"
+      >
+        <h4 class="card-title mb-0">
+          {{ "promotion_management" | translate }}
+        </h4>
+        <button class="btn btn-primary" (click)="openAddPromotion()">
+          <i class="bi bi-plus"></i> เพิ่มโปรโมชั่น
+        </button>
+      </div>
+
+      <div class="card-body">
+        <div class="mb-3 row">
+          <div class="col-xl-3">
+            <!-- <input
+              id="table-filtering-search"
+              class="form-control"
+              placeholder="{{ 'search' | translate }}"
+              type="text"
+              [(ngModel)]="filter"
+              (ngModelChange)="onSearch()"
+            />
+          </div> -->
+          </div>
+
+          <div class="table-responsive">
+            <table class="table table-enhanced table-hover">
+              <thead>
+                <tr>
+                  <th scope="col" class="text-center">
+                    {{ "no" | translate }}
+                  </th>
+                  <th scope="col" class="text-center">
+                    {{ "name" | translate }}
+                  </th>
+                  <th scope="col" class="text-center">
+                    {{ "discountCategory" | translate }}
+                  </th>
+                  <th scope="col" class="text-center">
+                    {{ "discountType" | translate }}
+                  </th>
+                  <th scope="col" class="text-center">
+                    {{ "amount" | translate }}
+                  </th>
+                  <th scope="col" class="text-center">
+                    {{ "periodType" | translate }}
+                  </th>
+                  <th scope="col" class="text-center">
+                    {{ "startDate" | translate }}
+                  </th>
+                  <th scope="col" class="text-center">
+                    {{ "endDate" | translate }}
+                  </th>
+                  <th scope="col" class="text-center">
+                    {{ "specificDays" | translate }}
+                  </th>
+                  <th scope="col" class="text-center">
+                    {{ "customerOnly" | translate }}
+                  </th>
+                  <th scope="col" class="text-center">
+                    {{ "status" | translate }}
+                  </th>
+                  <th scope="col" class="text-center">
+                    {{ "quota" | translate }}
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                @if (searchCountries && searchCountries.length == 0) {
+                  <tr>
+                    <td colspan="9" class="text-center">
+                      <span>{{ "no_data" | translate }}</span>
+                    </td>
+                  </tr>
+                }
+                @for (item of searchCountries; track item.id; let i = $index) {
+                  <tr>
+                    <td class="text-center">
+                      <span>{{ i + 1 }}</span>
+                    </td>
+                    <td class="text-center">
+                      <span>{{ item.name }}</span>
+                    </td>
+                    <td class="text-center">
+                      <span>{{ item.discountCategory }}</span>
+                    </td>
+                    <td class="text-center">
+                      <span>{{ item.discountType }}</span>
+                    </td>
+                    <td class="text-center">
+                      <span>{{ item.amount }}</span>
+                    </td>
+                    <td class="text-center">
+                      <span>{{ item.periodType }}</span>
+                    </td>
+                    <td class="text-center">
+                      <span>{{ item.startDate }}</span>
+                    </td>
+                    <td class="text-center">
+                      <span>{{ item.endDate }}</span>
+                    </td>
+                    <td class="text-center">
+                      <span>{{ item.specificDays }}</span>
+                    </td>
+                    <td class="text-center">
+                      <span>{{ item.customerOnly }}</span>
+                    </td>
+                    <td class="text-center">
+                      <span>{{ item.status }}</span>
+                    </td>
+                    <td class="text-center">
+                      <span>{{ item.quota }}</span>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+          <ngb-pagination
+            class="d-flex justify-content-end"
+            [collectionSize]="collectionSize"
+            [(page)]="page"
+            [pageSize]="pageSize"
+            (pageChange)="onSearch()"
+          >
+          </ngb-pagination>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

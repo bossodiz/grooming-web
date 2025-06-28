@@ -28,4 +28,39 @@ export class PaymentService {
         }),
       );
   }
+
+  getGroomingServiceList(typeId: any): Observable<ApiResponse> {
+    return this.http
+      .get<ApiResponse>(
+        `${Config.apiUrl}/payment/grooming-services?petTypeId=${typeId}`,
+      )
+      .pipe(
+        map((response) => response),
+        catchError((error) => {
+          return throwError(() => error);
+        }),
+      );
+  }
+
+  getPetShopServiceList(): Observable<ApiResponse> {
+    return this.http
+      .get<ApiResponse>(`${Config.apiUrl}/payment/pet-shop-services`)
+      .pipe(
+        map((response) => response),
+        catchError((error) => {
+          return throwError(() => error);
+        }),
+      );
+  }
+
+  calculatePayment(data: any): Observable<ApiResponse> {
+    return this.http
+      .post<ApiResponse>(`${Config.apiUrl}/payment/calculate`, data)
+      .pipe(
+        map((response) => response),
+        catchError((error) => {
+          return throwError(() => error);
+        }),
+      );
+  }
 }

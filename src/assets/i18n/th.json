@@ -70,5 +70,6 @@
   "update": "อัพเดต",
   "delete": "ลบ",
   "save": "บันทึก",
-  "cancel": "ยกเลิก"
+  "cancel": "ยกเลิก",
+  "promotion_management": "การจัดการโปรโมชั่น"
 }

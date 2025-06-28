@@ -1,0 +1,78 @@
+.card-item {
+  border: 1px solid #dee2e6 !important; /* ขอบสีเทาอ่อน */
+  border-radius: 0.5rem;
+}
+
+.card-scroll-container {
+  padding-right: 0.5rem; /* เผื่อ space สำหรับ scrollbar */
+}
+
+.scrollable-items {
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  @media (min-width: 1200px) {
+    max-height: 540px;
+  }
+  @media (max-width: 1199.98px) and (min-width: 768px) {
+    max-height: 420px;
+  }
+  @media (max-width: 767.98px) {
+    max-height: 300px;
+  }
+}
+
+.selectable-card {
+  position: relative;
+  cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  &.selected {
+    background-color: #f0f0f0;
+    border: 2px solid #28a745;
+    box-shadow: none;
+  }
+}
+
+.cart-item-row:hover {
+  background-color: #f9f9f9;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+}
+.cart-table {
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.cart-table thead th {
+  border-bottom: 1px solid #dee2e6;
+}
+
+.cart-table td {
+  vertical-align: middle;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.cart-table button {
+  font-size: 1rem;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+
+.cart-table button:hover {
+  opacity: 1;
+}
+
+.card-header {
+  font-size: 1.1rem;
+  background-color: #f8f9fa !important;
+  border-bottom: 1px solid #e9ecef;
+}
