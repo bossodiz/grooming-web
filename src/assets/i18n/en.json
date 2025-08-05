@@ -39,7 +39,8 @@
     "require": {
       "name": "Please enter name",
       "service_name": "Please enter service name",
-      "pet_type": "Please select pet type"
+      "pet_type": "Please select pet type",
+      "service_price": "Please enter service price"
     },
     "validate": {
       "age_year_min": "Please enter year >= 0",
@@ -70,5 +71,6 @@
   "delete": "Delete",
   "save": "Save",
   "cancel": "Cancel",
-  "promotion_management": "Promotion Management"
+  "promotion_management": "Promotion Management",
+  "service_description": "Service Description"
 }

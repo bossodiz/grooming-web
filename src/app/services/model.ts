@@ -71,10 +71,10 @@ export class PetDetail {
 
 export class GroomingServiceTableList {
   id?: number;
-  service_name?: string;
+  name?: string;
   type?: string;
-  service_price?: string;
-  details?: string;
+  price?: string;
+  description?: string;
 }
 
 export class PromotionTableList {
@@ -82,7 +82,8 @@ export class PromotionTableList {
   name?: string;
   discountCategory?: string;
   discountType?: string;
-  amount?: number;
+  amount?: string;
+  amountType?: string;
   periodType?: string;
   startDate?: string;
   endDate?: string;

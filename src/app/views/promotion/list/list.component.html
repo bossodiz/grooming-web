@@ -38,34 +38,19 @@
                     {{ "name" | translate }}
                   </th>
                   <th scope="col" class="text-center">
-                    {{ "discountCategory" | translate }}
+                    {{ "discount_category" | translate }}
                   </th>
                   <th scope="col" class="text-center">
-                    {{ "discountType" | translate }}
+                    {{ "discount_type" | translate }}
                   </th>
                   <th scope="col" class="text-center">
                     {{ "amount" | translate }}
                   </th>
                   <th scope="col" class="text-center">
-                    {{ "periodType" | translate }}
-                  </th>
-                  <th scope="col" class="text-center">
-                    {{ "startDate" | translate }}
-                  </th>
-                  <th scope="col" class="text-center">
-                    {{ "endDate" | translate }}
-                  </th>
-                  <th scope="col" class="text-center">
-                    {{ "specificDays" | translate }}
-                  </th>
-                  <th scope="col" class="text-center">
-                    {{ "customerOnly" | translate }}
+                    {{ "period_date" | translate }}
                   </th>
                   <th scope="col" class="text-center">
                     {{ "status" | translate }}
-                  </th>
-                  <th scope="col" class="text-center">
-                    {{ "quota" | translate }}
                   </th>
                 </tr>
               </thead>
@@ -82,7 +67,7 @@
                     <td class="text-center">
                       <span>{{ i + 1 }}</span>
                     </td>
-                    <td class="text-center">
+                    <td class="text-left">
                       <span>{{ item.name }}</span>
                     </td>
                     <td class="text-center">
@@ -92,29 +77,27 @@
                       <span>{{ item.discountType }}</span>
                     </td>
                     <td class="text-center">
-                      <span>{{ item.amount }}</span>
+                      <span>{{ item.amount }} {{ item.amountType }}</span>
                     </td>
                     <td class="text-center">
-                      <span>{{ item.periodType }}</span>
+                      <span
+                        >{{ item.startDate }} {{ "to" | translate }}
+                        {{ item.endDate }}</span
+                      >
                     </td>
-                    <td class="text-center">
-                      <span>{{ item.startDate }}</span>
-                    </td>
-                    <td class="text-center">
-                      <span>{{ item.endDate }}</span>
-                    </td>
-                    <td class="text-center">
-                      <span>{{ item.specificDays }}</span>
-                    </td>
-                    <td class="text-center">
-                      <span>{{ item.customerOnly }}</span>
-                    </td>
-                    <td class="text-center">
-                      <span>{{ item.status }}</span>
-                    </td>
-                    <td class="text-center">
-                      <span>{{ item.quota }}</span>
-                    </td>
+                    @if (item.status) {
+                      <td class="text-center">
+                        <span style="color: green">{{
+                          "active" | translate
+                        }}</span>
+                      </td>
+                    } @else {
+                      <td class="text-center">
+                        <span style="color: red">{{
+                          "inactive" | translate
+                        }}</span>
+                      </td>
+                    }
                   </tr>
                 }
               </tbody>

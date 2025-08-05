@@ -39,18 +39,6 @@ export class MasterService {
       );
   }
 
-  getGroomingServices(petTypeId?: number): Observable<ApiResponse> {
-    const options =
-      petTypeId !== undefined ? { params: { type: petTypeId } } : {};
-
-    return this.http
-      .get<ApiResponse>(`${Config.apiUrl}/master/grooming-list`, options)
-      .pipe(
-        map((response) => response),
-        catchError((error) => throwError(() => error)),
-      );
-  }
-
   getPetTypeByName(name: string): Observable<ApiResponse> {
     const params = new HttpParams().set('name', name);
     return this.http

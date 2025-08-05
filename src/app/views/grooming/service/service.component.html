@@ -1,10 +1,10 @@
 <breadcrumb [title]="'Service'" [titleLink]="'/grooming/service'" />
 
 <div class="row">
-  <div class="col-lg-6">
+  <div class="col-lg-12">
     <div class="card">
       <div class="card-header">
-        <h4 class="card-title mb-0">{{ "animalType.dog" | translate }}</h4>
+        <h4 class="card-title mb-0">บริการ</h4>
       </div>
       <div class="card-body">
         <div class="mb-3 row">
@@ -14,21 +14,21 @@
               class="form-control"
               placeholder="{{ 'search' | translate }}"
               type="text"
-              [(ngModel)]="filterDog"
-              (ngModelChange)="onSearch('dog')"
+              [(ngModel)]="filter"
+              (ngModelChange)="onSearch()"
             />
           </div>
           <div class="col-xl text-end">
-            <button
-              class="btn btn-primary"
-              (click)="openAddServiceModal('dog')"
-            >
+            <button class="btn btn-primary" (click)="openAddServiceModal()">
               {{ "add_service" | translate }}
             </button>
           </div>
         </div>
 
-        <div class="table-responsive">
+        <div
+          class="table-responsive"
+          style="max-height: 500px; overflow-y: auto"
+        >
           <table class="table table-enhanced table-hover">
             <thead>
               <tr>
@@ -37,125 +37,43 @@
                   {{ "service_name" | translate }}
                 </th>
                 <th scope="col" class="text-center">
-                  {{ "service_price" | translate }}
+                  {{ "pet_type" | translate }}
                 </th>
                 <th scope="col" class="text-center">
-                  {{ "details" | translate }}
+                  {{ "service_description" | translate }}
+                </th>
+                <th scope="col" class="text-center">
+                  {{ "service_price" | translate }}
                 </th>
               </tr>
             </thead>
             <tbody>
-              @for (item of searchCountriesDog; track item.id; let i = $index) {
+              @for (item of searchCountries; track item.id; let i = $index) {
                 <tr (click)="viewDetail(item.id!)">
                   <td class="table-detail-link text-center">
                     {{ i + 1 }}
                   </td>
                   <td
                     class="table-detail-link text-center"
-                    [innerHTML]="item.service_name! | multiHighlight: filterDog"
+                    [innerHTML]="item.name! | multiHighlight: filter"
                   ></td>
                   <td
                     class="table-detail-link text-center"
-                    [innerHTML]="
-                      item.service_price! | multiHighlight: filterDog
-                    "
+                    [innerHTML]="item.type! | multiHighlight: filter"
                   ></td>
                   <td
                     class="table-detail-link text-center"
-                    [innerHTML]="item.details! | multiHighlight: filterDog"
+                    [innerHTML]="item.description! | multiHighlight: filter"
+                  ></td>
+                  <td
+                    class="table-detail-link text-center"
+                    [innerHTML]="item.price!"
                   ></td>
                 </tr>
               }
             </tbody>
           </table>
         </div>
-        <ngb-pagination
-          class="d-flex justify-content-end"
-          [collectionSize]="collectionSizeDog"
-          [(page)]="pageDog"
-          [pageSize]="pageSizeDog"
-          (pageChange)="onSearch('dog')"
-        >
-        </ngb-pagination>
-      </div>
-    </div>
-  </div>
-  <div class="col-lg-6">
-    <div class="card">
-      <div class="card-header">
-        <h4 class="card-title mb-0">{{ "animalType.cat" | translate }}</h4>
-      </div>
-      <div class="card-body">
-        <div class="mb-3 row">
-          <div class="col-xl-3">
-            <input
-              id="table-filtering-search"
-              class="form-control"
-              placeholder="{{ 'search' | translate }}"
-              type="text"
-              [(ngModel)]="filterCat"
-              (ngModelChange)="onSearch('cat')"
-            />
-          </div>
-          <div class="col-xl text-end">
-            <button
-              class="btn btn-primary"
-              (click)="openAddServiceModal('cat')"
-            >
-              {{ "add_service" | translate }}
-            </button>
-          </div>
-        </div>
-
-        <div class="table-responsive">
-          <table class="table table-enhanced table-hover">
-            <thead>
-              <tr>
-                <th scope="col" class="text-center">{{ "no" | translate }}</th>
-                <th scope="col" class="text-center">
-                  {{ "service_name" | translate }}
-                </th>
-                <th scope="col" class="text-center">
-                  {{ "service_price" | translate }}
-                </th>
-                <th scope="col" class="text-center">
-                  {{ "details" | translate }}
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              @for (item of searchCountriesCat; track item.id; let i = $index) {
-                <tr (click)="viewDetail(item.id!)">
-                  <td class="table-detail-link text-center">
-                    {{ i + 1 }}
-                  </td>
-                  <td
-                    class="table-detail-link text-center"
-                    [innerHTML]="item.service_name! | multiHighlight: filterCat"
-                  ></td>
-                  <td
-                    class="table-detail-link text-center"
-                    [innerHTML]="
-                      item.service_price! | multiHighlight: filterCat
-                    "
-                  ></td>
-                  <td
-                    class="table-detail-link text-center"
-                    [innerHTML]="item.details! | multiHighlight: filterCat"
-                  ></td>
-                </tr>
-              }
-            </tbody>
-          </table>
-        </div>
-        <ngb-pagination
-          class="d-flex justify-content-end"
-          [collectionSize]="collectionSizeCat"
-          [(page)]="pageCat"
-          [pageSize]="pageSizeCat"
-          (pageChange)="onSearch('cat')"
-        >
-        </ngb-pagination>
       </div>
     </div>
   </div>
@@ -184,14 +102,15 @@
   </div>
   <div class="modal-body">
     <form class="row g-3 needs-validation" novalidate [formGroup]="serviceForm">
+      <!-- name -->
       <div class="col-md-12">
-        <label for="nameThInput" class="form-label"
-          >{{ "service_name_th" | translate }}
+        <label for="nameInput" class="form-label"
+          >{{ "service_name" | translate }}
           <span class="text-danger">*</span></label
         >
         <input
-          formControlName="nameTh"
-          [ngClass]="{ 'is-invalid': submit && form['nameTh'].errors }"
+          formControlName="name"
+          [ngClass]="{ 'is-invalid': submit && form['name'].errors }"
           type="text"
           class="form-control form-control-lg"
           id="nameThInput"
@@ -199,24 +118,15 @@
         />
         <div class="invalid-feedback">{{ nameError }}</div>
       </div>
-      <div class="col-md-12">
-        <label for="nameEnInput" class="form-label">{{
-          "service_name_en" | translate
-        }}</label>
-        <input
-          formControlName="nameEn"
-          type="text"
-          class="form-control form-control-lg"
-          id="nameEnInput"
-        />
-      </div>
       <!-- Type -->
       <div class="col-md-12">
         <label for="typeInput" class="form-label"
           >{{ "pet_type" | translate }}
-        </label>
+          <span class="text-danger">*</span></label
+        >
         <ng-select
           [items]="petTypeList"
+          [ngClass]="{ 'is-invalid': submit && form['type'].errors }"
           bindLabel="label"
           bindValue="key"
           [searchable]="true"
@@ -228,26 +138,54 @@
             </div>
           </ng-template>
         </ng-select>
+        <div class="invalid-feedback">{{ typeError }}</div>
       </div>
-
+      <!-- description -->
+      <div class="col-md-12">
+        <label for="descriptionInput" class="form-label"
+          >{{ "service_description" | translate }}
+          <span class="text-danger">*</span></label
+        >
+        <input
+          formControlName="description"
+          type="text"
+          class="form-control form-control-lg"
+          id="descriptionInput"
+        />
+      </div>
       <!-- price -->
       <div class="col-md-12">
-        <label for="priceInput" class="form-label">{{
-          "service_price" | translate
-        }}</label>
+        <label for="priceInput" class="form-label"
+          >{{ "service_price" | translate }}
+          <span class="text-danger">*</span></label
+        >
         <div class="d-flex gap-3">
           <div class="input-group">
             <input
               formControlName="price"
-              mask="separator.2"
+              [ngClass]="{ 'is-invalid': submit && form['price'].errors }"
+              mask="separator.0"
               thousandSeparator=","
               [dropSpecialCharacters]="true"
               type="text"
               class="form-control form-control-lg"
               id="priceInput"
             />
+            <div class="invalid-feedback">{{ priceError }}</div>
           </div>
         </div>
+      </div>
+      <!-- barcode -->
+      <div class="col-md-12">
+        <label for="barcodeInput" class="form-label">{{
+          "barcode" | translate
+        }}</label>
+        <input
+          formControlName="barcode"
+          type="text"
+          class="form-control form-control-lg"
+          id="barcodeInput"
+        />
       </div>
       <div class="col-md-12">
         <label for="remarkInput" class="form-label">{{

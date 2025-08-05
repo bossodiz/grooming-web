@@ -96,9 +96,7 @@ export class ReserveComponent implements OnInit {
   public formBuilder = inject(UntypedFormBuilder);
   private modalService = inject(NgbModal);
   private localeService = inject(LocaleService);
-  private translate = inject(TranslateService);
   private masterService = inject(MasterService);
-  private petService = inject(PetService);
   private tooltipMap = new Map<string, Tooltip>();
   private reserveService = inject(ReserveService);
   private phoneFormatPipe = inject(PhoneFormatPipe);
@@ -423,8 +421,6 @@ export class ReserveComponent implements OnInit {
   petTypeList: any[] = [];
   breedList: any[] = [];
   filteredBreedList: any[] = [];
-  groomingServiceList: any[] = [];
-  filteredGroomingServiceList: any[] = [];
   showDelete!: boolean;
   confirmBtn!: string;
 
@@ -432,7 +428,6 @@ export class ReserveComponent implements OnInit {
     this.loadPetList();
     this.loadPetTypes();
     this.loadAllBreeds();
-    this.loadGroomingService();
   }
 
   setupTooltip(info: any) {
@@ -548,9 +543,6 @@ export class ReserveComponent implements OnInit {
         this.filteredBreedList = this.breedList.filter(
           (b) => b.ref_key === obj.type,
         );
-        this.filteredGroomingServiceList = this.groomingServiceList.filter(
-          (b) => b.ref_key === obj.type,
-        );
       }
       this.reserveForm.patchValue({
         id: obj.id,
@@ -591,11 +583,7 @@ export class ReserveComponent implements OnInit {
         this.filteredBreedList = this.breedList.filter(
           (b) => b.ref_key === item.ref_key,
         );
-        this.filteredGroomingServiceList = this.groomingServiceList.filter(
-          (b) => b.ref_key === item.ref_key,
-        );
         this.sortBreeds();
-        this.sortGrooming();
       }
       if (item.ref_key3) {
         this.onPhoneInput({ target: { value: item.ref_key3 } });
@@ -611,14 +599,9 @@ export class ReserveComponent implements OnInit {
       this.filteredBreedList = this.breedList.filter(
         (b) => b.ref_key === item.key,
       );
-      this.filteredGroomingServiceList = this.groomingServiceList.filter(
-        (b) => b.ref_key === item.key,
-      );
       this.sortBreeds();
-      this.sortGrooming();
     } else {
       this.filteredBreedList = [];
-      this.filteredGroomingServiceList = [];
     }
     this.reserveForm.get('breed')?.setValue('');
     this.reserveForm.get('grooming')?.setValue('');
@@ -659,12 +642,6 @@ export class ReserveComponent implements OnInit {
       .map((item) => {
         item.label = this.locale() === 'th' ? item.value_th : item.value_en;
       });
-  }
-
-  sortGrooming() {
-    this.groomingServiceList.map((item) => {
-      item.label = this.locale() === 'th' ? item.value_th : item.value_en;
-    });
   }
 
   addCustomPet = (name: string) => {
@@ -829,21 +806,6 @@ export class ReserveComponent implements OnInit {
         tap((response) => {
           this.breedList = response.data ?? [];
           this.sortBreeds();
-        }),
-        catchError((error) => {
-          return throwError(() => error);
-        }),
-      )
-      .subscribe();
-  }
-
-  loadGroomingService() {
-    this.masterService
-      .getGroomingServices()
-      .pipe(
-        tap((response) => {
-          this.groomingServiceList = response.data ?? [];
-          this.sortGrooming();
         }),
         catchError((error) => {
           return throwError(() => error);

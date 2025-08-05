@@ -129,31 +129,6 @@
         </ng-select>
       </div>
 
-      <!-- Grooming Service -->
-      <div class="col-md-12">
-        <label for="groomingInput" class="form-label"
-          >Grooming Service <span class="text-danger">*</span></label
-        >
-        <ng-select
-          [items]="filteredGroomingServiceList"
-          bindLabel="label"
-          bindValue="key"
-          [searchable]="true"
-          formControlName="grooming"
-          required
-          [ngClass]="{
-            'is-invalid': submit && form['grooming'].errors,
-          }"
-        >
-          <ng-template ng-option-tmp let-item="item">
-            <div class="option-content">
-              {{ locale() === "th" ? item.value_th : item.value_en }}
-            </div>
-          </ng-template>
-        </ng-select>
-        <div class="invalid-feedback">Please select a service</div>
-      </div>
-
       <!-- Start -->
       <div class="col-md-12">
         <label class="form-label"

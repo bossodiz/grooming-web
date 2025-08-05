@@ -14,20 +14,14 @@ import {
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
-import {
-  NgbHighlight,
-  NgbModal,
-  NgbPaginationModule,
-} from '@ng-bootstrap/ng-bootstrap';
-import { catchError, Observable, tap, throwError } from 'rxjs';
+import { NgbModal, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
+import { catchError, tap, throwError } from 'rxjs';
 import { BreadcrumbComponent } from '@components/breadcrumb/breadcrumb.component';
-import { TableService } from '@/app/services/table.service';
 import { RouterModule } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { GroomingServiceTableList } from '@/app/services/model';
 import { GroomingService } from '@/app/services/grooming.service';
 import { MultiHighlightPipe } from '../../../services/format.service';
-import { PetService } from '@/app/services/pet.service';
 import { MasterService } from '@/app/services/master.service';
 import { LocaleService } from '@/app/services/locale.service';
 import { NgSelectModule } from '@ng-select/ng-select';
@@ -57,25 +51,10 @@ import { NgxMaskDirective, NGX_MASK_CONFIG, initialConfig } from 'ngx-mask';
   ],
 })
 export class ServiceComponent {
-  //Dog
-  filterDog = '';
-  pageDog = 1;
-  pageSizeDog = 5;
-  searchCountriesDog!: GroomingServiceTableList[];
-  collectionSizeDog = 0;
-  originalDataDog!: GroomingServiceTableList[];
+  filter = '';
+  searchCountries!: GroomingServiceTableList[];
+  originalData!: GroomingServiceTableList[];
 
-  //Cat
-  filterCat = '';
-  pageCat = 1;
-  pageSizeCat = 5;
-  searchCountriesCat!: GroomingServiceTableList[];
-  collectionSizeCat = 0;
-  originalDataCat!: GroomingServiceTableList[];
-
-  records$: Observable<GroomingServiceTableList[]> | undefined;
-  total$: Observable<number> | undefined;
-  public tableService = inject(TableService);
   private pipe = inject(DecimalPipe);
   private groomingService = inject(GroomingService);
   private masterService = inject(MasterService);
@@ -89,6 +68,8 @@ export class ServiceComponent {
   serviceForm!: UntypedFormGroup;
   submit!: boolean;
   nameError!: string;
+  typeError!: string;
+  priceError!: string;
   petTypeList: any[] = [];
   locale = this.localeService.getLocale();
   btnSave!: string;
@@ -96,50 +77,20 @@ export class ServiceComponent {
   isDelete!: boolean;
 
   ngOnInit(): void {
-    this.records$ = this.tableService.items$;
-    this.total$ = this.tableService.total$;
-    this.getData('dog');
-    this.getData('cat');
+    this.getData();
     this.loadPetTypes();
   }
 
-  onSearch(type: string) {
-    if (type === 'dog') {
-      let searchData = this.search(type, this.filterDog, this.pipe);
-      this.collectionSizeDog = searchData.length;
-      this.searchCountriesDog = searchData
-        .map((country: any) => ({
-          ...country,
-        }))
-        .slice(
-          (this.pageDog - 1) * this.pageSizeDog,
-          (this.pageDog - 1) * this.pageSizeDog + this.pageSizeDog,
-        );
-    } else {
-      let searchDataCat = this.search(type, this.filterCat, this.pipe);
-      this.collectionSizeCat = searchDataCat.length;
-      this.searchCountriesCat = searchDataCat
-        .map((country: any) => ({
-          ...country,
-        }))
-        .slice(
-          (this.pageCat - 1) * this.pageSizeCat,
-          (this.pageCat - 1) * this.pageSizeCat + this.pageSizeCat,
-        );
-    }
+  onSearch() {
+    let searchData = this.search(this.filter, this.pipe);
+    this.searchCountries = searchData.map((country: any) => ({
+      ...country,
+    }));
   }
 
-  search(
-    type: string,
-    text: string,
-    pipe: PipeTransform,
-  ): GroomingServiceTableList[] {
+  search(text: string, pipe: PipeTransform): GroomingServiceTableList[] {
     if (!text || text.trim().length === 0) {
-      if (type === 'dog') {
-        return this.originalDataDog;
-      } else {
-        return this.originalDataCat;
-      }
+      return this.originalData;
     }
 
     const terms = text
@@ -148,67 +99,35 @@ export class ServiceComponent {
       .map((t) => t.trim())
       .filter((t) => t.length > 0);
 
-    if (type === 'dog') {
-      return this.originalDataDog.filter((item) => {
-        const searchable = [
-          item.service_name ?? '',
-          item.type ?? '',
-          item.details ?? '',
-        ].map((v) => v.toLowerCase());
+    return this.originalData.filter((item) => {
+      const searchable = [
+        item.name ?? '',
+        item.description ?? '',
+        item.type ?? '',
+      ].map((v) => v.toLowerCase());
 
-        // ทุกคำต้องเจอในอย่างน้อย 1 ฟิลด์
-        return terms.every((term) =>
-          searchable.some((field) => field.includes(term)),
-        );
-      });
-    } else {
-      return this.originalDataCat.filter((item) => {
-        const searchable = [
-          item.service_name ?? '',
-          item.type ?? '',
-          item.details ?? '',
-        ].map((v) => v.toLowerCase());
-
-        // ทุกคำต้องเจอในอย่างน้อย 1 ฟิลด์
-        return terms.every((term) =>
-          searchable.some((field) => field.includes(term)),
-        );
-      });
-    }
+      // ทุกคำต้องเจอในอย่างน้อย 1 ฟิลด์
+      return terms.every((term) =>
+        searchable.some((field) => field.includes(term)),
+      );
+    });
   }
 
-  getData(type: string) {
+  getData() {
     this.groomingService
-      .getService(type)
+      .getService()
       .pipe(
         tap((response) => {
-          if (type === 'dog') {
-            this.originalDataDog = response.data.map((item: any) => {
-              return {
-                id: item.id,
-                service_name: item.nameTh, // หรือ nameEn แล้วแต่ภาษา
-                type: item.typeTh,
-                service_price: item.price,
-                details: item.remark,
-              } as GroomingServiceTableList;
-            });
-            this.tableService.setItems(this.originalDataDog, this.pageSizeDog);
-            this.collectionSizeDog = this.originalDataDog.length;
-            this.onSearch(type);
-          } else {
-            this.originalDataCat = response.data.map((item: any) => {
-              return {
-                id: item.id,
-                service_name: item.nameTh, // หรือ nameEn แล้วแต่ภาษา
-                type: item.typeTh,
-                service_price: item.price,
-                details: item.remark,
-              } as GroomingServiceTableList;
-            });
-            this.tableService.setItems(this.originalDataCat, this.pageSizeCat);
-            this.collectionSizeCat = this.originalDataCat.length;
-            this.onSearch(type);
-          }
+          this.originalData = response.data.map((item: any) => {
+            return {
+              id: item.id,
+              name: item.name,
+              price: item.price,
+              type: item.typeName,
+              description: item.description,
+            } as GroomingServiceTableList;
+          });
+          this.onSearch();
         }),
         catchError((error) => {
           return throwError(() => error);
@@ -222,11 +141,12 @@ export class ServiceComponent {
         const service = response.data;
         this.serviceForm = this.formBuilder.group({
           id: [service.id],
-          nameTh: [service.nameTh, [Validators.required]],
-          nameEn: [service.nameEn],
+          name: [service.name, [Validators.required]],
           price: [service.price],
+          type: [service.type],
+          description: [service.description],
+          barcode: [service.barcode],
           remark: [service.remark],
-          type: [service.typeId],
         });
         this.form['type']?.disable();
         this.btnSave = this.translate.instant('save');
@@ -239,28 +159,20 @@ export class ServiceComponent {
       },
     });
   }
-  openAddServiceModal(type: string) {
-    this.masterService
-      .getPetTypeByName(type)
-      .pipe(
-        tap((response) => {
-          let petTypeId = response.data.key; // เก็บ id ของ pet type ที่เลือก
-          this.serviceForm = this.formBuilder.group({
-            id: [null],
-            nameTh: ['', [Validators.required]],
-            nameEn: [null],
-            price: [null],
-            remark: [null],
-            type: [petTypeId],
-          });
-          this.form['type']?.disable();
-          this.btnSave = this.translate.instant('add');
-          this.headerModal = this.translate.instant('add_service');
-          this.isDelete = false;
-          this.modalService.open(this.standardModal, { centered: true });
-        }),
-      )
-      .subscribe();
+  openAddServiceModal() {
+    this.serviceForm = this.formBuilder.group({
+      id: [null],
+      name: ['', [Validators.required]],
+      description: [null],
+      type: [null],
+      price: [null],
+      barcode: [null],
+      remark: [null],
+    });
+    this.btnSave = this.translate.instant('add');
+    this.headerModal = this.translate.instant('add_service');
+    this.isDelete = false;
+    this.modalService.open(this.standardModal, { centered: true });
   }
 
   modalclose() {
@@ -277,23 +189,42 @@ export class ServiceComponent {
     this.submit = true;
     if (this.serviceForm.invalid) {
       this.nameError = this.translate.instant('error.require.service_name');
-      this.serviceForm.markAllAsTouched(); // เพื่อแสดง validation error
-      return;
+      this.typeError = this.translate.instant('error.require.pet_type');
+      this.priceError = this.translate.instant('error.require.service_price');
+      if (this.form['name'].errors) {
+        this.serviceForm.markAllAsTouched(); // เพื่อแสดง validation error
+        return;
+      }
     }
     const formData = {
       id: this.serviceForm.get('id')?.value,
-      nameTh: this.serviceForm.get('nameTh')?.value,
-      nameEn: this.serviceForm.get('nameEn')?.value,
+      name: this.serviceForm.get('name')?.value,
       price: this.serviceForm.get('price')?.value,
+      type: this.serviceForm.get('type')?.value,
+      description: this.serviceForm.get('description')?.value,
+      barcode: this.serviceForm.get('barcode')?.value,
       remark: this.serviceForm.get('remark')?.value,
-      petTypeId: this.serviceForm.get('type')?.value,
     };
     this.groomingService
       .addService(formData)
       .pipe(
         tap((response) => {
-          this.getData('dog');
-          this.getData('cat');
+          this.getData();
+          this.modalclose();
+        }),
+        catchError((error) => {
+          return throwError(() => error);
+        }),
+      )
+      .subscribe();
+  }
+
+  deleteService() {
+    this.groomingService
+      .deleteService(this.serviceForm.value.id)
+      .pipe(
+        tap((response) => {
+          this.getData();
           this.modalclose();
         }),
         catchError((error) => {
@@ -328,21 +259,5 @@ export class ServiceComponent {
       .map((item) => {
         item.label = this.locale() === 'th' ? item.value_th : item.value_en;
       });
-  }
-
-  deleteService() {
-    this.groomingService
-      .deleteService(this.serviceForm.value.id)
-      .pipe(
-        tap((response) => {
-          this.getData('dog');
-          this.getData('cat');
-          this.modalclose();
-        }),
-        catchError((error) => {
-          return throwError(() => error);
-        }),
-      )
-      .subscribe();
   }
 }

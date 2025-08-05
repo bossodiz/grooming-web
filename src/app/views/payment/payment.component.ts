@@ -80,7 +80,6 @@ export class PaymentComponent implements AfterViewChecked {
   }
 
   getGroomingServiceList(typeId: any) {
-    console.log('getGroomingServiceList', typeId);
     this.paymentService
       .getGroomingServiceList(typeId)
       .pipe(
@@ -88,8 +87,8 @@ export class PaymentComponent implements AfterViewChecked {
           this.originalGroomingItems = response.data ?? [];
           this.groomingItems = this.originalGroomingItems.map((item: any) => ({
             id: item.id,
-            name: this.locale() === 'th' ? item.nameTh : item.nameEn,
-            description: item.description || '-',
+            name: item.name,
+            remark: item.remark || '-',
             price: item.price,
           }));
         }),
@@ -108,8 +107,8 @@ export class PaymentComponent implements AfterViewChecked {
           this.originalPetShopItems = response.data ?? [];
           this.petShopItems = this.originalPetShopItems.map((item: any) => ({
             id: item.id,
-            name: this.locale() === 'th' ? item.nameTh : item.nameEn,
-            description: item.description || '-',
+            name: item.name,
+            remark: item.remark || '-',
             price: item.price,
             stock: item.stock,
           }));
@@ -245,8 +244,8 @@ export class PaymentComponent implements AfterViewChecked {
       if (this.selectedTags.size === 0) {
         this.groomingItems = this.originalGroomingItems.map((item: any) => ({
           id: item.id,
-          name: this.locale() === 'th' ? item.nameTh : item.nameEn,
-          description: item.description || '-',
+          name: item.name,
+          remark: item.remark || '-',
           price: item.price,
         }));
       } else {
@@ -256,8 +255,8 @@ export class PaymentComponent implements AfterViewChecked {
           )
           .map((item: any) => ({
             id: item.id,
-            name: this.locale() === 'th' ? item.nameTh : item.nameEn,
-            description: item.description || '-',
+            name: item.name,
+            remark: item.remark || '-',
             price: item.price,
           }));
       }
@@ -268,8 +267,8 @@ export class PaymentComponent implements AfterViewChecked {
       if (this.selectedTags.size === 0) {
         this.petShopItems = this.originalPetShopItems.map((item: any) => ({
           id: item.id,
-          name: this.locale() === 'th' ? item.nameTh : item.nameEn,
-          description: item.description || '-',
+          name: item.name,
+          remark: item.remark || '-',
           price: item.price,
           stock: item.stock,
         }));
@@ -280,8 +279,8 @@ export class PaymentComponent implements AfterViewChecked {
           )
           .map((item: any) => ({
             id: item.id,
-            name: this.locale() === 'th' ? item.nameTh : item.nameEn,
-            description: item.description || '-',
+            name: item.name,
+            remark: item.remark || '-',
             price: item.price,
             stock: item.stock,
           }));
@@ -384,6 +383,8 @@ export class PaymentComponent implements AfterViewChecked {
           typeof this.currentCart[index].quantity === 'number'
         ) {
           this.currentCart[index].quantity--;
+          this.currentCart[index].total =
+            this.currentCart[index].quantity! * this.currentCart[index].price!;
         }
       } else {
         this.currentCart.splice(index, 1);
@@ -418,12 +419,11 @@ export class PaymentComponent implements AfterViewChecked {
     0,
   );
 
-  onConfirm() {
+  onCalculate() {
     this.paymentService
       .calculatePayment(this.currentCart)
       .pipe(
         tap((response) => {
-          this.customerList = response.data ?? [];
           this.discountBreakdown = response.data?.discountBreakdown ?? [];
         }),
         catchError((error) => {
