@@ -93,11 +93,6 @@ export class PromotionTableList {
   quota?: number;
 }
 
-export class PromotionDiscount {
-  description?: string;
-  amount?: number;
-}
-
 export class CartItem {
   key?: string;
   type?: 'G' | 'P';
@@ -107,5 +102,33 @@ export class CartItem {
   price?: number;
   quantity?: number;
   total?: number;
-  // order: number;
+}
+
+export class CartCalculationResult {
+  items?: CartItemResult[];
+  totalBeforeDiscount?: number;
+  totalDiscount?: number;
+  totalAfterDiscount?: number;
+  warningPromotions?: string[];
+  overallPromotion?: AppliedPromotion;
+}
+
+export class CartItemResult {
+  key?: string;
+  type?: 'G' | 'P';
+  petId?: number;
+  itemId?: number;
+  name?: string;
+  price?: number;
+  quantity?: number;
+  total?: number;
+  discount?: number;
+  finalTotal?: number;
+  appliedPromotions?: AppliedPromotion[];
+}
+
+export class AppliedPromotion {
+  promotionId?: number;
+  name?: string;
+  discountAmount?: number; // เดิมเป็น string
 }
