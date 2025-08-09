@@ -53,14 +53,17 @@ export class PaymentService {
       );
   }
 
-  calculatePayment(
-    cart: CartItem[],
-    mode: 'preview' | 'finalize',
-    calculationId?: string,
-  ) {
-    const body = { items: cart, calculationId };
+  calculatePayment(cart: CartItem[], invoiceNo?: string) {
+    const body = { items: cart, invoiceNo };
     return this.http.post<ApiResponse>(
-      `${Config.apiUrl}/payment/calculate?mode=${mode}`,
+      `${Config.apiUrl}/payment/calculate`,
+      body,
+    );
+  }
+
+  generateQr(body: { invoiceNo?: string | null; amount: number }) {
+    return this.http.post<ApiResponse>(
+      `${Config.apiUrl}/payment/generate-qr`,
       body,
     );
   }

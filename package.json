@@ -37,6 +37,7 @@
     "@ngx-translate/http-loader": "^16.0.1",
     "@popperjs/core": "^2.11.8",
     "angular-feather": "^6.5.1",
+    "angularx-qrcode": "^19.0.0",
     "apexcharts": "^4.4.0",
     "bootstrap": "^5.3.3",
     "feather-icons": "^4.29.2",

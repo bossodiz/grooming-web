@@ -26,11 +26,13 @@ import { FormsModule } from '@angular/forms';
 import { MasterService } from '@/app/services/master.service';
 import { TranslateModule } from '@ngx-translate/core';
 import {
+  ApiResponse,
   AppliedPromotion,
-  CartCalculationResult,
   CartItem,
   CartItemResult,
+  GenerateQrResponse,
 } from '@/app/services/model';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 // ---- Minimal typings to replace any ----
 export type ShopType = 'GROOMING' | 'PET_SHOP';
@@ -79,6 +81,7 @@ export class PaymentComponent implements AfterViewChecked, OnDestroy {
   private localeService = inject(LocaleService);
   private paymentService = inject(PaymentService);
   private masterService = inject(MasterService);
+  private modalService = inject(NgbModal);
   locale = this.localeService.getLocale();
 
   // ---- Data sources ----
@@ -96,7 +99,7 @@ export class PaymentComponent implements AfterViewChecked, OnDestroy {
   selectedTagsGrooming = new Set<number>();
   selectedTagsPetShop = new Set<number>();
   // pointer to the active set (do not mutate directly outside helpers)
-  private selectedTags = new Set<number>();
+  selectedTags = new Set<number>();
 
   // ---- Items ----
   filter = '';
@@ -110,20 +113,18 @@ export class PaymentComponent implements AfterViewChecked, OnDestroy {
   currentCart: CartItem[] = [];
 
   @ViewChild('cartTable') cartTable!: ElementRef<HTMLDivElement>;
-  private shouldScrollToBottom = false;
+  shouldScrollToBottom = false;
 
   // ---- reactive search ----
-  private search$ = new Subject<string>();
-  private destroy$ = new Subject<void>();
+  search$ = new Subject<string>();
+  destroy$ = new Subject<void>();
 
   // ---- calculation result ----
-  private cartChanges$ = new Subject<void>();
-  private previewSub?: Subscription;
+  cartChanges$ = new Subject<void>();
+  calculateSub?: Subscription;
+  isCalculateLoading = false;
 
-  isPreviewLoading = false;
-  isFinalizing = false;
-
-  calculationId: string | null = null;
+  invoiceNo: string | null = null;
 
   summaryItems: CartItemResult[] = [];
   appliedPromotionsFlat: { name: string; amount: number }[] = [];
@@ -135,6 +136,21 @@ export class PaymentComponent implements AfterViewChecked, OnDestroy {
   itemCount = 0;
   now: Date | null = null;
 
+  @ViewChild('cashInput') cashInput!: ElementRef;
+  cashReceived: number = 0;
+  cashChange: number | null = null;
+  isCashLoading: boolean = false;
+
+  @ViewChild('qrModal') qrModalTpl!: any;
+  isQrLoading = false;
+  qrError = '';
+  qr = {
+    invoiceNo: '' as string | undefined,
+    amount: undefined as number | undefined,
+    imageDataUrl: '' as string | undefined,
+    expiresAt: '' as string | undefined,
+  };
+
   ngOnInit(): void {
     this.getCustomerList();
     this.getTagsGrooming();
@@ -142,25 +158,23 @@ export class PaymentComponent implements AfterViewChecked, OnDestroy {
     this.getPetShopServiceList();
 
     // พรีวิวอัตโนมัติเมื่อ cart เปลี่ยน (debounce กันสั่น)
-    this.previewSub = this.cartChanges$
+    this.calculateSub = this.cartChanges$
       .pipe(
         debounceTime(400),
         tap(() => {
-          this.isPreviewLoading = true;
+          this.isCalculateLoading = true;
         }),
         switchMap(() =>
           this.paymentService
-            .calculatePayment(this.currentCart, 'preview')
-            .pipe(finalize(() => (this.isPreviewLoading = false))),
+            .calculatePayment(this.currentCart, this.invoiceNo ?? undefined)
+            .pipe(finalize(() => (this.isCalculateLoading = false))),
         ),
       )
-      .subscribe((resp) =>
-        this.applyCalcResponse(resp?.data, /*isFinalize*/ false),
-      );
+      .subscribe((resp) => this.applyCalcResponse(resp?.data));
   }
 
   ngOnDestroy(): void {
-    this.previewSub?.unsubscribe();
+    this.calculateSub?.unsubscribe();
   }
 
   // lifecycle hook หลังจาก Angular render view เสร็จ
@@ -201,7 +215,7 @@ export class PaymentComponent implements AfterViewChecked, OnDestroy {
       .pipe(
         tap((response) => {
           this.originalPetShopItems = (response.data ?? []).map(
-            (item: any) =>
+            (item: PetShopItem) =>
               ({
                 id: item.id,
                 name: item.name,
@@ -513,23 +527,6 @@ export class PaymentComponent implements AfterViewChecked, OnDestroy {
     return item.key;
   }
 
-  // ---- calculation ----
-  onCalculate() {
-    if (!this.currentCart.length) return;
-
-    this.isFinalizing = true;
-    this.paymentService
-      .calculatePayment(
-        this.currentCart,
-        'finalize',
-        this.calculationId ?? undefined,
-      )
-      .pipe(finalize(() => (this.isFinalizing = false)))
-      .subscribe((resp) =>
-        this.applyCalcResponse(resp?.data, /*isFinalize*/ true),
-      );
-  }
-
   get groupedPromotions(): { name: string; amount: number }[] {
     const map = new Map<string, number>();
     for (const p of this.appliedPromotionsFlat ?? []) {
@@ -542,7 +539,7 @@ export class PaymentComponent implements AfterViewChecked, OnDestroy {
     return this.customerList.find((c) => c.key === this.customerId);
   }
 
-  private applyCalcResponse(data: any, isFinalize: boolean) {
+  applyCalcResponse(data: any) {
     const items: CartItemResult[] = data?.items ?? [];
 
     this.summaryItems = items;
@@ -551,7 +548,7 @@ export class PaymentComponent implements AfterViewChecked, OnDestroy {
     this.totalAfterDiscount = Number(data?.totalAfterDiscount ?? 0);
     this.warningPromotions = data?.warningPromotions ?? [];
     this.overallPromotion = data?.overallPromotion ?? null;
-    this.calculationId = data?.calculationId ?? this.calculationId;
+    this.invoiceNo = data?.invoiceNo ?? this.invoiceNo;
 
     this.itemCount = items.reduce((s, it) => s + Number(it.quantity ?? 0), 0);
 
@@ -561,8 +558,6 @@ export class PaymentComponent implements AfterViewChecked, OnDestroy {
         amount: Number(p.discountAmount ?? 0),
       })),
     );
-
-    if (isFinalize) this.now = new Date(); // ตี timestamp ตอนยืนยัน
   }
 
   isGroomingKey(key?: string | null): boolean {
@@ -579,5 +574,135 @@ export class PaymentComponent implements AfterViewChecked, OnDestroy {
     const pid = it.petId ?? this.extractPetIdFromKey(it.key) ?? null;
     if (pid == null) return '';
     return this.petName(pid) || ''; // ใช้ฟังก์ชัน petName ที่คุณมีอยู่แล้ว
+  }
+
+  canAddPetShop(item: PetShopItem): boolean {
+    if (!item || typeof item.stock !== 'number') return true;
+    if (item.stock <= 0) return false;
+    const inCartQty = this.currentCart
+      .filter((c) => c.type === 'P' && c.itemId === item.id)
+      .reduce((sum, c) => sum + Number(c.quantity ?? 0), 0);
+    return inCartQty < item.stock;
+  }
+
+  getStockDisabledReason(item: any): string {
+    if (!item || typeof item.stock !== 'number') return '';
+    if (item.stock <= 0) return 'สินค้าหมด';
+    const inCartQty = this.currentCart
+      .filter((c) => c.type === 'P' && c.itemId === item.id)
+      .reduce((sum, c) => sum + Number(c.quantity ?? 0), 0);
+    return inCartQty >= item.stock ? 'ครบจำนวนในตะกร้า' : '';
+  }
+
+  canIncreaseFromCart(cartItem: CartItem): boolean {
+    if (!cartItem || cartItem.type !== 'P') return true;
+    const product = this.petShopItems.find((p) => p.id === cartItem.itemId);
+    if (!product || typeof product.stock !== 'number') return true;
+    return Number(cartItem.quantity ?? 0) < product.stock;
+  }
+
+  onPay(type: string) {
+    // Implement payment logic here
+  }
+
+  openCashModal(content: any) {
+    this.isCashLoading = true;
+    this.cashReceived = 0;
+    this.cashChange = null;
+    const modalRef = this.modalService.open(content, { centered: true });
+
+    modalRef.shown?.subscribe(() => {
+      // บางเวอร์ชันไม่มี .shown ต้องใช้ setTimeout
+      this.focusCashInput();
+    });
+
+    // fallback ใช้ setTimeout ให้แน่ใจว่า DOM render แล้ว
+    setTimeout(() => this.focusCashInput(), 100);
+  }
+
+  focusCashInput() {
+    if (this.cashInput) {
+      this.cashInput.nativeElement.focus();
+    }
+  }
+
+  onCashChange(value: string) {
+    this.cashReceived = Number(value.replace(/,/g, '')); // เอา comma ออกก่อน parse
+  }
+
+  appendNumber(num: number) {
+    this.cashReceived = Number(this.cashReceived.toString() + num.toString());
+    this.calculateChange();
+  }
+
+  clearInput() {
+    this.cashReceived = 0;
+    this.cashChange = null;
+  }
+
+  calculateChange() {
+    const received = Number(this.cashReceived);
+    if (!isNaN(received) && received >= this.totalAfterDiscount) {
+      this.cashChange = received - this.totalAfterDiscount;
+    } else {
+      this.cashChange = null;
+    }
+  }
+
+  confirmCashPayment(modal: any) {
+    // TODO: เรียก API บันทึกการชำระเงิน
+    modal.close();
+  }
+
+  openQrModal(content: any) {
+    if (!this.currentCart.length) return;
+    this.isQrLoading = true;
+    this.qrError = '';
+    this.qr = {
+      invoiceNo: undefined,
+      amount: undefined,
+      imageDataUrl: undefined,
+      expiresAt: undefined,
+    };
+
+    // เตรียมข้อมูลส่งให้ BE ตามที่คุณต้องการ (เช่น invoiceNo จาก preview)
+    const payload = {
+      invoiceNo: this.invoiceNo ?? null,
+      amount: this.totalAfterDiscount, // ให้ BE ยืนยัน/คำนวณซ้ำได้
+      // เติมข้อมูลลูกค้า/ร้าน ถ้าต้องการ
+    };
+
+    // เปิดโมดัลทันที (โชว์ spinner ไว้ก่อน)
+    const modalRef = this.modalService.open(content, {
+      centered: true,
+      backdrop: 'static',
+      keyboard: false,
+    });
+
+    this.paymentService.generateQr(payload).subscribe({
+      next: (res: ApiResponse) => {
+        const data = (res?.data || {}) as GenerateQrResponse;
+
+        this.qr.invoiceNo = data.invoiceNo;
+        this.qr.amount = data.amount ?? this.totalAfterDiscount;
+        this.qr.expiresAt = data.expiresAt;
+        this.qr.imageDataUrl = `data:${data.contentType};base64,${data.imageBase64}`;
+        if (!this.qr.imageDataUrl) {
+          this.qrError = 'ไม่พบรูป QR จากเซิร์ฟเวอร์';
+        }
+      },
+      error: (err: any) => {
+        console.error(err);
+        this.qrError = 'สร้าง QR ไม่สำเร็จ กรุณาลองใหม่';
+      },
+      complete: () => {
+        this.isQrLoading = false;
+      },
+    });
+  }
+
+  confirmQrPaid(modal: any) {
+    // ภายหลัง: call finalize / ตรวจสถานะจ่าย / ออกใบเสร็จ
+    modal.close();
   }
 }

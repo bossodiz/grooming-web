@@ -132,3 +132,13 @@ export class AppliedPromotion {
   name?: string;
   discountAmount?: number; // เดิมเป็น string
 }
+
+export class GenerateQrResponse {
+  invoiceNo?: string;
+  amount?: number;
+  // รองรับได้หลายรูปแบบจาก BE
+  image?: string; // อาจเป็น dataURL หรือ base64 ล้วน
+  imageBase64?: string; // base64 ไม่รวม prefix
+  contentType?: string; // เช่น "image/png"
+  expiresAt?: string; // ISO
+}
