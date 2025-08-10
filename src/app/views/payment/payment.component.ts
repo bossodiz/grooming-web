@@ -7,6 +7,7 @@ import {
   ElementRef,
   AfterViewChecked,
   OnDestroy,
+  TemplateRef,
 } from '@angular/core';
 import { BreadcrumbComponent } from '@components/breadcrumb/breadcrumb.component';
 import { NgSelectModule } from '@ng-select/ng-select';
@@ -33,6 +34,7 @@ import {
   GenerateQrResponse,
 } from '@/app/services/model';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { formatPhone } from '@/app/helper/utils';
 
 // ---- Minimal typings to replace any ----
 export type ShopType = 'GROOMING' | 'PET_SHOP';
@@ -150,6 +152,9 @@ export class PaymentComponent implements AfterViewChecked, OnDestroy {
     imageDataUrl: '' as string | undefined,
     expiresAt: '' as string | undefined,
   };
+
+  @ViewChild('receiptModal') receiptModalTpl!: TemplateRef<any>;
+  receipt: any | null = null;
 
   ngOnInit(): void {
     this.getCustomerList();
@@ -601,10 +606,6 @@ export class PaymentComponent implements AfterViewChecked, OnDestroy {
     return Number(cartItem.quantity ?? 0) < product.stock;
   }
 
-  onPay(type: string) {
-    // Implement payment logic here
-  }
-
   openCashModal(content: any) {
     this.isCashLoading = true;
     this.cashReceived = 0;
@@ -618,6 +619,11 @@ export class PaymentComponent implements AfterViewChecked, OnDestroy {
 
     // fallback ใช้ setTimeout ให้แน่ใจว่า DOM render แล้ว
     setTimeout(() => this.focusCashInput(), 100);
+  }
+
+  cashModalClose(modal: any) {
+    this.isCashLoading = false;
+    modal.dismiss();
   }
 
   focusCashInput() {
@@ -649,9 +655,58 @@ export class PaymentComponent implements AfterViewChecked, OnDestroy {
     }
   }
 
-  confirmCashPayment(modal: any) {
-    // TODO: เรียก API บันทึกการชำระเงิน
-    modal.close();
+  confirmPayment(modal: any, paymentType: string) {
+    this.paymentService
+      .confirmPayment({
+        invoiceNo: this.invoiceNo ?? '',
+        paymentType,
+        customerId: this.customerId ?? undefined,
+      })
+      .subscribe({
+        next: (res) => {
+          // สร้าง items จาก response หรือ fallback จาก summaryItems ปัจจุบัน
+          const items =
+            this.summaryItems ??
+            [].map((it: any) => ({
+              name: it.name,
+              quantity: Number(it.quantity ?? 1),
+              price: Number(it.price ?? 0),
+              total: Number(
+                it.total ?? Number(it.price ?? 0) * Number(it.quantity ?? 1),
+              ),
+              petName: this.petNameFromItem(it),
+            }));
+
+          this.receipt = {
+            invoiceNo: this.invoiceNo ?? '',
+            paidAt: new Date().toISOString(),
+            customerName: this.selectedCustomer?.name ?? '',
+            customerPhone: formatPhone(this.selectedCustomer?.phone ?? ''),
+            items,
+            totalBeforeDiscount: Number(this.totalBeforeDiscount ?? 0),
+            totalDiscount: Number(this.discountTotal ?? 0),
+            totalAfterDiscount: Number(this.totalAfterDiscount ?? 0),
+            paymentType: paymentType == 'CASH_PAYMENT' ? 'เงินสด' : 'QR Code',
+          };
+
+          // ปิด cash modal เดิม
+          modal.close();
+          this.isCashLoading = false;
+          // เปิด receipt modal
+          this.modalService.open(this.receiptModalTpl, {
+            size: 'lg',
+            centered: true,
+            backdrop: 'static',
+            keyboard: false,
+          });
+        },
+        error: (err) => {
+          console.error('confirmPayment error', err);
+        },
+        complete: () => {
+          modal.close();
+        },
+      });
   }
 
   openQrModal(content: any) {
@@ -701,8 +756,229 @@ export class PaymentComponent implements AfterViewChecked, OnDestroy {
     });
   }
 
-  confirmQrPaid(modal: any) {
-    // ภายหลัง: call finalize / ตรวจสถานะจ่าย / ออกใบเสร็จ
-    modal.close();
+  closeReceipt(modalRef: any) {
+    modalRef.close();
+    this.currentCart = [];
+    this.selectedItems = [];
+    this.cartChanges$.next();
+  }
+
+  // ปุ่มพิมพ์
+  printReceipt() {
+    // พิมพ์เฉพาะโซนใบเสร็จ โดยเปิดหน้าต่างใหม่
+    const area = document.getElementById('receipt-area');
+    if (!area) {
+      window.print(); // fallback
+      return;
+    }
+    const printContent = `
+    <html>
+      <head>
+        <meta charset="utf-8">
+        <title>Receipt</title>
+        <style>
+          body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Th SarabunPSK', Arial, sans-serif; padding: 12px; }
+          .table { width: 100%; border-collapse: collapse; }
+          .table th, .table td { border-bottom: 1px solid #eee; padding: 6px 8px; font-size: 12px; }
+          .table tfoot td { font-weight: bold; }
+          .text-end { text-align: right; }
+          .text-muted { color: #6b7280; }
+          hr { border: 0; border-top: 1px solid #eee; }
+        </style>
+      </head>
+      <body>${area.innerHTML}</body>
+    </html>`;
+    const w = window.open('', '_blank', 'width=800,height=700');
+    if (w) {
+      w.document.open();
+      w.document.write(printContent);
+      w.document.close();
+      w.focus();
+      w.print();
+      // w.close(); // จะปิดอัตโนมัติในบางเบราว์เซอร์
+    } else {
+      window.print();
+    }
+  }
+
+  printReceiptSlip(widthMm: 58 = 58) {
+    if (!this.receipt) {
+      window.print(); // fallback
+      return;
+    }
+
+    const r = this.receipt;
+    const storeName = 'Bloom Bloom Paw Grooming';
+    const addrLine =
+      '528/181 คาซ่าเพรสโต้ดอนเมือง-สรงประภา เขตดอนเมือง แขวงสีกัน กทม. <br>088-241-4554'; // ปรับตามจริง
+    const paidAt = new Date(r.paidAt ?? new Date()).toLocaleString('th-TH', {
+      hour12: false,
+    });
+    const payLabel = r.paymentType || 'CASH';
+
+    // แปลงรายการเป็นแถว (ชื่อ • จำนวนxราคา • รวม)
+    const itemRows = (r.items ?? [])
+      .map((it: any) => {
+        const name = it.name + (it.petName ? ` (#${it.petName})` : '');
+        const qty = Number(it.quantity ?? 1);
+        const price = Number(it.price ?? 0);
+        const total = Number(it.total ?? price * qty);
+        return `
+      <tr>
+        <td class="name">${name}</td>
+        <td class="qty">${qty}</td>
+        <td class="sum">${total.toLocaleString('th-TH', { minimumFractionDigits: 2 })}</td>
+      </tr>
+    `;
+      })
+      .join('');
+
+    // HTML สำหรับหน้าพิมพ์สลิป
+    const html = `
+                  <!doctype html>
+                  <html>
+                  <head>
+                  <meta charset="utf-8">
+                  <title>Receipt</title>
+                  <style>
+                    /* ขนาดหน้าเป็น 58mm หรือ 80mm แบบไร้ขอบ */
+                    @page { size: ${widthMm}mm auto; margin: 0; }
+                    html, body { margin: 0; padding: 0; }
+                    body { width: ${widthMm}mm; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'TH Sarabun New', 'Sarabun', Arial; }
+                    .receipt { padding: 6px 6px 10px; }
+                    .center { text-align: center; }
+                    .right { text-align: right; }
+                    .small { font-size: 10px; color: #444; }
+                    .title { font-weight: 700; }
+                    .info-row {
+                      display: flex;
+                      justify-content: space-between;
+                      font-size: 10px;
+                      white-space: nowrap;
+                    }
+                    .info-row .label {
+                      flex: 1; /* ให้ label กินพื้นที่ซ้าย */
+                    }
+                    .info-row .value {
+                      text-align: right;
+                      min-width: 120px; /* กำหนดความกว้างฝั่งขวาให้เท่ากันทุกบรรทัด */
+                    }
+                    hr { border: 0; border-top: 1px dashed #000; margin: 6px 0; }
+                    table { width: 100%; border-collapse: collapse; }
+                    th, td { font-size: 10px; padding: 2px 0; vertical-align: top; }
+                    thead th { border-bottom: 1px dashed #000; }
+                    tfoot td { padding-top: 4px; }
+                    .name { width: 60% }
+                    .qty { width: 20%; text-align: right; }
+                    .sum { width: 20%; text-align: right; }
+                    .totals td { font-size: 10px; }
+                    .grand { font-weight: 700; font-size: 12px; }
+                    .footer-note { margin-top: 8px; }
+                    .qr { text-align: center; margin-top: 6px; }
+                    .qr img { width: ${Math.min(widthMm - 18, 40)}mm; } /* จำกัดขนาดรูปให้พอดี */
+                  </style>
+                  </head>
+                  <body onload="window.print()">
+                    <div class="receipt">
+                      <div class="center title">${storeName}</div>
+                      <div class="center small">${addrLine}</div>
+                      <hr>
+                      <div class="small info-row">
+                        <span class="label">เลขที่:</span>
+                        <span class="value">${r.invoiceNo ?? ''}</span>
+                      </div>
+                      <div class="small info-row">
+                        <span class="label">วันที่:</span>
+                        <span class="value">${paidAt}</span>
+                      </div>
+                      <div class="small info-row">
+                        <span class="label">ลูกค้า:</span>
+                        <span class="value">${r.customerName || '-'}</span>
+                      </div>
+                      <div class="small info-row">
+                        <span class="label">เบอร์ติดต่อ:</span>
+                        <span class="value">${formatPhone(r.customerPhone || '-')}</span>
+                      </div>
+                      <hr>
+
+                      <table>
+                        <thead>
+                          <tr>
+                            <th class="name">รายการ</th>
+                            <th class="qty">จำนวน</th>
+                            <th class="sum">รวม</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          ${itemRows}
+                        </tbody>
+                        <tfoot>
+                          <tr class="totals">
+                            <td colspan="2" class="right">รวมก่อนส่วนลด</td>
+                            <td style="text-align:right; white-space:nowrap;">
+                              ${Number(r.totalBeforeDiscount ?? 0).toLocaleString('th-TH', { minimumFractionDigits: 2 })}
+                            </td>
+                          </tr>
+                          ${
+                            Number(r.totalDiscount ?? 0) > 0
+                              ? `
+                          <tr class="totals">
+                            <td colspan="2" class="right">ส่วนลด</td>
+                            <td style="text-align:right; white-space:nowrap;">
+                              -${Number(r.totalDiscount ?? 0).toLocaleString('th-TH', { minimumFractionDigits: 2 })}
+                            </td>
+                          </tr>`
+                              : ''
+                          }
+                          <tr class="totals grand">
+                            <td colspan="2" class="right">ยอดสุทธิ</td>
+                            <td style="text-align:right; white-space:nowrap;">
+                              ${Number(r.totalAfterDiscount ?? 0).toLocaleString('th-TH', { minimumFractionDigits: 2 })}
+                            </td>
+                          </tr>
+                          <tr class="totals">
+                            <td colspan="2" class="right">ชำระโดย</td>
+                            <td style="text-align:right; white-space:nowrap;">${payLabel}</td>
+                          </tr>
+                        </tfoot>
+                      </table>
+
+                      ${
+                        this.qr?.imageDataUrl
+                          ? `
+                      <div class="qr">
+                        <img src="${this.qr.imageDataUrl}" alt="QR">
+                      </div>`
+                          : ''
+                      }
+
+                      <hr>
+                      <div class="center small footer-note">
+                        ขอบคุณที่ใช้บริการ 🐶🐱
+                      </div>
+                    </div>
+                  </body>
+                  </html>
+                `;
+
+    const w = window.open('', '_blank', `width=800,height=700`);
+    if (!w) {
+      window.print();
+      return;
+    }
+    w.document.open();
+    // แทนที่ placeholder formatPhone ใน template ด้วยผลลัพธ์จริง (เพื่อให้รันใน window ใหม่)
+    const phoneFmt = formatPhone
+      ? formatPhone(r.customerPhone)
+      : r.customerPhone || '';
+    w.document.write(
+      html.replace(
+        '${formatPhone ? formatPhone(r.customerPhone) : r.customerPhone}',
+        phoneFmt,
+      ),
+    );
+    w.document.close();
+    w.focus();
+    // บาง browser จะปิดเองหลังพิมพ์
   }
 }

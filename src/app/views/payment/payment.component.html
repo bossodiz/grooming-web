@@ -389,7 +389,7 @@
       type="button"
       class="btn-close"
       aria-label="Close"
-      (click)="modal.dismiss()"
+      (click)="cashModalClose(modal)"
     ></button>
   </div>
 
@@ -443,11 +443,13 @@
   </div>
 
   <div class="modal-footer">
-    <button class="btn btn-secondary" (click)="modal.dismiss()">ยกเลิก</button>
+    <button class="btn btn-secondary" (click)="cashModalClose(modal)">
+      ยกเลิก
+    </button>
     <button
       class="btn btn-success"
       [disabled]="+cashReceived < totalAfterDiscount"
-      (click)="confirmCashPayment(modal)"
+      (click)="confirmPayment(modal, 'CASH_PAYMENT')"
     >
       ยืนยัน
     </button>
@@ -501,8 +503,108 @@
     <button class="btn btn-outline-secondary" (click)="modal.dismiss()">
       ปิด
     </button>
-    <button class="btn btn-success" (click)="confirmQrPaid(modal)">
+    <button
+      class="btn btn-success"
+      (click)="confirmPayment(modal, 'QR_PAYMENT')"
+    >
       ยืนยันรับชำระ
+    </button>
+  </div>
+</ng-template>
+
+<!-- Receipt Modal -->
+<ng-template #receiptModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">ใบเสร็จรับเงิน</h5>
+    <button type="button" class="btn-close" (click)="modal.dismiss()"></button>
+  </div>
+
+  <div class="modal-body">
+    <div id="receipt-area">
+      <div class="d-flex justify-content-between mb-2">
+        <div>
+          <div class="fw-bold">ร้าน Grooming & Pet Shop</div>
+          <div class="small text-muted">ใบเสร็จรับเงินอย่างย่อ</div>
+        </div>
+        <div class="text-end">
+          <div>
+            เลขที่: <strong>{{ receipt?.invoiceNo }}</strong>
+          </div>
+          <div>วันที่: {{ receipt?.paidAt | date: "dd/MM/yyyy HH:mm" }}</div>
+        </div>
+      </div>
+      <hr class="my-2" />
+
+      <div class="mb-2" *ngIf="receipt?.customerName">
+        ลูกค้า: {{ receipt?.customerName }}
+        <span class="text-muted" *ngIf="receipt?.customerPhone">
+          • {{ receipt?.customerPhone }}
+        </span>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table table-sm align-middle">
+          <thead class="table-light">
+            <tr>
+              <th>รายการ</th>
+              <th class="text-end">จำนวน</th>
+              <th class="text-end">ราคา/หน่วย</th>
+              <th class="text-end">รวม</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let it of receipt?.items">
+              <td>
+                {{ it.name }}
+                <small class="text-muted" *ngIf="it.petName"
+                  >#{{ it.petName }}</small
+                >
+              </td>
+              <td class="text-end">{{ it.quantity }}</td>
+              <td class="text-end">{{ it.price | number: "1.2-2" }}</td>
+              <td class="text-end">{{ it.total | number: "1.2-2" }}</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="3" class="text-end">รวม (ก่อนส่วนลด)</td>
+              <td class="text-end">
+                {{ receipt?.totalBeforeDiscount | number: "1.2-2" }}
+              </td>
+            </tr>
+            <tr *ngIf="receipt?.totalDiscount && receipt?.totalDiscount > 0">
+              <td colspan="3" class="text-end text-danger">ส่วนลด</td>
+              <td class="text-end text-danger">
+                -{{ receipt?.totalDiscount | number: "1.2-2" }}
+              </td>
+            </tr>
+            <tr class="fw-bold">
+              <td colspan="3" class="text-end">ยอดสุทธิ</td>
+              <td class="text-end">
+                {{ receipt?.totalAfterDiscount | number: "1.2-2" }}
+              </td>
+            </tr>
+            <tr>
+              <td colspan="3" class="text-end">ชำระโดย</td>
+              <td class="text-end">{{ receipt?.paymentType }}</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+
+      <div class="small text-center text-muted mt-2">
+        ขอบคุณที่ใช้บริการ 🐶🐱
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button class="btn btn-outline-secondary" (click)="closeReceipt(modal)">
+      ปิด
+    </button>
+    <button class="btn btn-primary" (click)="printReceipt()">พิมพ์ A4</button>
+    <button class="btn btn-success" (click)="printReceiptSlip()">
+      พิมพ์สลิป 58mm
     </button>
   </div>
 </ng-template>

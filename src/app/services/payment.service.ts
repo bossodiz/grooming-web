@@ -67,4 +67,15 @@ export class PaymentService {
       body,
     );
   }
+
+  confirmPayment(body: {
+    invoiceNo: string;
+    paymentType: string;
+    customerId?: number;
+  }) {
+    return this.http.post<ApiResponse>(
+      `${Config.apiUrl}/payment/confirm`,
+      body,
+    );
+  }
 }
