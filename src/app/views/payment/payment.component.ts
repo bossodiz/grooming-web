@@ -32,6 +32,7 @@ import {
   CartItem,
   CartItemResult,
   GenerateQrResponse,
+  ManualDiscount,
 } from '@/app/services/model';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { formatPhone } from '@/app/helper/utils';
@@ -138,6 +139,13 @@ export class PaymentComponent implements AfterViewChecked, OnDestroy {
   itemCount = 0;
   now: Date | null = null;
 
+  manualDiscount = {
+    type: null,
+    value: null,
+    amount: null,
+    note: null,
+  };
+
   @ViewChild('cashInput') cashInput!: ElementRef;
   cashReceived: number = 0;
   cashChange: number | null = null;
@@ -171,7 +179,11 @@ export class PaymentComponent implements AfterViewChecked, OnDestroy {
         }),
         switchMap(() =>
           this.paymentService
-            .calculatePayment(this.currentCart, this.invoiceNo ?? undefined)
+            .calculatePayment(
+              this.currentCart,
+              this.invoiceNo ?? undefined,
+              this.manualDiscount ?? undefined,
+            )
             .pipe(finalize(() => (this.isCalculateLoading = false))),
         ),
       )
@@ -554,6 +566,7 @@ export class PaymentComponent implements AfterViewChecked, OnDestroy {
     this.warningPromotions = data?.warningPromotions ?? [];
     this.overallPromotion = data?.overallPromotion ?? null;
     this.invoiceNo = data?.invoiceNo ?? this.invoiceNo;
+    this.manualDiscount = data?.manualDiscount ?? null;
 
     this.itemCount = items.reduce((s, it) => s + Number(it.quantity ?? 0), 0);
 
@@ -649,10 +662,29 @@ export class PaymentComponent implements AfterViewChecked, OnDestroy {
   calculateChange() {
     const received = Number(this.cashReceived);
     if (!isNaN(received) && received >= this.totalAfterDiscount) {
-      this.cashChange = received - this.totalAfterDiscount;
+      this.cashChange = +(received - this.totalAfterDiscount).toFixed(2);
     } else {
       this.cashChange = null;
     }
+  }
+
+  applyManualDiscount(): void {
+    const val = Number(this.manualDiscount?.value ?? 0);
+    if (isNaN(val) || val <= 0) {
+      this.manualDiscount!.value = null;
+      return;
+    }
+    this.cartChanges$.next();
+  }
+
+  clearManualDiscount(): void {
+    this.manualDiscount = {
+      type: null,
+      value: null,
+      amount: null,
+      note: null,
+    };
+    this.cartChanges$.next();
   }
 
   confirmPayment(modal: any, paymentType: string) {

@@ -142,3 +142,10 @@ export class GenerateQrResponse {
   contentType?: string; // เช่น "image/png"
   expiresAt?: string; // ISO
 }
+
+export class ManualDiscount {
+  type?: string;
+  value?: number;
+  amount?: number;
+  note?: string;
+}

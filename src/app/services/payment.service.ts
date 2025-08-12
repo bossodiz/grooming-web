@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, map, Observable, throwError } from 'rxjs';
-import { ApiResponse, CartItem } from './model';
+import { ApiResponse, CartItem, ManualDiscount } from './model';
 import { Config } from '../app.config';
 
 @Injectable({ providedIn: 'root' })
@@ -53,8 +53,9 @@ export class PaymentService {
       );
   }
 
-  calculatePayment(cart: CartItem[], invoiceNo?: string) {
-    const body = { items: cart, invoiceNo };
+  calculatePayment(cart: CartItem[], invoiceNo?: string, manualDiscount?: any) {
+    const body = { items: cart, invoiceNo, manualDiscount };
+    console.log(body);
     return this.http.post<ApiResponse>(
       `${Config.apiUrl}/payment/calculate`,
       body,

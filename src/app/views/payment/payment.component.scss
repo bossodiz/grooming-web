@@ -361,3 +361,14 @@ ng-select,
   font-weight: 600;
   padding: 0.6rem 0;
 }
+
+.summary .discount {
+  color: #047857; // เขียวเข้มขึ้นนิด
+}
+.summary .bg-light {
+  background: #f8fafc !important;
+}
+.summary .form-select-sm,
+.summary .form-control-sm {
+  font-size: 0.9rem;
+}
