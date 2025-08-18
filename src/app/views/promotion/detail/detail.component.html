@@ -1,0 +1,620 @@
+<breadcrumb
+  [title]="'Promotion'"
+  [titleLink]="'/promotion/list'"
+  [subtitle]="'Detail'"
+/>
+<div class="row">
+  <div class="col-xl-6">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">รายละเอียดโปรโมชั่น</h3>
+      </div>
+      <div class="card-body">
+        <form
+          class="row g-2 needs-validation"
+          novalidate
+          [formGroup]="promotionForm"
+        >
+          <div class="row col-xl-12 mb-3">
+            <!-- Name -->
+            <div class="col-xl-12 mb-3">
+              <label for="nameInput" class="form-label"
+                >ชื่อโปรโมชั่น <span class="text-danger">*</span></label
+              >
+              <input
+                formControlName="name"
+                type="text"
+                class="form-control"
+                id="nameInput"
+                required
+              />
+            </div>
+
+            <!-- Discount Category -->
+            <div class="col-xl-6 mb-3">
+              <label class="form-label">ประเภทสินค้า</label>
+              <div>
+                <div class="form-check form-check-inline">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    formControlName="discount_category"
+                    value="ALL"
+                    id="discountCategoryAll"
+                  />
+                  <label class="form-check-label" for="discountCategoryAll"
+                    >ทั้งหมด</label
+                  >
+                </div>
+                <div class="form-check form-check-inline">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    formControlName="discount_category"
+                    value="GROOMING"
+                    id="discountCategoryGrooming"
+                  />
+                  <label class="form-check-label" for="discountCategoryGrooming"
+                    >Grooming</label
+                  >
+                </div>
+                <div class="form-check form-check-inline">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    formControlName="discount_category"
+                    value="PET_SHOP"
+                    id="discountCategoryPetShop"
+                  />
+                  <label class="form-check-label" for="discountCategoryPetShop"
+                    >Pet Shop</label
+                  >
+                </div>
+              </div>
+            </div>
+
+            <!-- Customer Only -->
+            <div class="col-xl-6 mb-3">
+              <label class="form-label">สำหรับลูกค้า</label>
+              <div>
+                <div class="form-check form-check-inline">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    formControlName="customer_only"
+                    [value]="true"
+                    id="customerOnlyTrue"
+                  />
+                  <label class="form-check-label" for="customerOnlyTrue"
+                    >เฉพาะสมาชิก</label
+                  >
+                </div>
+                <div class="form-check form-check-inline">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    formControlName="customer_only"
+                    [value]="false"
+                    id="customerOnlyFalse"
+                  />
+                  <label class="form-check-label" for="customerOnlyFalse"
+                    >ทุกคน</label
+                  >
+                </div>
+              </div>
+            </div>
+
+            <!-- Discount Type -->
+            <div class="col-xl-12 mb-3">
+              <label class="form-label">ประเภทส่วนลด</label>
+              <div>
+                <div class="form-check form-check-inline">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    formControlName="discount_type"
+                    value="NORMAL"
+                    id="discountTypeNormal"
+                  />
+                  <label class="form-check-label" for="discountTypeNormal"
+                    >ปกติ</label
+                  >
+                </div>
+                <div class="form-check form-check-inline">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    formControlName="discount_type"
+                    value="FREE"
+                    id="discountTypeFree"
+                  />
+                  <label class="form-check-label" for="discountTypeFree"
+                    >ซื้อ-แถม</label
+                  >
+                </div>
+                <div class="form-check form-check-inline">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    formControlName="discount_type"
+                    value="MORE_THAN"
+                    id="discountTypeMoreThan"
+                  />
+                  <label class="form-check-label" for="discountTypeMoreThan"
+                    >ยอดชำระมากกว่า</label
+                  >
+                </div>
+              </div>
+            </div>
+
+            @if (
+              promotionForm.get("discount_type")?.value === "NORMAL" ||
+              promotionForm.get("discount_type")?.value === "MORE_THAN"
+            ) {
+              @if (promotionForm.get("discount_type")?.value === "MORE_THAN") {
+                <div class="col-xl-6 mb-3">
+                  <label class="form-label">จำนวน (บาท)</label>
+                  <input
+                    formControlName="condition_value"
+                    type="number"
+                    class="form-control"
+                    min="0"
+                    step="0.01"
+                  />
+                </div>
+              }
+
+              <div class="col-xl-6 mb-3">
+                <label class="form-label">ส่วนลด</label>
+                <div class="input-group" [formGroup]="promotionForm">
+                  <input
+                    type="number"
+                    class="form-control text-end"
+                    formControlName="amount"
+                    placeholder="0.00"
+                    inputmode="decimal"
+                    step="1"
+                    [attr.min]="min"
+                    [attr.max]="max()"
+                  />
+
+                  <div ngbDropdown class="input-group-append">
+                    <button
+                      class="btn btn-outline-secondary"
+                      ngbDropdownToggle
+                      style="width: 70px"
+                    >
+                      {{ unitLabel() }} ▼
+                    </button>
+                    <div ngbDropdownMenu>
+                      <button ngbDropdownItem (click)="setUnit('BAHT')">
+                        บาท
+                      </button>
+                      <button ngbDropdownItem (click)="setUnit('PERCENT')">
+                        เปอร์เซ็นต์ (%)
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            }
+
+            @if (promotionForm.get("discount_type")?.value === "FREE") {
+              <div class="col-xl-6 mb-3">
+                <label class="form-label">จำนวนที่ซื้อ</label>
+                <input
+                  formControlName="condition_value"
+                  type="number"
+                  class="form-control"
+                  min="0"
+                  step="0.01"
+                />
+              </div>
+              <div class="col-xl-6 mb-3">
+                <label class="form-label">จำนวนที่แถม</label>
+                <input
+                  formControlName="amount"
+                  type="number"
+                  class="form-control"
+                  min="0"
+                  step="0.01"
+                />
+              </div>
+            }
+
+            <!-- Quota -->
+            <div class="mb-3">
+              <label class="form-label">การจำกัดจำนวน</label>
+              <div class="d-flex align-items-center gap-3">
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="quotaType"
+                    id="quotaUnlimited"
+                    [checked]="promotionForm.value.quotaRadio === '0'"
+                    (change)="promotionForm.get('quota')?.setValue(null)"
+                  />
+                  <label class="form-check-label" for="quotaUnlimited"
+                    >ไม่จำกัด</label
+                  >
+                </div>
+                <div class="form-check d-flex align-items-center">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    name="quotaType"
+                    id="quotaLimited"
+                    style="margin-right: 10px"
+                    [checked]="promotionForm.value.quotaRadio === '1'"
+                    (change)="promotionForm.get('quotaRadio')?.setValue(0)"
+                  />
+                  <label class="form-check-label me-2" for="quotaLimited">
+                    จำนวน</label
+                  >
+                  <input
+                    formControlName="quota"
+                    type="number"
+                    class="form-control"
+                    min="0"
+                    style="width: 120px"
+                    [readonly]="promotionForm.value.quotaRadio === '0'"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <!-- Period Type -->
+            <div class="col-xl-12 mb-3">
+              <label class="form-label">ประเภทระยะเวลา</label>
+              <div>
+                <div class="form-check form-check-inline">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    formControlName="period_type"
+                    value="DATE_RANGE"
+                    id="periodDateRange"
+                  />
+                  <label class="form-check-label" for="periodDateRange"
+                    >ช่วงวันที่ - เวลา</label
+                  >
+                </div>
+                <div class="form-check form-check-inline">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    formControlName="period_type"
+                    value="DAY"
+                    id="periodDay"
+                  />
+                  <label class="form-check-label" for="periodDay"
+                    >เฉพาะวัน</label
+                  >
+                </div>
+              </div>
+            </div>
+
+            <!-- Specific Days (if DAY) -->
+            <div
+              class="col-xl-6 mb-3"
+              *ngIf="promotionForm.value.period_type === 'DAY'"
+            >
+              <label class="form-label">วัน</label>
+              <ng-select
+                [items]="dayList"
+                bindLabel="label"
+                bindValue="key"
+                [searchable]="true"
+                formControlName="specific_days"
+              >
+                <ng-template ng-option-tmp let-item="item">
+                  <div class="option-content">
+                    {{ item.label }}
+                  </div>
+                </ng-template>
+              </ng-select>
+            </div>
+
+            <!-- Start/End Date (if DATE_RANGE) -->
+            <div
+              class="col-xl-6 mb-3"
+              *ngIf="promotionForm.value.period_type === 'DATE_RANGE'"
+            >
+              <label class="form-label">วันที่เริ่มต้น</label>
+              <input
+                mwlFlatpickr
+                [flatpickrOptions]="flatpickrStartOptions"
+                type="text"
+                class="form-control"
+                id="datetime-datepicker-start"
+                formControlName="start_date"
+                required
+                [ngClass]="{
+                  'is-invalid': submit && form['start_date'].errors,
+                }"
+              />
+              <div class="invalid-feedback">Please select a start time</div>
+            </div>
+            <div
+              class="col-xl-6 mb-3"
+              *ngIf="promotionForm.value.period_type === 'DATE_RANGE'"
+            >
+              <label class="form-label">วันที่สิ้นสุด</label>
+              <input
+                mwlFlatpickr
+                [flatpickrOptions]="flatpickrEndOptions"
+                type="text"
+                class="form-control"
+                id="datetime-datepicker-end"
+                formControlName="end_date"
+                required
+                [ngClass]="{
+                  'is-invalid': submit && form['end_date'].errors,
+                }"
+              />
+              <div class="invalid-feedback">Please select a end time</div>
+            </div>
+
+            <!-- Status -->
+            <div class="col-xl-12 mb-3">
+              <label class="form-label">สถานะ</label>
+              <div>
+                <label
+                  class="form-switch d-flex align-items-center gap-2 custom-switch-lg"
+                >
+                  <input
+                    type="checkbox"
+                    class="form-check-input custom-switch-input-lg"
+                    formControlName="status"
+                  />
+                  <span class="custom-switch-label-lg">
+                    {{ promotionForm.value.status ? "เปิด" : "ปิด" }}
+                  </span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Created/Updated At (disabled) -->
+            <div class="col-xl-6 mb-3">
+              <label class="form-label">สร้างเมื่อ</label>
+              <div class="form-control-plaintext">
+                {{ promotionForm.value.created_at || "-" }}
+              </div>
+            </div>
+            <div class="col-xl-6 mb-3">
+              <label class="form-label">แก้ไขเมื่อ</label>
+              <div class="form-control-plaintext">
+                {{ promotionForm.value.updated_at || "-" }}
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!-- สินค้าที่เข้าร่วม -->
+  <div class="col-xl-6">
+    <div class="card">
+      <div
+        class="card-header d-flex justify-content-between align-items-center"
+      >
+        <div class="card-title mb-0">
+          <h5 class="mb-0">สินค้าที่เข้าร่วม</h5>
+          <h6 class="text-muted mb-0" style="font-weight: normal">
+            (ไม่จำกัดสินค้าให้ปิดการใช้งาน)
+          </h6>
+        </div>
+        <label
+          class="form-switch d-flex align-items-center gap-2 custom-switch-lg mb-0"
+        >
+          <input
+            type="checkbox"
+            class="form-check-input custom-switch-input-lg"
+            [(ngModel)]="includedItemStatus"
+          />
+          <span class="custom-switch-label-lg">
+            {{ includedItemStatus ? "เปิด" : "ปิด" }}
+          </span>
+        </label>
+      </div>
+      <div class="card-body" *ngIf="includedItemStatus">
+        <button
+          class="btn btn-primary mb-3"
+          (click)="openAddItemModal('included')"
+        >
+          เลือกสินค้า
+        </button>
+        <div
+          *ngIf="itemListIncluded.length > 0"
+          style="max-height: 300px; overflow-y: auto"
+        >
+          <table class="table table-sm">
+            <thead>
+              <tr>
+                <th class="text-center">No.</th>
+                <th class="text-center">ชื่อสินค้า</th>
+                <th class="text-center">รายละเอียด</th>
+                <th class="text-center">ราคา</th>
+                <th class="text-center"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of itemListIncluded; let i = index">
+                <td class="text-center">{{ i + 1 }}</td>
+                <td>{{ item.name }}</td>
+                <td>{{ item.description }}</td>
+                <td class="text-end">{{ item.price | number: "1.2-2" }}</td>
+                <td class="text-end">
+                  <button
+                    class="btn btn-outline-danger btn-sm"
+                    (click)="removeIncludedItem(i)"
+                    title="ลบรายการ"
+                  >
+                    <i class="bi bi-trash"></i> ลบ
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div *ngIf="itemListIncluded.length === 0" class="text-muted">
+          ยังไม่มีสินค้าที่เลือก
+        </div>
+      </div>
+    </div>
+    <!-- สินค้าที่ยกเว้น -->
+    <div class="card">
+      <div
+        class="card-header d-flex justify-content-between align-items-center"
+      >
+        <div class="card-title mb-0">
+          <h5 class="mb-0">สินค้าที่ยกเว้น</h5>
+          <h6 class="text-muted mb-0" style="font-weight: normal">
+            (ไม่จำกัดสินค้าให้ปิดการใช้งาน)
+          </h6>
+        </div>
+        <label
+          class="form-switch d-flex align-items-center gap-2 custom-switch-lg mb-0"
+        >
+          <input
+            type="checkbox"
+            class="form-check-input custom-switch-input-lg"
+            [(ngModel)]="excludedItemStatus"
+          />
+          <span class="custom-switch-label-lg">
+            {{ excludedItemStatus ? "เปิด" : "ปิด" }}
+          </span>
+        </label>
+      </div>
+      <div class="card-body" *ngIf="excludedItemStatus">
+        <button
+          class="btn btn-primary mb-3"
+          (click)="openAddItemModal('excluded')"
+        >
+          เลือกสินค้า
+        </button>
+        <div
+          *ngIf="itemListExcluded.length > 0"
+          style="max-height: 300px; overflow-y: auto"
+        >
+          <table class="table table-sm">
+            <thead>
+              <tr>
+                <th class="text-center">No.</th>
+                <th class="text-center">ชื่อสินค้า</th>
+                <th class="text-center">รายละเอียด</th>
+                <th class="text-center">ราคา</th>
+                <th class="text-center"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of itemListExcluded; let i = index">
+                <td class="text-center">{{ i + 1 }}</td>
+                <td>{{ item.name }}</td>
+                <td>{{ item.description }}</td>
+                <td class="text-end">{{ item.price | number: "1.2-2" }}</td>
+                <td class="text-end">
+                  <button
+                    class="btn btn-outline-danger btn-sm"
+                    (click)="removeExcludedItem(i)"
+                    title="ลบรายการ"
+                  >
+                    <i class="bi bi-trash"></i> ลบ
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div *ngIf="itemListExcluded.length === 0" class="text-muted">
+          ยังไม่มีสินค้าที่เลือก
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer Card -->
+  <div class="card">
+    <div class="card-body d-flex justify-content-between align-items-center">
+      <button type="button" class="btn btn-secondary" (click)="onBack()">
+        ย้อนกลับ
+      </button>
+      <button type="button" class="btn btn-warning" (click)="onReset()">
+        คืนค่าเดิม
+      </button>
+      <button
+        type="submit"
+        class="btn btn-success"
+        [disabled]="promotionForm.invalid"
+        (click)="onSave()"
+      >
+        บันทึก
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal เลือกสินค้า -->
+<ng-template #addItemModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">เลือกสินค้าเข้าร่วมโปรโมชั่น</h5>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="modal.dismiss()"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <input
+      type="text"
+      class="form-control mb-2"
+      placeholder="ค้นหาสินค้า..."
+      [(ngModel)]="searchText"
+      (ngModelChange)="filterItemList()"
+    />
+    <div style="max-height: 350px; overflow-y: auto">
+      <table class="table table-sm">
+        <thead>
+          <tr>
+            <th class="text-center">
+              <input
+                type="checkbox"
+                [(ngModel)]="selectAll"
+                (change)="toggleSelectAll()"
+              />
+            </th>
+            <th class="text-center">No.</th>
+            <th class="text-center">ชื่อสินค้า</th>
+            <th class="text-center">รายละเอียด</th>
+            <th class="text-center">ราคา</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of filteredItemList; let i = index">
+            <td class="text-center">
+              <input type="checkbox" [(ngModel)]="item.selected" />
+            </td>
+            <td class="text-center">{{ i + 1 }}</td>
+            <td>{{ item.name }}</td>
+            <td>{{ item.description }}</td>
+            <td class="text-end">{{ item.price | number: "1.2-2" }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">
+      ยกเลิก
+    </button>
+    <button
+      type="button"
+      class="btn btn-success"
+      (click)="confirmAddItems(modal)"
+    >
+      ตกลง
+    </button>
+  </div>
+</ng-template>

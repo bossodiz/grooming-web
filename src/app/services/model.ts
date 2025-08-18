@@ -149,3 +149,30 @@ export class ManualDiscount {
   amount?: number;
   note?: string;
 }
+
+export class PromotionDetail {
+  id?: number;
+  name?: string;
+  discount_category?: string;
+  amount_type?: string;
+  amount?: string;
+  period_type?: string;
+  start_date?: string;
+  end_date?: string;
+  specific_days?: string;
+  customer_only?: boolean;
+  status?: boolean;
+  quota?: number;
+  created_at?: string;
+  updated_at?: string;
+  discount_type?: string;
+  condition?: string;
+}
+
+export class PromotionItem {
+  selected?: boolean;
+  id?: number;
+  name?: string;
+  description?: string;
+  price?: number;
+}

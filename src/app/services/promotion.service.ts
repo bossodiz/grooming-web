@@ -15,4 +15,46 @@ export class PromotionService {
       }),
     );
   }
+
+  getPromotionById(id: string) {
+    return this.http.get<ApiResponse>(`${Config.apiUrl}/promotion/${id}`).pipe(
+      map((response) => response),
+      catchError((error) => {
+        return throwError(() => error);
+      }),
+    );
+  }
+
+  getItemList(type: string) {
+    return this.http
+      .get<ApiResponse>(`${Config.apiUrl}/promotion/items/${type}`)
+      .pipe(
+        map((response) => response),
+        catchError((error) => {
+          return throwError(() => error);
+        }),
+      );
+  }
+
+  getItemListIncluded(id: string) {
+    return this.http
+      .get<ApiResponse>(`${Config.apiUrl}/promotion/${id}/include`)
+      .pipe(
+        map((response) => response),
+        catchError((error) => {
+          return throwError(() => error);
+        }),
+      );
+  }
+
+  getItemListExcluded(id: string) {
+    return this.http
+      .get<ApiResponse>(`${Config.apiUrl}/promotion/${id}/exclude`)
+      .pipe(
+        map((response) => response),
+        catchError((error) => {
+          return throwError(() => error);
+        }),
+      );
+  }
 }

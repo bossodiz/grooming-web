@@ -82,5 +82,9 @@
   "customer_only": "เฉพาะลูกค้า",
   "quota": "โควต้า",
   "to": "ถึง",
-  "service_description": "คำอธิบาย"
+  "service_description": "คำอธิบาย",
+  "ACTIVE": "ใช้งาน",
+  "UPCOMING": "กำลังจะมา",
+  "ENDED": "สิ้นสุด",
+  "DISABLED": "ไม่สามารถใช้งานได้"
 }

@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { BreadcrumbComponent } from '@components/breadcrumb/breadcrumb.component';
 import { NgbHighlight, NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule } from '@ngx-translate/core';
@@ -26,6 +26,7 @@ import { PromotionService } from '@/app/services/promotion.service';
 export class ListComponent {
   public tableService = inject(TableService);
   private promotionService = inject(PromotionService);
+  private router = inject(Router);
 
   searchCountries: PromotionTableList[] = [];
   collectionSize = 0;
@@ -60,6 +61,8 @@ export class ListComponent {
   onSearch() {}
 
   openAddPromotion = () => {};
-  viewDetail = (id: string) => {};
+  viewDetail(itemId: number) {
+    this.router.navigate(['/promotion/detail', itemId]);
+  }
   deleteRecord = (id: string) => {};
 }

@@ -370,6 +370,7 @@
                   class="form-control form-control-sm"
                   placeholder="หมายเหตุ (เช่น ลูกค้า VIP)"
                   [(ngModel)]="manualDiscount!.note"
+                  (keydown.enter)="applyManualDiscount()"
                 />
               </div>
             </div>
@@ -388,7 +389,6 @@
               <span>− {{ manualDiscount!.amount | number: "1.2-2" }}</span>
             </div>
           </div>
-          <!-- ▲▲ End Add-on -->
           <hr />
 
           <div class="line muted">
@@ -397,13 +397,6 @@
               >− {{ discountTotal | number: "1.2-2" }}</span
             >
           </div>
-
-          <!-- <div class="line total mt-1">
-            <span>ยอดสุทธิ</span>
-            <span class="value">{{
-              totalAfterDiscount | number: "1.2-2"
-            }}</span>
-          </div> -->
 
           <div class="line total mt-1">
             <span>ยอดสุทธิ</span>

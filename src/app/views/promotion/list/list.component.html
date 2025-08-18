@@ -65,39 +65,69 @@
                 @for (item of searchCountries; track item.id; let i = $index) {
                   <tr>
                     <td class="text-center">
-                      <span>{{ i + 1 }}</span>
+                      <span
+                        class="table-detail-link"
+                        (click)="viewDetail(item.id!)"
+                        >{{ i + 1 }}</span
+                      >
                     </td>
                     <td class="text-left">
-                      <span>{{ item.name }}</span>
-                    </td>
-                    <td class="text-center">
-                      <span>{{ item.discountCategory }}</span>
-                    </td>
-                    <td class="text-center">
-                      <span>{{ item.discountType }}</span>
-                    </td>
-                    <td class="text-center">
-                      <span>{{ item.amount }} {{ item.amountType }}</span>
+                      <span
+                        class="table-detail-link"
+                        (click)="viewDetail(item.id!)"
+                        >{{ item.name }}</span
+                      >
                     </td>
                     <td class="text-center">
                       <span
+                        class="table-detail-link"
+                        (click)="viewDetail(item.id!)"
+                        >{{ item.discountCategory }}</span
+                      >
+                    </td>
+                    <td class="text-center">
+                      <span
+                        class="table-detail-link"
+                        (click)="viewDetail(item.id!)"
+                        >{{ item.discountType }}</span
+                      >
+                    </td>
+                    <td class="text-center">
+                      <span
+                        class="table-detail-link"
+                        (click)="viewDetail(item.id!)"
+                        >{{ item.amount }} {{ item.amountType }}</span
+                      >
+                    </td>
+                    <td class="text-center">
+                      <span
+                        class="table-detail-link"
+                        (click)="viewDetail(item.id!)"
                         >{{ item.startDate }} {{ "to" | translate }}
                         {{ item.endDate }}</span
                       >
                     </td>
-                    @if (item.status) {
-                      <td class="text-center">
-                        <span style="color: green">{{
-                          "active" | translate
-                        }}</span>
-                      </td>
-                    } @else {
-                      <td class="text-center">
-                        <span style="color: red">{{
-                          "inactive" | translate
-                        }}</span>
-                      </td>
-                    }
+
+                    <td
+                      class="text-center"
+                      [style.color]="
+                        item.status === 'ACTIVE'
+                          ? 'green'
+                          : item.status === 'UPCOMING'
+                            ? 'orange'
+                            : item.status === 'ENDED'
+                              ? 'red'
+                              : item.status === 'DISABLED'
+                                ? 'gray'
+                                : 'black'
+                      "
+                    >
+                      <span
+                        class="table-detail-link"
+                        (click)="viewDetail(item.id!)"
+                        >{{ item.status! | translate }}</span
+                      >
+                    </td>
                   </tr>
                 }
               </tbody>
