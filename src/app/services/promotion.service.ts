@@ -57,4 +57,16 @@ export class PromotionService {
         }),
       );
   }
+
+  updatePromotion(id: string, data: any) {
+    let body = { ...data };
+    return this.http
+      .put<ApiResponse>(`${Config.apiUrl}/promotion/${id}`, body)
+      .pipe(
+        map((response) => response),
+        catchError((error) => {
+          return throwError(() => error);
+        }),
+      );
+  }
 }

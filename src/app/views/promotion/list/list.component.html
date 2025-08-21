@@ -41,9 +41,6 @@
                     {{ "discount_category" | translate }}
                   </th>
                   <th scope="col" class="text-center">
-                    {{ "discount_type" | translate }}
-                  </th>
-                  <th scope="col" class="text-center">
                     {{ "amount" | translate }}
                   </th>
                   <th scope="col" class="text-center">
@@ -89,23 +86,21 @@
                       <span
                         class="table-detail-link"
                         (click)="viewDetail(item.id!)"
-                        >{{ item.discountType }}</span
-                      >
+                        >{{ item.amount }}
+                      </span>
                     </td>
                     <td class="text-center">
                       <span
                         class="table-detail-link"
                         (click)="viewDetail(item.id!)"
-                        >{{ item.amount }} {{ item.amountType }}</span
                       >
-                    </td>
-                    <td class="text-center">
-                      <span
-                        class="table-detail-link"
-                        (click)="viewDetail(item.id!)"
-                        >{{ item.startDate }} {{ "to" | translate }}
-                        {{ item.endDate }}</span
-                      >
+                        @if (item.periodType === "DATE_RANGE") {
+                          {{ item.startDate }} {{ "to" | translate }}
+                          {{ item.endDate }}
+                        } @else {
+                          {{ item.specificDays }}
+                        }
+                      </span>
                     </td>
 
                     <td

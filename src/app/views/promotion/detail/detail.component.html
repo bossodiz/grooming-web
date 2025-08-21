@@ -147,22 +147,53 @@
               </div>
             </div>
 
-            @if (
-              promotionForm.get("discount_type")?.value === "NORMAL" ||
-              promotionForm.get("discount_type")?.value === "MORE_THAN"
-            ) {
-              @if (promotionForm.get("discount_type")?.value === "MORE_THAN") {
-                <div class="col-xl-6 mb-3">
-                  <label class="form-label">จำนวน (บาท)</label>
+            @if (promotionForm.get("discount_type")?.value === "NORMAL") {
+              <div class="col-xl-6 mb-3">
+                <label class="form-label">ส่วนลด</label>
+                <div class="input-group" [formGroup]="promotionForm">
                   <input
-                    formControlName="condition_value"
                     type="number"
-                    class="form-control"
-                    min="0"
-                    step="0.01"
+                    class="form-control text-end"
+                    formControlName="amount_normal"
+                    placeholder="0.00"
+                    inputmode="decimal"
+                    step="1"
+                    [attr.min]="min"
+                    [attr.max]="max()"
                   />
+
+                  <div ngbDropdown class="input-group-append">
+                    <button
+                      class="btn btn-outline-secondary"
+                      ngbDropdownToggle
+                      style="width: 70px"
+                    >
+                      {{ unitLabel() }} ▼
+                    </button>
+                    <div ngbDropdownMenu>
+                      <button ngbDropdownItem (click)="setUnit('BAHT')">
+                        บาท
+                      </button>
+                      <button ngbDropdownItem (click)="setUnit('PERCENT')">
+                        เปอร์เซ็นต์ (%)
+                      </button>
+                    </div>
+                  </div>
                 </div>
-              }
+              </div>
+            }
+
+            @if (promotionForm.get("discount_type")?.value === "MORE_THAN") {
+              <div class="col-xl-6 mb-3">
+                <label class="form-label">จำนวน (บาท)</label>
+                <input
+                  formControlName="amount_more_than"
+                  type="number"
+                  class="form-control"
+                  min="0"
+                  step="0.01"
+                />
+              </div>
 
               <div class="col-xl-6 mb-3">
                 <label class="form-label">ส่วนลด</label>
@@ -170,7 +201,7 @@
                   <input
                     type="number"
                     class="form-control text-end"
-                    formControlName="amount"
+                    formControlName="discount_more_than"
                     placeholder="0.00"
                     inputmode="decimal"
                     step="1"
@@ -203,21 +234,21 @@
               <div class="col-xl-6 mb-3">
                 <label class="form-label">จำนวนที่ซื้อ</label>
                 <input
-                  formControlName="condition_value"
+                  formControlName="amountFree"
                   type="number"
                   class="form-control"
                   min="0"
-                  step="0.01"
+                  step="1"
                 />
               </div>
               <div class="col-xl-6 mb-3">
                 <label class="form-label">จำนวนที่แถม</label>
                 <input
-                  formControlName="amount"
+                  formControlName="amountFreeBonus"
                   type="number"
                   class="form-control"
                   min="0"
-                  step="0.01"
+                  step="1"
                 />
               </div>
             }
@@ -226,16 +257,16 @@
             <div class="mb-3">
               <label class="form-label">การจำกัดจำนวน</label>
               <div class="d-flex align-items-center gap-3">
-                <div class="form-check">
+                <div class="form-check form-check-inline">
                   <input
                     class="form-check-input"
                     type="radio"
-                    name="quotaType"
-                    id="quotaUnlimited"
-                    [checked]="promotionForm.value.quotaRadio === '0'"
+                    formControlName="quota_type"
+                    [value]="0"
+                    id="quotaTypeUnlimited"
                     (change)="promotionForm.get('quota')?.setValue(null)"
                   />
-                  <label class="form-check-label" for="quotaUnlimited"
+                  <label class="form-check-label" for="quotaTypeUnlimited"
                     >ไม่จำกัด</label
                   >
                 </div>
@@ -243,11 +274,10 @@
                   <input
                     class="form-check-input"
                     type="radio"
-                    name="quotaType"
+                    formControlName="quota_type"
+                    [value]="1"
                     id="quotaLimited"
-                    style="margin-right: 10px"
-                    [checked]="promotionForm.value.quotaRadio === '1'"
-                    (change)="promotionForm.get('quotaRadio')?.setValue(0)"
+                    (change)="promotionForm.get('quota')?.setValue(0)"
                   />
                   <label class="form-check-label me-2" for="quotaLimited">
                     จำนวน</label
@@ -258,7 +288,7 @@
                     class="form-control"
                     min="0"
                     style="width: 120px"
-                    [readonly]="promotionForm.value.quotaRadio === '0'"
+                    [readonly]="promotionForm.value.quota_type === 0"
                   />
                 </div>
               </div>

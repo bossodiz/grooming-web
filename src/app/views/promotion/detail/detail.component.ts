@@ -258,7 +258,11 @@ export class DetailComponent implements OnInit {
       discount_category: ['', [Validators.required]],
       discount_type: ['', [Validators.required]],
       amount_type: ['', [Validators.required]],
-      amount: [0, [Validators.required]],
+      amount_normal: [null],
+      amount_more_than: [null],
+      discount_more_than: [null],
+      amount_free: [null],
+      amount_free_bonus: [null],
       period_type: ['', [Validators.required]],
       start_date: [''],
       end_date: [''],
@@ -266,7 +270,7 @@ export class DetailComponent implements OnInit {
       customer_only: [false],
       status: [false],
       quota: [null],
-      quotaRadio: [''],
+      quota_type: [''],
       created_at: [''],
       updated_at: [''],
       condition: [''],
@@ -293,7 +297,11 @@ export class DetailComponent implements OnInit {
             discount_category: response.data.discountCategory ?? '',
             discount_type: response.data.discountType ?? '',
             amount_type: response.data.amountType ?? '',
-            amount: response.data.amount ?? 0,
+            amount_normal: response.data.amountNormal ?? null,
+            amount_more_than: response.data.amountMoreThan ?? null,
+            discount_more_than: response.data.discountMoreThan ?? null,
+            amount_free: response.data.amountFree ?? null,
+            amount_free_bonus: response.data.amountFreeBonus ?? null,
             period_type: response.data.periodType ?? '',
             start_date: response.data.startDate ?? '',
             end_date: response.data.endDate ?? '',
@@ -301,7 +309,7 @@ export class DetailComponent implements OnInit {
             customer_only: response.data.customerOnly ?? false,
             status: response.data.isStatus ?? false,
             quota: response.data.quota ?? null,
-            quotaRadio: response.data.quota != null ? '1' : '0',
+            quota_type: response.data.quotaType ?? 0,
             created_at: response.data.createdAt ?? '',
             updated_at: response.data.updatedAt ?? '',
             condition_value: '',
@@ -357,14 +365,29 @@ export class DetailComponent implements OnInit {
       promotionDetail: { ...this.promotionForm.value },
       included: {
         active: this.includedItemStatus,
-        items: this.itemListIncluded,
+        items: this.itemListIncluded.map((item) => item.id),
       },
       excluded: {
         active: this.excludedItemStatus,
-        items: this.itemListExcluded,
+        items: this.itemListExcluded.map((item) => item.id),
       },
     };
-    console.log(formData);
+    this.promotionService
+      .updatePromotion(this.promotionId!, formData)
+      .pipe(
+        tap((response) => {
+          this.itemListExcluded = response.data.map((item: PromotionItem) => {
+            return { ...item, selected: true };
+          });
+          if (this.itemListExcluded.length > 0) {
+            this.excludedItemStatus = true;
+          }
+        }),
+        catchError((error) => {
+          return throwError(() => error);
+        }),
+      )
+      .subscribe();
   }
 
   @ViewChild('addItemModal') addItemModal!: TemplateRef<any>;
