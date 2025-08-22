@@ -3,7 +3,7 @@
   [titleLink]="'/promotion/list'"
   [subtitle]="'Detail'"
 />
-<div class="row">
+<div class="row" *ngIf="isLoaded">
   <div class="col-xl-6">
     <div class="card">
       <div class="card-header">
@@ -399,7 +399,7 @@
                     formControlName="status"
                   />
                   <span class="custom-switch-label-lg">
-                    {{ promotionForm.value.status ? "เปิด" : "ปิด" }}
+                    {{ promotionForm.value.status ? "ใช้งาน" : "ปิดการใช้งาน" }}
                   </span>
                 </label>
               </div>
@@ -407,16 +407,28 @@
 
             <!-- Created/Updated At (disabled) -->
             <div class="col-xl-6 mb-3">
-              <label class="form-label">สร้างเมื่อ</label>
-              <div class="form-control-plaintext">
-                {{ promotionForm.value.created_at || "-" }}
-              </div>
+              <label class="form-label">วันที่สร้าง</label>
+              <input
+                mwlFlatpickr
+                [flatpickrOptions]="flatpickrCreatedOptions"
+                type="text"
+                class="form-control"
+                id="datetime-datepicker-created_at"
+                formControlName="created_at"
+                [readonly]="true"
+              />
             </div>
             <div class="col-xl-6 mb-3">
-              <label class="form-label">แก้ไขเมื่อ</label>
-              <div class="form-control-plaintext">
-                {{ promotionForm.value.updated_at || "-" }}
-              </div>
+              <label class="form-label">วันที่แก้ไข</label>
+              <input
+                mwlFlatpickr
+                [flatpickrOptions]="flatpickrCreatedOptions"
+                type="text"
+                class="form-control"
+                id="datetime-datepicker-updated_at"
+                formControlName="updated_at"
+                [readonly]="true"
+              />
             </div>
           </div>
         </form>
@@ -444,7 +456,7 @@
             [(ngModel)]="includedItemStatus"
           />
           <span class="custom-switch-label-lg">
-            {{ includedItemStatus ? "เปิด" : "ปิด" }}
+            {{ includedItemStatus ? "ใช้งาน" : "ปิดการใช้งาน" }}
           </span>
         </label>
       </div>

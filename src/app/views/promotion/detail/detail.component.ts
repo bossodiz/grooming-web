@@ -27,6 +27,7 @@ import { Options } from 'flatpickr/dist/types/options';
 import { Thai } from 'flatpickr/dist/l10n/th';
 import confirmDatePlugin from 'flatpickr/dist/plugins/confirmDate/confirmDate';
 import { FlatpickrDirective } from '@common/flatpickr.directive';
+import { firstValueFrom } from 'rxjs';
 
 type Unit = 'BAHT' | 'PERCENT';
 
@@ -52,6 +53,7 @@ export class DetailComponent implements OnInit {
   public formBuilder = inject(UntypedFormBuilder);
   private fb = inject(FormBuilder);
 
+  isLoaded = false;
   promotionId: string | null = null;
 
   submit!: boolean;
@@ -162,7 +164,6 @@ export class DetailComponent implements OnInit {
     locale: Thai,
     altInput: true,
     altFormat: 'D d M Y | H:i',
-    dateFormat: 'Y-m-d\\TH:i:S',
     enableTime: true,
     time_24hr: true,
     minTime: '09:00',
@@ -249,6 +250,20 @@ export class DetailComponent implements OnInit {
     },
   };
 
+  flatpickrCreatedOptions: Options = {
+    locale: Thai,
+    altInput: true,
+    altFormat: 'D d M Y | H:i',
+    allowInput: false,
+    clickOpens: false,
+    onReady: (selectedDates, dateStr, instance) => {
+      const currentValue = this.promotionForm.get('created_at')?.value;
+      if (currentValue && currentValue.length > 0) {
+        instance.setDate(currentValue, true);
+      }
+    },
+  };
+
   includedItemStatus = false;
   excludedItemStatus = false;
 
@@ -274,7 +289,6 @@ export class DetailComponent implements OnInit {
       created_at: [''],
       updated_at: [''],
       condition: [''],
-      condition_value: [''],
     });
     this.route.paramMap.subscribe((params) => {
       this.promotionId = params.get('id');
@@ -284,75 +298,64 @@ export class DetailComponent implements OnInit {
     });
   }
 
-  getData() {
+  async getData() {
     if (!this.promotionId) {
       return;
     }
-    this.promotionService
-      .getPromotionById(this.promotionId)
-      .pipe(
-        tap((response) => {
-          this.promotionForm.patchValue({
-            name: response.data.name ?? '',
-            discount_category: response.data.discountCategory ?? '',
-            discount_type: response.data.discountType ?? '',
-            amount_type: response.data.amountType ?? '',
-            amount_normal: response.data.amountNormal ?? null,
-            amount_more_than: response.data.amountMoreThan ?? null,
-            discount_more_than: response.data.discountMoreThan ?? null,
-            amount_free: response.data.amountFree ?? null,
-            amount_free_bonus: response.data.amountFreeBonus ?? null,
-            period_type: response.data.periodType ?? '',
-            start_date: response.data.startDate ?? '',
-            end_date: response.data.endDate ?? '',
-            specific_days: response.data.specificDays ?? '',
-            customer_only: response.data.customerOnly ?? false,
-            status: response.data.isStatus ?? false,
-            quota: response.data.quota ?? null,
-            quota_type: response.data.quotaType ?? 0,
-            created_at: response.data.createdAt ?? '',
-            updated_at: response.data.updatedAt ?? '',
-            condition_value: '',
-          });
-          this.unit.set(response.data.amountType ?? 'BAHT');
-        }),
-        catchError((error) => {
-          return throwError(() => error);
-        }),
-      )
-      .subscribe();
-    this.promotionService
-      .getItemListIncluded(this.promotionId)
-      .pipe(
-        tap((response) => {
-          this.itemListIncluded = response.data.map((item: PromotionItem) => {
-            return { ...item, selected: true };
-          });
-          if (this.itemListIncluded.length > 0) {
-            this.includedItemStatus = true;
-          }
-        }),
-        catchError((error) => {
-          return throwError(() => error);
-        }),
-      )
-      .subscribe();
-    this.promotionService
-      .getItemListExcluded(this.promotionId)
-      .pipe(
-        tap((response) => {
-          this.itemListExcluded = response.data.map((item: PromotionItem) => {
-            return { ...item, selected: true };
-          });
-          if (this.itemListExcluded.length > 0) {
-            this.excludedItemStatus = true;
-          }
-        }),
-        catchError((error) => {
-          return throwError(() => error);
-        }),
-      )
-      .subscribe();
+    try {
+      const responsePromotion = await firstValueFrom(
+        this.promotionService.getPromotionById(this.promotionId),
+      );
+      this.promotionForm.patchValue({
+        name: responsePromotion.data.name ?? '',
+        discount_category: responsePromotion.data.discountCategory ?? '',
+        discount_type: responsePromotion.data.discountType ?? '',
+        amount_type: responsePromotion.data.amountType ?? '',
+        amount_normal: responsePromotion.data.amountNormal ?? null,
+        amount_more_than: responsePromotion.data.amountMoreThan ?? null,
+        discount_more_than: responsePromotion.data.discountMoreThan ?? null,
+        amount_free: responsePromotion.data.amountFree ?? null,
+        amount_free_bonus: responsePromotion.data.amountFreeBonus ?? null,
+        period_type: responsePromotion.data.periodType ?? '',
+        start_date: responsePromotion.data.startDate ?? '',
+        end_date: responsePromotion.data.endDate ?? '',
+        specific_days: responsePromotion.data.specificDays ?? '',
+        customer_only: responsePromotion.data.customerOnly ?? false,
+        status: responsePromotion.data.isStatus ?? false,
+        quota: responsePromotion.data.quota ?? null,
+        quota_type: responsePromotion.data.quotaType ?? 0,
+        created_at: responsePromotion.data.createdAt ?? '',
+        updated_at: responsePromotion.data.updatedAt ?? '',
+      });
+      this.unit.set(responsePromotion.data.amountType ?? 'BAHT');
+
+      const responseIncluded = await firstValueFrom(
+        this.promotionService.getItemListIncluded(this.promotionId),
+      );
+      this.itemListIncluded = responseIncluded.data.map(
+        (item: PromotionItem) => {
+          return { ...item, selected: true };
+        },
+      );
+      if (this.itemListIncluded.length > 0) {
+        this.includedItemStatus = true;
+      }
+
+      const responseExcluded = await firstValueFrom(
+        this.promotionService.getItemListExcluded(this.promotionId),
+      );
+      this.itemListExcluded = responseExcluded.data.map(
+        (item: PromotionItem) => {
+          return { ...item, selected: true };
+        },
+      );
+      if (this.itemListExcluded.length > 0) {
+        this.excludedItemStatus = true;
+      }
+      this.isLoaded = true;
+    } catch (err) {
+      throwError(() => err);
+    }
   }
   onBack() {
     this.router.navigate(['/promotion/list']);
@@ -407,7 +410,6 @@ export class DetailComponent implements OnInit {
 
   filterItemList() {
     const text = this.searchText.trim().toLowerCase();
-    console.log('Filtering item list with text:', text);
     this.filteredItemList = this.itemList.filter(
       (item: PromotionItem) =>
         (item.name ?? '').toLowerCase().includes(text) ||
