@@ -60,7 +60,9 @@ export class ListComponent {
 
   onSearch() {}
 
-  openAddPromotion = () => {};
+  openAddPromotion = () => {
+    this.router.navigate(['/promotion/detail', 'new']);
+  };
   viewDetail(itemId: number) {
     this.router.navigate(['/promotion/detail', itemId]);
   }

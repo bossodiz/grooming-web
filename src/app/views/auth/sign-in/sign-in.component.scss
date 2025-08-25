@@ -1,0 +1,39 @@
+// ปิดการ Scroll Bar ทั้งแนวตั้งและแนวนอน
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+}
+
+// จัดให้ Login Form อยู่กลางจอ
+.auth-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8f9fa; // สีพื้นหลังจางๆ
+}
+
+// ปรับขนาด Card ให้อ่านง่ายขึ้น
+.auth-card {
+  width: 100%;
+  max-width: 450px; // จำกัดขนาดสูงสุดไม่ให้ใหญ่เกินไป
+  padding: 2rem;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); // ใส่เงาให้ดูเด่นขึ้น
+  border-radius: 10px;
+  background: #fff;
+}
+
+// ปรับขนาดโลโก้ให้อยู่ตรงกลาง
+.auth-logo {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+// ปรับปุ่ม Login
+.auth-btn {
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+}

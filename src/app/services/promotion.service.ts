@@ -58,10 +58,10 @@ export class PromotionService {
       );
   }
 
-  updatePromotion(id: string, data: any) {
+  updatePromotion(data: any) {
     let body = { ...data };
     return this.http
-      .put<ApiResponse>(`${Config.apiUrl}/promotion/${id}`, body)
+      .put<ApiResponse>(`${Config.apiUrl}/promotion/update`, body)
       .pipe(
         map((response) => response),
         catchError((error) => {

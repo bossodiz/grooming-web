@@ -2,6 +2,7 @@ import { Router, Routes } from '@angular/router';
 import { LayoutComponent } from './layout/layout.component';
 import { AuthenticationService } from './services/auth.service';
 import { inject } from '@angular/core';
+import { AuthLayoutComponent } from './auth-layout/auth-layout.component';
 
 export const routes: Routes = [
   {
@@ -26,5 +27,11 @@ export const routes: Routes = [
         return true;
       },
     ],
+  },
+  {
+    path: '',
+    component: AuthLayoutComponent,
+    loadChildren: () =>
+      import('./views/auth/auth.route').then((mod) => mod.AUTH_ROUTES),
   },
 ];

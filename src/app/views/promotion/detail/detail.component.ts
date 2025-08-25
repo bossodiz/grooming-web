@@ -54,20 +54,21 @@ export class DetailComponent implements OnInit {
   private fb = inject(FormBuilder);
 
   isLoaded = false;
+  isNew = false;
   promotionId: string | null = null;
 
   submit!: boolean;
 
   promotionForm!: UntypedFormGroup;
 
-  dayList: any[] = [
-    { key: 'MON', label: 'Monday' },
-    { key: 'TUE', label: 'Tuesday' },
-    { key: 'WED', label: 'Wednesday' },
-    { key: 'THU', label: 'Thursday' },
-    { key: 'FRI', label: 'Friday' },
-    { key: 'SAT', label: 'Saturday' },
-    { key: 'SUN', label: 'Sunday' },
+  dayList = [
+    { key: 'MONDAY', label: 'จันทร์' },
+    { key: 'TUESDAY', label: 'อังคาร' },
+    { key: 'WEDNESDAY', label: 'พุธ' },
+    { key: 'THURSDAY', label: 'พฤหัสบดี' },
+    { key: 'FRIDAY', label: 'ศุกร์' },
+    { key: 'SATURDAY', label: 'เสาร์' },
+    { key: 'SUNDAY', label: 'อาทิตย์' },
   ];
 
   get form() {
@@ -164,6 +165,7 @@ export class DetailComponent implements OnInit {
     locale: Thai,
     altInput: true,
     altFormat: 'D d M Y | H:i',
+    dateFormat: 'Y-m-d\\TH:i:S',
     enableTime: true,
     time_24hr: true,
     minTime: '09:00',
@@ -211,10 +213,14 @@ export class DetailComponent implements OnInit {
           instance.set('minDate', todayStr);
         }
       }
+      console.log('Current Start Date:', currentValueStart);
+      console.log('Current End Date:', currentValueEnd);
       if (inputId === 'datetime-datepicker-end') {
         if (currentValueEnd) {
           instance.setDate(currentValueEnd, true);
-          instance.set('minDate', currentValueEnd);
+          if (currentValueStart) {
+            instance.set('minDate', currentValueStart);
+          }
         } else {
           if (currentValueStart) {
             instance.set('minDate', currentValueStart);
@@ -254,14 +260,9 @@ export class DetailComponent implements OnInit {
     locale: Thai,
     altInput: true,
     altFormat: 'D d M Y | H:i',
+    dateFormat: 'Y-m-d\\TH:i:S',
     allowInput: false,
     clickOpens: false,
-    onReady: (selectedDates, dateStr, instance) => {
-      const currentValue = this.promotionForm.get('created_at')?.value;
-      if (currentValue && currentValue.length > 0) {
-        instance.setDate(currentValue, true);
-      }
-    },
   };
 
   includedItemStatus = false;
@@ -272,7 +273,7 @@ export class DetailComponent implements OnInit {
       name: ['', [Validators.required]],
       discount_category: ['', [Validators.required]],
       discount_type: ['', [Validators.required]],
-      amount_type: ['', [Validators.required]],
+      amount_type: [''],
       amount_normal: [null],
       amount_more_than: [null],
       discount_more_than: [null],
@@ -282,18 +283,20 @@ export class DetailComponent implements OnInit {
       start_date: [''],
       end_date: [''],
       specific_days: [''],
-      customer_only: [false],
-      status: [false],
+      customer_only: [null, [Validators.required]],
+      status: [false, [Validators.required]],
       quota: [null],
-      quota_type: [''],
+      quota_type: ['', [Validators.required]],
       created_at: [''],
       updated_at: [''],
-      condition: [''],
     });
     this.route.paramMap.subscribe((params) => {
       this.promotionId = params.get('id');
-      if (this.promotionId) {
+      if (this.promotionId != 'new') {
         this.getData();
+      } else {
+        this.isLoaded = true;
+        this.isNew = true;
       }
     });
   }
@@ -320,7 +323,7 @@ export class DetailComponent implements OnInit {
         start_date: responsePromotion.data.startDate ?? '',
         end_date: responsePromotion.data.endDate ?? '',
         specific_days: responsePromotion.data.specificDays ?? '',
-        customer_only: responsePromotion.data.customerOnly ?? false,
+        customer_only: responsePromotion.data.customerOnly ?? null,
         status: responsePromotion.data.isStatus ?? false,
         quota: responsePromotion.data.quota ?? null,
         quota_type: responsePromotion.data.quotaType ?? 0,
@@ -365,6 +368,7 @@ export class DetailComponent implements OnInit {
   }
   onSave() {
     const formData = {
+      promotionId: this.promotionId != 'new' ? this.promotionId : null,
       promotionDetail: { ...this.promotionForm.value },
       included: {
         active: this.includedItemStatus,
@@ -375,17 +379,15 @@ export class DetailComponent implements OnInit {
         items: this.itemListExcluded.map((item) => item.id),
       },
     };
+    if (this.promotionForm.get('discount_type')?.value === 'FREE') {
+      formData.promotionDetail.amount_type = 'EACH';
+    } else {
+      formData.promotionDetail.amount_type = this.unit();
+    }
     this.promotionService
-      .updatePromotion(this.promotionId!, formData)
+      .updatePromotion(formData)
       .pipe(
-        tap((response) => {
-          this.itemListExcluded = response.data.map((item: PromotionItem) => {
-            return { ...item, selected: true };
-          });
-          if (this.itemListExcluded.length > 0) {
-            this.excludedItemStatus = true;
-          }
-        }),
+        tap((response) => {}),
         catchError((error) => {
           return throwError(() => error);
         }),
@@ -443,16 +445,58 @@ export class DetailComponent implements OnInit {
         }
         return { ...item, selected };
       });
-      this.filteredItemList = this.itemList;
+      // กรอง item ที่มีอยู่แล้วใน included/excluded ออก
+      if (this.currentAddType === 'included') {
+        this.filteredItemList = this.itemList.filter(
+          (item) => !this.itemListExcluded.some((i) => i.id === item.id),
+        );
+      } else if (this.currentAddType === 'excluded') {
+        this.filteredItemList = this.itemList.filter(
+          (item) => !this.itemListIncluded.some((i) => i.id === item.id),
+        );
+      } else {
+        this.filteredItemList = this.itemList;
+      }
+
       this.selectAll = this.filteredItemList.every((item) => item.selected);
       this.modalService.open(this.addItemModal, { size: 'lg', centered: true });
     });
   }
+
   removeIncludedItem(index: number) {
     this.itemListIncluded.splice(index, 1);
   }
 
   removeExcludedItem(index: number) {
     this.itemListExcluded.splice(index, 1);
+  }
+
+  onDayCheckboxChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const value = input.value;
+    let selectedDays = this.promotionForm.value.specific_days || [];
+    if (input.checked) {
+      selectedDays = [...selectedDays, value];
+    } else {
+      selectedDays = selectedDays.filter((d: string) => d !== value);
+    }
+    this.promotionForm.get('specific_days')?.setValue(selectedDays);
+  }
+
+  @ViewChild('deleteItemModal') deleteItemModal!: TemplateRef<any>;
+  deleteType: 'included' | 'excluded' = 'included';
+
+  openDeleteItemModal(type: 'included' | 'excluded') {
+    this.deleteType = type;
+    this.modalService.open(this.deleteItemModal, { centered: true });
+  }
+
+  confirmDeleteAll(modal: any) {
+    if (this.deleteType === 'included') {
+      this.itemListIncluded = [];
+    } else {
+      this.itemListExcluded = [];
+    }
+    modal.close();
   }
 }

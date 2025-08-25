@@ -25,20 +25,22 @@
           <table class="table table-enhanced table-hover">
             <thead>
               <tr>
-                <th scope="col" class="text-center">{{ "no" | translate }}</th>
-                <th scope="col" class="text-center">
+                <th scope="col" class="text-center align-middle">
+                  {{ "no" | translate }}
+                </th>
+                <th scope="col" class="text-center align-middle">
                   {{ "phone" | translate }}
                 </th>
-                <th scope="col" class="text-center">
+                <th scope="col" class="text-center align-middle">
                   {{ "name" | translate }}
                 </th>
-                <th scope="col" class="text-center">
+                <th scope="col" class="text-center align-middle">
                   {{ "total_pets" | translate }}
                 </th>
-                <th scope="col" class="text-center">
+                <th scope="col" class="text-center align-middle">
                   {{ "register_date" | translate }}
                 </th>
-                <th scope="col" class="text-center">
+                <th scope="col" class="text-center align-middle">
                   {{ "detail" | translate }}
                 </th>
               </tr>
@@ -46,14 +48,14 @@
             <tbody>
               @for (item of searchCountries; track item.id; let i = $index) {
                 <tr>
-                  <td class="text-center">
+                  <td class="text-center align-middle">
                     <span
                       class="table-detail-link"
                       (click)="viewDetail(item.id!)"
                       >{{ (page - 1) * pageSize + (i + 1) }}</span
                     >
                   </td>
-                  <td class="text-center">
+                  <td class="text-center align-middle">
                     <span
                       class="table-detail-link"
                       (click)="viewDetail(item.id!)"
@@ -62,26 +64,29 @@
                         [term]="filter"
                     /></span>
                   </td>
-                  <td class="text-center">
+                  <td class="text-center align-middle">
                     <span
                       class="table-detail-link"
                       (click)="viewDetail(item.id!)"
                       ><ngb-highlight [result]="item.name" [term]="filter"
                     /></span>
                   </td>
-                  <td class="text-center">
+                  <td class="text-center align-middle">
                     <span
                       class="table-detail-link"
                       (click)="viewDetail(item.id!)"
                       >{{ item.pets?.length }}</span
                     >
                   </td>
-                  <td class="text-center" (click)="viewDetail(item.id!)">
+                  <td
+                    class="text-center align-middle"
+                    (click)="viewDetail(item.id!)"
+                  >
                     <span class="table-detail-link">{{
                       item.createdDate | date_full: translate.currentLang
                     }}</span>
                   </td>
-                  <td class="text-center">
+                  <td class="text-center align-middle">
                     <a
                       (click)="viewDetail(item.id!)"
                       class="btn btn-sm bg-primary-subtle me-1"

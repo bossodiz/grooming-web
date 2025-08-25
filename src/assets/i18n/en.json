@@ -72,5 +72,9 @@
   "save": "Save",
   "cancel": "Cancel",
   "promotion_management": "Promotion Management",
-  "service_description": "Service Description"
+  "service_description": "Service Description",
+  "ACTIVE": "Active",
+  "UPCOMING": "Upcoming",
+  "ENDED": "Ended",
+  "DISABLED": "Disabled"
 }

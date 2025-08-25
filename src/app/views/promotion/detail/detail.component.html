@@ -1,13 +1,15 @@
 <breadcrumb
   [title]="'Promotion'"
   [titleLink]="'/promotion/list'"
-  [subtitle]="'Detail'"
+  [subtitle]="isNew ? 'สร้างโปรโมชั่นใหม่' : 'รายละเอียดโปรโมชั่น'"
 />
 <div class="row" *ngIf="isLoaded">
   <div class="col-xl-6">
     <div class="card">
       <div class="card-header">
-        <h3 class="card-title">รายละเอียดโปรโมชั่น</h3>
+        <h3 class="card-title">
+          {{ isNew ? "สร้างโปรโมชั่นใหม่" : "รายละเอียดโปรโมชั่น" }}
+        </h3>
       </div>
       <div class="card-body">
         <form
@@ -32,7 +34,9 @@
 
             <!-- Discount Category -->
             <div class="col-xl-6 mb-3">
-              <label class="form-label">ประเภทสินค้า</label>
+              <label class="form-label"
+                >ประเภทสินค้า <span class="text-danger">*</span></label
+              >
               <div>
                 <div class="form-check form-check-inline">
                   <input
@@ -75,7 +79,9 @@
 
             <!-- Customer Only -->
             <div class="col-xl-6 mb-3">
-              <label class="form-label">สำหรับลูกค้า</label>
+              <label class="form-label"
+                >สำหรับลูกค้า <span class="text-danger">*</span></label
+              >
               <div>
                 <div class="form-check form-check-inline">
                   <input
@@ -106,7 +112,9 @@
 
             <!-- Discount Type -->
             <div class="col-xl-12 mb-3">
-              <label class="form-label">ประเภทส่วนลด</label>
+              <label class="form-label"
+                >ประเภทส่วนลด <span class="text-danger">*</span></label
+              >
               <div>
                 <div class="form-check form-check-inline">
                   <input
@@ -149,7 +157,9 @@
 
             @if (promotionForm.get("discount_type")?.value === "NORMAL") {
               <div class="col-xl-6 mb-3">
-                <label class="form-label">ส่วนลด</label>
+                <label class="form-label"
+                  >ส่วนลด <span class="text-danger">*</span></label
+                >
                 <div class="input-group" [formGroup]="promotionForm">
                   <input
                     type="number"
@@ -185,7 +195,9 @@
 
             @if (promotionForm.get("discount_type")?.value === "MORE_THAN") {
               <div class="col-xl-6 mb-3">
-                <label class="form-label">จำนวน (บาท)</label>
+                <label class="form-label"
+                  >จำนวน (บาท) <span class="text-danger">*</span></label
+                >
                 <input
                   formControlName="amount_more_than"
                   type="number"
@@ -196,7 +208,9 @@
               </div>
 
               <div class="col-xl-6 mb-3">
-                <label class="form-label">ส่วนลด</label>
+                <label class="form-label"
+                  >ส่วนลด <span class="text-danger">*</span></label
+                >
                 <div class="input-group" [formGroup]="promotionForm">
                   <input
                     type="number"
@@ -232,9 +246,11 @@
 
             @if (promotionForm.get("discount_type")?.value === "FREE") {
               <div class="col-xl-6 mb-3">
-                <label class="form-label">จำนวนที่ซื้อ</label>
+                <label class="form-label"
+                  >จำนวนที่ซื้อ <span class="text-danger">*</span></label
+                >
                 <input
-                  formControlName="amountFree"
+                  formControlName="amount_free"
                   type="number"
                   class="form-control"
                   min="0"
@@ -242,9 +258,11 @@
                 />
               </div>
               <div class="col-xl-6 mb-3">
-                <label class="form-label">จำนวนที่แถม</label>
+                <label class="form-label"
+                  >จำนวนที่แถม <span class="text-danger">*</span></label
+                >
                 <input
-                  formControlName="amountFreeBonus"
+                  formControlName="amount_free_bonus"
                   type="number"
                   class="form-control"
                   min="0"
@@ -255,7 +273,9 @@
 
             <!-- Quota -->
             <div class="mb-3">
-              <label class="form-label">การจำกัดจำนวน</label>
+              <label class="form-label"
+                >การจำกัดจำนวน <span class="text-danger">*</span></label
+              >
               <div class="d-flex align-items-center gap-3">
                 <div class="form-check form-check-inline">
                   <input
@@ -279,7 +299,11 @@
                     id="quotaLimited"
                     (change)="promotionForm.get('quota')?.setValue(0)"
                   />
-                  <label class="form-check-label me-2" for="quotaLimited">
+                  <label
+                    class="form-check-label me-2"
+                    for="quotaLimited"
+                    style="margin-left: 0.5em"
+                  >
                     จำนวน</label
                   >
                   <input
@@ -296,7 +320,9 @@
 
             <!-- Period Type -->
             <div class="col-xl-12 mb-3">
-              <label class="form-label">ประเภทระยะเวลา</label>
+              <label class="form-label"
+                >ประเภทระยะเวลา <span class="text-danger">*</span></label
+              >
               <div>
                 <div class="form-check form-check-inline">
                   <input
@@ -315,7 +341,7 @@
                     class="form-check-input"
                     type="radio"
                     formControlName="period_type"
-                    value="DAY"
+                    value="SPECIFIC_DAYS"
                     id="periodDay"
                   />
                   <label class="form-check-label" for="periodDay"
@@ -327,23 +353,30 @@
 
             <!-- Specific Days (if DAY) -->
             <div
-              class="col-xl-6 mb-3"
-              *ngIf="promotionForm.value.period_type === 'DAY'"
+              class="col-xl-12 mb-3"
+              *ngIf="promotionForm.value.period_type === 'SPECIFIC_DAYS'"
             >
-              <label class="form-label">วัน</label>
-              <ng-select
-                [items]="dayList"
-                bindLabel="label"
-                bindValue="key"
-                [searchable]="true"
-                formControlName="specific_days"
+              <label class="form-label"
+                >วัน <span class="text-danger">*</span></label
               >
-                <ng-template ng-option-tmp let-item="item">
-                  <div class="option-content">
-                    {{ item.label }}
-                  </div>
-                </ng-template>
-              </ng-select>
+              <div class="d-flex flex-wrap gap-2">
+                <div *ngFor="let day of dayList">
+                  <label
+                    class="form-check form-check-inline align-items-center"
+                  >
+                    <input
+                      type="checkbox"
+                      class="form-check-input"
+                      [value]="day.key"
+                      (change)="onDayCheckboxChange($event)"
+                      [checked]="
+                        promotionForm.value.specific_days?.includes(day.key)
+                      "
+                    />
+                    <span class="ms-1">{{ day.label }}</span>
+                  </label>
+                </div>
+              </div>
             </div>
 
             <!-- Start/End Date (if DATE_RANGE) -->
@@ -351,7 +384,9 @@
               class="col-xl-6 mb-3"
               *ngIf="promotionForm.value.period_type === 'DATE_RANGE'"
             >
-              <label class="form-label">วันที่เริ่มต้น</label>
+              <label class="form-label"
+                >วันที่เริ่มต้น <span class="text-danger">*</span></label
+              >
               <input
                 mwlFlatpickr
                 [flatpickrOptions]="flatpickrStartOptions"
@@ -370,7 +405,9 @@
               class="col-xl-6 mb-3"
               *ngIf="promotionForm.value.period_type === 'DATE_RANGE'"
             >
-              <label class="form-label">วันที่สิ้นสุด</label>
+              <label class="form-label"
+                >วันที่สิ้นสุด <span class="text-danger">*</span></label
+              >
               <input
                 mwlFlatpickr
                 [flatpickrOptions]="flatpickrEndOptions"
@@ -385,51 +422,56 @@
               />
               <div class="invalid-feedback">Please select a end time</div>
             </div>
-
-            <!-- Status -->
-            <div class="col-xl-12 mb-3">
-              <label class="form-label">สถานะ</label>
-              <div>
-                <label
-                  class="form-switch d-flex align-items-center gap-2 custom-switch-lg"
+            @if (!isNew) {
+              <!-- Status -->
+              <div class="col-xl-12 mb-3">
+                <label class="form-label"
+                  >สถานะ <span class="text-danger">*</span></label
                 >
-                  <input
-                    type="checkbox"
-                    class="form-check-input custom-switch-input-lg"
-                    formControlName="status"
-                  />
-                  <span class="custom-switch-label-lg">
-                    {{ promotionForm.value.status ? "ใช้งาน" : "ปิดการใช้งาน" }}
-                  </span>
-                </label>
+                <div>
+                  <label
+                    class="form-switch d-flex align-items-center gap-2 custom-switch-lg"
+                  >
+                    <input
+                      type="checkbox"
+                      class="form-check-input custom-switch-input-lg"
+                      formControlName="status"
+                    />
+                    <span class="custom-switch-label-lg">
+                      {{
+                        promotionForm.value.status ? "ใช้งาน" : "ปิดการใช้งาน"
+                      }}
+                    </span>
+                  </label>
+                </div>
               </div>
-            </div>
 
-            <!-- Created/Updated At (disabled) -->
-            <div class="col-xl-6 mb-3">
-              <label class="form-label">วันที่สร้าง</label>
-              <input
-                mwlFlatpickr
-                [flatpickrOptions]="flatpickrCreatedOptions"
-                type="text"
-                class="form-control"
-                id="datetime-datepicker-created_at"
-                formControlName="created_at"
-                [readonly]="true"
-              />
-            </div>
-            <div class="col-xl-6 mb-3">
-              <label class="form-label">วันที่แก้ไข</label>
-              <input
-                mwlFlatpickr
-                [flatpickrOptions]="flatpickrCreatedOptions"
-                type="text"
-                class="form-control"
-                id="datetime-datepicker-updated_at"
-                formControlName="updated_at"
-                [readonly]="true"
-              />
-            </div>
+              <!-- Created/Updated At (disabled) -->
+              <div class="col-xl-6 mb-3">
+                <label class="form-label">วันที่สร้าง</label>
+                <input
+                  mwlFlatpickr
+                  [flatpickrOptions]="flatpickrCreatedOptions"
+                  type="text"
+                  class="form-control"
+                  id="datetime-datepicker-created_at"
+                  formControlName="created_at"
+                  [readonly]="true"
+                />
+              </div>
+              <div class="col-xl-6 mb-3">
+                <label class="form-label">วันที่แก้ไข</label>
+                <input
+                  mwlFlatpickr
+                  [flatpickrOptions]="flatpickrCreatedOptions"
+                  type="text"
+                  class="form-control"
+                  id="datetime-datepicker-updated_at"
+                  formControlName="updated_at"
+                  [readonly]="true"
+                />
+              </div>
+            }
           </div>
         </form>
       </div>
@@ -461,12 +503,21 @@
         </label>
       </div>
       <div class="card-body" *ngIf="includedItemStatus">
-        <button
-          class="btn btn-primary mb-3"
-          (click)="openAddItemModal('included')"
-        >
-          เลือกสินค้า
-        </button>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <button
+            class="btn btn-primary btn-sm"
+            (click)="openAddItemModal('included')"
+          >
+            เลือกสินค้า
+          </button>
+          <button
+            class="btn btn-outline-danger btn-sm"
+            (click)="openDeleteItemModal('included')"
+          >
+            ลบทั้งหมด
+          </button>
+        </div>
+
         <div
           *ngIf="itemListIncluded.length > 0"
           style="max-height: 300px; overflow-y: auto"
@@ -474,27 +525,30 @@
           <table class="table table-sm">
             <thead>
               <tr>
-                <th class="text-center">No.</th>
-                <th class="text-center">ชื่อสินค้า</th>
-                <th class="text-center">รายละเอียด</th>
-                <th class="text-center">ราคา</th>
-                <th class="text-center"></th>
+                <th class="text-center align-middle">No.</th>
+                <th class="text-center align-middle">ชื่อสินค้า</th>
+                <th class="text-center align-middle">รายละเอียด</th>
+                <th class="text-center align-middle">ราคา</th>
+                <th class="text-center align-middle"></th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let item of itemListIncluded; let i = index">
-                <td class="text-center">{{ i + 1 }}</td>
-                <td>{{ item.name }}</td>
-                <td>{{ item.description }}</td>
-                <td class="text-end">{{ item.price | number: "1.2-2" }}</td>
-                <td class="text-end">
-                  <button
-                    class="btn btn-outline-danger btn-sm"
+                <td class="text-center align-middle">{{ i + 1 }}</td>
+                <td class="align-middle">{{ item.name }}</td>
+                <td class="align-middle">{{ item.description }}</td>
+                <td class="text-end align-middle">
+                  {{ item.price | number: "1.2-2" }}
+                </td>
+                <td class="text-end align-middle">
+                  <a
+                    aria-label="anchor"
+                    class="btn btn-sm bg-danger-subtle"
+                    ngbTooltip="Delete"
                     (click)="removeIncludedItem(i)"
-                    title="ลบรายการ"
                   >
-                    <i class="bi bi-trash"></i> ลบ
-                  </button>
+                    <i class="mdi mdi-delete fs-12 text-danger"></i>
+                  </a>
                 </td>
               </tr>
             </tbody>
@@ -525,17 +579,25 @@
             [(ngModel)]="excludedItemStatus"
           />
           <span class="custom-switch-label-lg">
-            {{ excludedItemStatus ? "เปิด" : "ปิด" }}
+            {{ excludedItemStatus ? "ใช้งาน" : "ปิดการใช้งาน" }}
           </span>
         </label>
       </div>
       <div class="card-body" *ngIf="excludedItemStatus">
-        <button
-          class="btn btn-primary mb-3"
-          (click)="openAddItemModal('excluded')"
-        >
-          เลือกสินค้า
-        </button>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <button
+            class="btn btn-primary btn-sm"
+            (click)="openAddItemModal('excluded')"
+          >
+            เลือกสินค้า
+          </button>
+          <button
+            class="btn btn-outline-danger btn-sm"
+            (click)="openDeleteItemModal('excluded')"
+          >
+            ลบทั้งหมด
+          </button>
+        </div>
         <div
           *ngIf="itemListExcluded.length > 0"
           style="max-height: 300px; overflow-y: auto"
@@ -543,27 +605,30 @@
           <table class="table table-sm">
             <thead>
               <tr>
-                <th class="text-center">No.</th>
-                <th class="text-center">ชื่อสินค้า</th>
-                <th class="text-center">รายละเอียด</th>
-                <th class="text-center">ราคา</th>
-                <th class="text-center"></th>
+                <th class="text-center align-middle">No.</th>
+                <th class="text-center align-middle">ชื่อสินค้า</th>
+                <th class="text-center align-middle">รายละเอียด</th>
+                <th class="text-center align-middle">ราคา</th>
+                <th class="text-center align-middle"></th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let item of itemListExcluded; let i = index">
-                <td class="text-center">{{ i + 1 }}</td>
-                <td>{{ item.name }}</td>
-                <td>{{ item.description }}</td>
-                <td class="text-end">{{ item.price | number: "1.2-2" }}</td>
-                <td class="text-end">
-                  <button
-                    class="btn btn-outline-danger btn-sm"
+                <td class="text-center align-middle">{{ i + 1 }}</td>
+                <td class="align-middle">{{ item.name }}</td>
+                <td class="align-middle">{{ item.description }}</td>
+                <td class="text-end align-middle">
+                  {{ item.price | number: "1.2-2" }}
+                </td>
+                <td class="text-end align-middle">
+                  <a
+                    aria-label="anchor"
+                    class="btn btn-sm bg-danger-subtle"
+                    ngbTooltip="Delete"
                     (click)="removeExcludedItem(i)"
-                    title="ลบรายการ"
                   >
-                    <i class="bi bi-trash"></i> ลบ
-                  </button>
+                    <i class="mdi mdi-delete fs-12 text-danger"></i>
+                  </a>
                 </td>
               </tr>
             </tbody>
@@ -620,25 +685,25 @@
       <table class="table table-sm">
         <thead>
           <tr>
-            <th class="text-center">
+            <th class="text-center align-middle">
               <input
                 type="checkbox"
                 [(ngModel)]="selectAll"
                 (change)="toggleSelectAll()"
               />
             </th>
-            <th class="text-center">No.</th>
-            <th class="text-center">ชื่อสินค้า</th>
-            <th class="text-center">รายละเอียด</th>
-            <th class="text-center">ราคา</th>
+            <th class="text-center align-middle">No.</th>
+            <th class="text-center align-middle">ชื่อสินค้า</th>
+            <th class="text-center align-middle">รายละเอียด</th>
+            <th class="text-center align-middle">ราคา</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let item of filteredItemList; let i = index">
-            <td class="text-center">
+            <td class="text-center align-middle">
               <input type="checkbox" [(ngModel)]="item.selected" />
             </td>
-            <td class="text-center">{{ i + 1 }}</td>
+            <td class="text-center align-middle">{{ i + 1 }}</td>
             <td>{{ item.name }}</td>
             <td>{{ item.description }}</td>
             <td class="text-end">{{ item.price | number: "1.2-2" }}</td>
@@ -657,6 +722,34 @@
       (click)="confirmAddItems(modal)"
     >
       ตกลง
+    </button>
+  </div>
+</ng-template>
+
+<!-- Modal Confirm Delete -->
+<ng-template #deleteItemModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">ยืนยันการลบรายการสินค้า</h5>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="modal.dismiss()"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <p>คุณต้องการลบสินค้าทั้งหมดออกจากรายการนี้ใช่หรือไม่?</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">
+      ยกเลิก
+    </button>
+    <button
+      type="button"
+      class="btn btn-danger"
+      (click)="confirmDeleteAll(modal)"
+    >
+      ลบทั้งหมด
     </button>
   </div>
 </ng-template>

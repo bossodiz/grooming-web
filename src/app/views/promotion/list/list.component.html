@@ -31,22 +31,22 @@
             <table class="table table-enhanced table-hover">
               <thead>
                 <tr>
-                  <th scope="col" class="text-center">
+                  <th scope="col" class="text-center align-middle">
                     {{ "no" | translate }}
                   </th>
-                  <th scope="col" class="text-center">
+                  <th scope="col" class="text-center align-middle">
                     {{ "name" | translate }}
                   </th>
-                  <th scope="col" class="text-center">
+                  <th scope="col" class="text-center align-middle">
                     {{ "discount_category" | translate }}
                   </th>
-                  <th scope="col" class="text-center">
+                  <th scope="col" class="text-center align-middle">
                     {{ "amount" | translate }}
                   </th>
-                  <th scope="col" class="text-center">
+                  <th scope="col" class="text-center align-middle">
                     {{ "period_date" | translate }}
                   </th>
-                  <th scope="col" class="text-center">
+                  <th scope="col" class="text-center align-middle">
                     {{ "status" | translate }}
                   </th>
                 </tr>
@@ -54,14 +54,14 @@
               <tbody>
                 @if (searchCountries && searchCountries.length == 0) {
                   <tr>
-                    <td colspan="9" class="text-center">
+                    <td colspan="9" class="text-center align-middle">
                       <span>{{ "no_data" | translate }}</span>
                     </td>
                   </tr>
                 }
                 @for (item of searchCountries; track item.id; let i = $index) {
                   <tr>
-                    <td class="text-center">
+                    <td class="text-center align-middle">
                       <span
                         class="table-detail-link"
                         (click)="viewDetail(item.id!)"
@@ -75,36 +75,31 @@
                         >{{ item.name }}</span
                       >
                     </td>
-                    <td class="text-center">
+                    <td class="text-center align-middle">
                       <span
                         class="table-detail-link"
                         (click)="viewDetail(item.id!)"
                         >{{ item.discountCategory }}</span
                       >
                     </td>
-                    <td class="text-center">
+                    <td class="text-center align-middle">
                       <span
                         class="table-detail-link"
                         (click)="viewDetail(item.id!)"
                         >{{ item.amount }}
                       </span>
                     </td>
-                    <td class="text-center">
+                    <td class="text-center align-middle">
                       <span
                         class="table-detail-link"
                         (click)="viewDetail(item.id!)"
                       >
-                        @if (item.periodType === "DATE_RANGE") {
-                          {{ item.startDate }} {{ "to" | translate }}
-                          {{ item.endDate }}
-                        } @else {
-                          {{ item.specificDays }}
-                        }
+                        {{ item.periodDate }}
                       </span>
                     </td>
 
                     <td
-                      class="text-center"
+                      class="text-center align-middle"
                       [style.color]="
                         item.status === 'ACTIVE'
                           ? 'green'

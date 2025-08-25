@@ -85,9 +85,7 @@ export class PromotionTableList {
   amount?: string;
   amountType?: string;
   periodType?: string;
-  startDate?: string;
-  endDate?: string;
-  specificDays?: string;
+  periodDate?: string;
   customerOnly?: boolean;
   status?: string;
   quota?: number;
