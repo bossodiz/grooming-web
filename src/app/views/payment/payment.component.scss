@@ -372,3 +372,13 @@ ng-select,
 .summary .form-control-sm {
   font-size: 0.9rem;
 }
+
+.btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px; /* เท่ากันทั้งสองปุ่ม */
+  min-width: 36px;
+  height: 31px; /* เข้ากับ .input-group-sm */
+  padding: 0;
+}

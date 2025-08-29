@@ -55,7 +55,6 @@ export class PaymentService {
 
   calculatePayment(cart: CartItem[], invoiceNo?: string, manualDiscount?: any) {
     const body = { items: cart, invoiceNo, manualDiscount };
-    console.log(body);
     return this.http.post<ApiResponse>(
       `${Config.apiUrl}/payment/calculate`,
       body,

@@ -164,6 +164,15 @@ export class PaymentComponent implements AfterViewChecked, OnDestroy {
   @ViewChild('receiptModal') receiptModalTpl!: TemplateRef<any>;
   receipt: any | null = null;
 
+  canPaymentBtn: boolean = false;
+
+  get canPayment(): boolean {
+    if (this.currentCart.length === 0) {
+      return false;
+    }
+    return this.canPaymentBtn;
+  }
+
   ngOnInit(): void {
     this.getCustomerList();
     this.getTagsGrooming();
@@ -176,6 +185,7 @@ export class PaymentComponent implements AfterViewChecked, OnDestroy {
         debounceTime(400),
         tap(() => {
           this.isCalculateLoading = true;
+          this.canPaymentBtn = false;
         }),
         switchMap(() =>
           this.paymentService
@@ -184,7 +194,12 @@ export class PaymentComponent implements AfterViewChecked, OnDestroy {
               this.invoiceNo ?? undefined,
               this.manualDiscount ?? undefined,
             )
-            .pipe(finalize(() => (this.isCalculateLoading = false))),
+            .pipe(
+              finalize(() => {
+                this.isCalculateLoading = false;
+                this.canPaymentBtn = true;
+              }),
+            ),
         ),
       )
       .subscribe((resp) => this.applyCalcResponse(resp?.data));
@@ -201,6 +216,10 @@ export class PaymentComponent implements AfterViewChecked, OnDestroy {
       el.scrollTop = el.scrollHeight;
       this.shouldScrollToBottom = false;
     }
+  }
+
+  get cartItemCount(): number {
+    return this.currentCart.reduce((sum, it) => sum + it.quantity!, 0);
   }
 
   // ---- API calls ----
@@ -290,7 +309,10 @@ export class PaymentComponent implements AfterViewChecked, OnDestroy {
   }
 
   getPetListByCustomerId() {
-    if (!this.customerId) return;
+    if (!this.customerId) {
+      this.petList = [{ key: 0, label: 'ไม่ระบุ' }];
+      return;
+    }
 
     this.paymentService
       .getPetListByCustomerId(this.customerId)
@@ -307,6 +329,13 @@ export class PaymentComponent implements AfterViewChecked, OnDestroy {
   onCustomerChange(item: Option | null) {
     if (item) {
       this.customerId = item.key;
+      this.petId = null;
+      this.currentCart = [];
+      this.selectedItems = [];
+      this.selectedTags = new Set<number>();
+      this.selectedTagsGrooming = new Set<number>();
+      this.selectedTagsPetShop = new Set<number>();
+      this.cartChanges$.next();
       this.getPetListByCustomerId();
     }
   }
@@ -318,23 +347,19 @@ export class PaymentComponent implements AfterViewChecked, OnDestroy {
   }
 
   onPetChange(item: Option | null) {
-    if (item) {
+    console.log('onPetChange', item);
+    if (item && item.key != 0) {
       this.petId = Number(item.key);
-      const petTypeId = (item as any).petTypeId as number | undefined;
+      const petTypeId = (item as any).petTypeId as number | undefined | null;
       if (petTypeId != null) this.getGroomingServiceList(petTypeId);
     } else {
+      this.getGroomingServiceList(0);
       this.petId = null;
     }
     // reset tags for grooming
     this.selectedTagsGrooming = new Set<number>();
     if (this.selectedShopType === 'GROOMING')
       this.selectedTags = this.selectedTagsGrooming;
-
-    // clear grooming selections from cart/selection to avoid cross-pet leakage
-    this.selectedItems = this.selectedItems.filter(
-      (s) => !s.key.startsWith('G|'),
-    );
-    this.currentCart = this.currentCart.filter((c) => c.type !== 'G');
 
     this.filterItems();
   }
@@ -415,6 +440,7 @@ export class PaymentComponent implements AfterViewChecked, OnDestroy {
     }
     if (mode === 'add') this.addToCart(key);
     else this.removeFromCart(key);
+    this.canPaymentBtn = false;
     this.cartChanges$.next();
   }
 
@@ -427,6 +453,7 @@ export class PaymentComponent implements AfterViewChecked, OnDestroy {
       this.selectedItems.push({ key, count: 1 });
       this.addToCart(key);
     }
+    this.canPaymentBtn = false;
     this.cartChanges$.next();
   }
 
@@ -458,12 +485,14 @@ export class PaymentComponent implements AfterViewChecked, OnDestroy {
 
     this.currentCart.push(newItem);
     this.shouldScrollToBottom = true;
+    this.canPaymentBtn = false;
     this.cartChanges$.next();
   }
 
   removeFromCart(key: string): void {
     this.currentCart = this.currentCart.filter((i) => i.key !== key);
     this.shouldScrollToBottom = true;
+    this.canPaymentBtn = false;
     this.cartChanges$.next();
   }
 
@@ -480,6 +509,7 @@ export class PaymentComponent implements AfterViewChecked, OnDestroy {
 
       if (typeof item.quantity === 'number') item.quantity!++;
       this.recalcItem(item);
+      this.canPaymentBtn = false;
       this.cartChanges$.next();
     } else {
       this.addToCart(key);
@@ -508,12 +538,13 @@ export class PaymentComponent implements AfterViewChecked, OnDestroy {
     if (!this.currentCart.some((i) => i.key === key)) {
       this.selectedItems = this.selectedItems.filter((i) => i.key !== key);
     }
+    this.canPaymentBtn = false;
     this.cartChanges$.next();
   }
 
   petName(petId: number): string {
     const pet = this.petList.find((p) => Number(p.key) === petId);
-    return pet ? (pet.name ?? pet.label ?? '') : '';
+    return pet ? (pet.name ?? pet.label ?? 'ไม่ระบุ') : 'ไม่ระบุ';
   }
 
   get cartTotal(): number {
@@ -536,6 +567,7 @@ export class PaymentComponent implements AfterViewChecked, OnDestroy {
       this.recalcItem(item);
     }
     this.shouldScrollToBottom = true;
+    this.canPaymentBtn = false;
     this.cartChanges$.next();
   }
 
@@ -674,6 +706,7 @@ export class PaymentComponent implements AfterViewChecked, OnDestroy {
       this.manualDiscount!.value = null;
       return;
     }
+    this.canPaymentBtn = false;
     this.cartChanges$.next();
   }
 
@@ -684,6 +717,7 @@ export class PaymentComponent implements AfterViewChecked, OnDestroy {
       amount: null,
       note: null,
     };
+    this.canPaymentBtn = false;
     this.cartChanges$.next();
   }
 

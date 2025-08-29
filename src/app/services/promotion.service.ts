@@ -69,4 +69,26 @@ export class PromotionService {
         }),
       );
   }
+
+  getItemListBought(id: string) {
+    return this.http
+      .get<ApiResponse>(`${Config.apiUrl}/promotion/${id}/bought`)
+      .pipe(
+        map((response) => response),
+        catchError((error) => {
+          return throwError(() => error);
+        }),
+      );
+  }
+
+  getItemListFree(id: string) {
+    return this.http
+      .get<ApiResponse>(`${Config.apiUrl}/promotion/${id}/free`)
+      .pipe(
+        map((response) => response),
+        catchError((error) => {
+          return throwError(() => error);
+        }),
+      );
+  }
 }

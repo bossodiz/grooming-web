@@ -186,7 +186,7 @@ export class ReserveComponent implements OnInit {
     slotEventOverlap: false,
     navLinks: true,
     events: (info, successCallback, failureCallback) => {
-      this.loadEventsFromApi()
+      this.loadEventsFromApi(info.startStr, info.endStr)
         .then((events) => {
           successCallback(events);
         })
@@ -208,7 +208,6 @@ export class ReserveComponent implements OnInit {
     eventContent: (arg) => {
       const icon = arg.event.extendedProps['petType'] === '1' ? '🐶' : '🐱';
       const name = arg.event.extendedProps['petName'];
-      const service = arg.event.extendedProps['serviceName'];
       if (arg.view.type === 'dayGridMonth') {
         console.log(arg);
         return {
@@ -224,7 +223,6 @@ export class ReserveComponent implements OnInit {
           <div class="event-container">
             <div>${arg.timeText}</div>
             <div style="font-weight: bold;">${icon} ${name} </div>
-            <div>${service}</div>
           </div>
           `,
         };
@@ -404,7 +402,6 @@ export class ReserveComponent implements OnInit {
     nameOther: [null],
     type: [null, [Validators.required]],
     breed: [null],
-    grooming: [null, [Validators.required]],
     start: [null, [Validators.required]],
     end: [null, [Validators.required]],
     phone: [null, [Validators.required]],
@@ -433,22 +430,27 @@ export class ReserveComponent implements OnInit {
   setupTooltip(info: any) {
     const id = info.event.extendedProps['id'];
     const icon = info.event.extendedProps['petType'] === '1' ? '🐶' : '🐱';
-    const name = info.event.extendedProps['petName'] || '';
+    const name = info.event.extendedProps['petName'] ?? '';
     const phone =
-      this.phoneFormatPipe.transform(info.event.extendedProps['phone']) || '';
-    const service = info.event.extendedProps['serviceName'] || '';
-    const note = info.event.extendedProps['note'] || '';
-
-    // กำจัด tooltip เก่า (ถ้ามี)
+      this.phoneFormatPipe.transform(info.event.extendedProps['phone']) ?? '';
+    const note = info.event.extendedProps['note'] ?? '';
     this.removeTooltip(id);
-
+    const parts: string[] = [];
+    if (name) {
+      parts.push(`${icon} ${name} ${icon}`);
+    }
+    if (phone) {
+      parts.push(phone);
+    }
+    if (note) {
+      parts.push(`* ${note} *`);
+    }
     const tooltipInstance = new Tooltip(info.el, {
-      title: `${icon} ${name} ${icon}<br>${phone}<br>${service}<br>* ${note} *`,
+      title: parts.join('<br>'),
       placement: 'right',
       trigger: 'hover',
       html: true,
     });
-
     this.tooltipMap.set(id, tooltipInstance);
   }
 
@@ -460,8 +462,8 @@ export class ReserveComponent implements OnInit {
     }
   }
 
-  loadEventsFromApi(): Promise<EventInput[]> {
-    return lastValueFrom(this.getData());
+  loadEventsFromApi(start: string, end: string): Promise<EventInput[]> {
+    return lastValueFrom(this.getData(start, end));
   }
 
   createReserve() {
@@ -551,7 +553,6 @@ export class ReserveComponent implements OnInit {
         pet: obj.pet,
         type: obj.type,
         breed: obj.breed,
-        grooming: obj.service,
         nameOther: obj.petName,
         phone: obj.phone,
         color: obj.className,
@@ -604,7 +605,6 @@ export class ReserveComponent implements OnInit {
       this.filteredBreedList = [];
     }
     this.reserveForm.get('breed')?.setValue('');
-    this.reserveForm.get('grooming')?.setValue('');
   }
 
   sortPetList() {
@@ -657,6 +657,7 @@ export class ReserveComponent implements OnInit {
   reserve() {
     this.submit = true;
     if (this.reserveForm.invalid) {
+      console.log(this.reserveForm);
       return;
     }
     const color = this.reserveForm.value.color
@@ -666,7 +667,6 @@ export class ReserveComponent implements OnInit {
       id: this.reserveForm.value.id,
       pet: this.reserveForm.value.nameOther ? null : this.reserveForm.value.pet,
       nameOther: this.reserveForm.value.nameOther,
-      grooming: this.reserveForm.value.grooming,
       breed: this.reserveForm.value.breed,
       type: this.reserveForm.value.type,
       phone: this.reserveForm.value.phone,
@@ -687,7 +687,7 @@ export class ReserveComponent implements OnInit {
             successCallback,
             failureCallback,
           ) => {
-            this.loadEventsFromApi()
+            this.loadEventsFromApi(info.startStr, info.endStr)
               .then(successCallback)
               .catch(failureCallback);
           };
@@ -718,7 +718,7 @@ export class ReserveComponent implements OnInit {
             successCallback,
             failureCallback,
           ) => {
-            this.loadEventsFromApi()
+            this.loadEventsFromApi(info.startStr, info.endStr)
               .then(successCallback)
               .catch(failureCallback);
           };
@@ -744,7 +744,7 @@ export class ReserveComponent implements OnInit {
             successCallback,
             failureCallback,
           ) => {
-            this.loadEventsFromApi()
+            this.loadEventsFromApi(info.startStr, info.endStr)
               .then(successCallback)
               .catch(failureCallback);
           };
@@ -760,8 +760,8 @@ export class ReserveComponent implements OnInit {
       .subscribe();
   }
 
-  getData(): Observable<EventInput[]> {
-    return this.reserveService.getReserveGrooming().pipe(
+  getData(start: string, end: string): Observable<EventInput[]> {
+    return this.reserveService.getReserveGrooming(start, end).pipe(
       map((response) => response.data ?? []),
       catchError((error) => {
         return throwError(() => error);
