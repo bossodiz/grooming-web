@@ -1,0 +1,45 @@
+name: Build & Deploy WEB
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build-upload-restart:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install & Build
+        run: |
+          npm ci
+          npm run build -- --configuration production
+          tar -czf dist.tgz -C dist .
+
+      - name: Upload dist to server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          source: "dist.tgz"
+          target: "~/apps/grooming"
+
+      - name: Deploy web (extract & restart nginx)
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          script: |
+            cd ~/apps/grooming
+            rm -rf web-dist
+            mkdir -p web-dist
+            tar -xzf dist.tgz -C web-dist --strip-components=1
+            rm -f dist.tgz
+            docker compose up -d web
