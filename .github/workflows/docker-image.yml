@@ -19,7 +19,11 @@ jobs:
         run: |
           npm ci
           npm run build -- --configuration production
-          tar -czf dist.tgz -C dist/grooming-admin .
+          PROJ_DIR="dist/grooming-admin"
+          APP_DIR="$PROJ_DIR/browser"
+          if [ ! -d "$APP_DIR" ]; then APP_DIR="$PROJ_DIR"; fi
+          echo "Packaging from: $APP_DIR"
+          tar -czf dist.tgz -C "$APP_DIR" .
       - name: Upload dist to server
         uses: appleboy/scp-action@v0.1.7
         with:
