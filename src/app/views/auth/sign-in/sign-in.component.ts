@@ -9,7 +9,6 @@ import {
   Validators,
 } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { currentYear } from '@common/constants';
 import { Store } from '@ngrx/store';
 import { login } from '@store/authentication/authentication.actions';
 import { getError } from '@store/authentication/authentication.selector';
@@ -21,7 +20,6 @@ import { getError } from '@store/authentication/authentication.selector';
   styleUrl: './sign-in.component.scss',
 })
 export class SignInComponent {
-  currentYear = currentYear;
   signInForm!: UntypedFormGroup;
   submitted: boolean = false;
 

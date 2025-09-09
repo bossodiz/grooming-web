@@ -6,6 +6,6 @@ export const PRODUCT_ROUTES: Route[] = [
   {
     path: 'list',
     component: ListComponent,
-    data: { title: 'List' },
+    data: { title: 'Product' },
   },
 ];

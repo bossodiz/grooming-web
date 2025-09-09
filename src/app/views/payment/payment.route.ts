@@ -1,11 +1,11 @@
 import type { Route } from '@angular/router';
 import { Title } from '@angular/platform-browser';
-import { FormComponent } from './form/form.component';
+import { PaymentComponent } from './payment.component';
 
 export const PAYMENT_ROUTES: Route[] = [
   {
-    path: 'Form',
-    component: FormComponent,
-    data: { title: 'Payment-Form' },
+    path: '',
+    component: PaymentComponent,
+    data: { title: 'Payment' },
   },
 ];

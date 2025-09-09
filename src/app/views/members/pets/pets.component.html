@@ -25,31 +25,31 @@
           <table class="table table-enhanced table-hover">
             <thead>
               <tr>
-                <th scope="col" class="text-center">
+                <th scope="col" class="text-center align-middle">
                   {{ "no" | translate }}
                 </th>
-                <th scope="col" class="text-center">
+                <th scope="col" class="text-center align-middle">
                   {{ "name" | translate }}
                 </th>
-                <th scope="col" class="text-center">
+                <th scope="col" class="text-center align-middle">
                   {{ "age" | translate }}
                 </th>
-                <th scope="col" class="text-center">
+                <th scope="col" class="text-center align-middle">
                   {{ "gender" | translate }}
                 </th>
-                <th scope="col" class="text-center">
+                <th scope="col" class="text-center align-middle">
                   {{ "type" | translate }}
                 </th>
-                <th scope="col" class="text-center">
+                <th scope="col" class="text-center align-middle">
                   {{ "breed" | translate }}
                 </th>
-                <th scope="col" class="text-center">
+                <th scope="col" class="text-center align-middle">
                   {{ "weight_kg" | translate }}
                 </th>
-                <th scope="col" class="text-center">
+                <th scope="col" class="text-center align-middle">
                   {{ "service" | translate }}
                 </th>
-                <th scope="col" class="text-center">
+                <th scope="col" class="text-center align-middle">
                   {{ "detail" | translate }}
                 </th>
               </tr>
@@ -57,28 +57,28 @@
             <tbody>
               @if (searchCountries && searchCountries.length == 0) {
                 <tr>
-                  <td colspan="9" class="text-center">
+                  <td colspan="9" class="text-center align-middle">
                     <span>{{ "no_data" | translate }}</span>
                   </td>
                 </tr>
               }
               @for (item of searchCountries; track item.id; let i = $index) {
                 <tr>
-                  <td class="text-center">
+                  <td class="text-center align-middle">
                     <span
                       class="table-detail-link"
                       (click)="viewDetail(item.id!)"
                       >{{ i + 1 }}</span
                     >
                   </td>
-                  <td class="text-center">
+                  <td class="text-center align-middle">
                     <span
                       class="table-detail-link"
                       (click)="viewDetail(item.id!)"
                       ><ngb-highlight [result]="item.name" [term]="filter"
                     /></span>
                   </td>
-                  <td class="text-center">
+                  <td class="text-center align-middle">
                     <span
                       class="table-detail-link"
                       (click)="viewDetail(item.id!)"
@@ -94,7 +94,7 @@
                       }
                     </span>
                   </td>
-                  <td class="text-center">
+                  <td class="text-center align-middle">
                     <span
                       class="table-detail-link"
                       (click)="viewDetail(item.id!)"
@@ -112,7 +112,7 @@
                       }
                     </span>
                   </td>
-                  <td class="text-center">
+                  <td class="text-center align-middle">
                     <span
                       class="table-detail-link"
                       (click)="viewDetail(item.id!)"
@@ -130,7 +130,7 @@
                       }
                     </span>
                   </td>
-                  <td class="text-center">
+                  <td class="text-center align-middle">
                     <span
                       class="table-detail-link"
                       (click)="viewDetail(item.id!)"
@@ -148,21 +148,21 @@
                       }
                     </span>
                   </td>
-                  <td class="text-center">
+                  <td class="text-center align-middle">
                     <span
                       class="table-detail-link"
                       (click)="viewDetail(item.id!)"
                       >{{ item.weight }}</span
                     >
                   </td>
-                  <td class="text-center">
+                  <td class="text-center align-middle">
                     <span
                       class="table-detail-link"
                       (click)="viewDetail(item.id!)"
                       >{{ item.service }}</span
                     >
                   </td>
-                  <td class="text-center">
+                  <td class="text-center align-middle">
                     <a
                       (click)="viewDetail(item.id!)"
                       class="btn btn-sm bg-primary-subtle me-1"

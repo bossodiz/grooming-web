@@ -9,15 +9,19 @@ import { ApiResponse } from './model';
 export class ReserveService {
   constructor(private http: HttpClient) {}
 
-  getReserveGrooming(): Observable<ApiResponse> {
-    return this.http.get<ApiResponse>(`${Config.apiUrl}/reserve/grooming`).pipe(
-      map((response) => {
-        return response;
-      }),
-      catchError((error) => {
-        return throwError(() => error);
-      }),
-    );
+  getReserveGrooming(start: string, end: string): Observable<ApiResponse> {
+    return this.http
+      .get<ApiResponse>(`${Config.apiUrl}/reserve/grooming`, {
+        params: { start, end },
+      })
+      .pipe(
+        map((response) => {
+          return response;
+        }),
+        catchError((error) => {
+          return throwError(() => error);
+        }),
+      );
   }
 
   reserveGrooming(data: any): Observable<ApiResponse> {

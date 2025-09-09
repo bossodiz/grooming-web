@@ -1,9 +1,8 @@
 import { Router, Routes } from '@angular/router';
 import { LayoutComponent } from './layout/layout.component';
-import { AuthLayoutComponent } from './auth-layout/auth-layout.component';
-import { ErrorLayoutComponent } from './error-layout/error-layout.component';
 import { AuthenticationService } from './services/auth.service';
 import { inject } from '@angular/core';
+import { AuthLayoutComponent } from './auth-layout/auth-layout.component';
 
 export const routes: Routes = [
   {
@@ -29,19 +28,10 @@ export const routes: Routes = [
       },
     ],
   },
-
   {
     path: '',
     component: AuthLayoutComponent,
     loadChildren: () =>
       import('./views/auth/auth.route').then((mod) => mod.AUTH_ROUTES),
-  },
-  {
-    path: '',
-    component: ErrorLayoutComponent,
-    loadChildren: () =>
-      import('./views/errors/error.route').then(
-        (mod) => mod.ERROR_PAGES_ROUTES,
-      ),
   },
 ];

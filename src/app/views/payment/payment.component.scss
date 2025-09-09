@@ -1,0 +1,384 @@
+/* ===== Base ===== */
+:host {
+  display: block;
+  background: #f7f9fc;
+}
+
+.card {
+  border-radius: 12px;
+  box-shadow: 0 0.4rem 1.2rem rgba(2, 6, 23, 0.06);
+}
+.card-header {
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+/* ng-select ให้ดูพรีเมียมและขนาดคงที่ */
+ng-select,
+.ng-select,
+.ng-select .ng-select-container {
+  min-height: 44px;
+  border-radius: 10px !important;
+}
+.ng-select .ng-select-container {
+  border: 1px solid #e2e8f0 !important;
+  padding: 0 0.5rem;
+  font-size: 0.95rem;
+}
+.ng-select .ng-option {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.95rem;
+}
+
+/* ===== Middle: Item Cards ===== */
+.selectable-card {
+  border: 1px solid #e6eaf2;
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease,
+    border-color 0.12s ease;
+  cursor: pointer;
+
+  &:hover {
+    transform: translateY(-1px);
+    border-color: #d7dfea;
+    box-shadow: 0 0.35rem 1rem rgba(30, 41, 59, 0.06);
+  }
+
+  &.border-success {
+    border-color: #22c55e !important;
+    box-shadow: 0 0.4rem 1.2rem rgba(34, 197, 94, 0.14);
+  }
+}
+
+/* สถานะหมดสต็อก/ครบจำนวน */
+.disabled-card {
+  opacity: 0.55;
+  pointer-events: none;
+  filter: grayscale(60%);
+}
+
+/* ป้ายสถานะบนการ์ด */
+.badge.bg-secondary {
+  background: #e5e7eb !important;
+  color: #374151 !important;
+  border: 1px solid #d1d5db;
+  font-weight: 600;
+}
+
+/* ===== Right: Cart + Summary + Payment ===== */
+.table-sm th,
+.table-sm td {
+  vertical-align: middle;
+}
+.table thead th {
+  background: #f1f5f9;
+  color: #6b7280;
+  font-weight: 600;
+  border-bottom: 1px solid #e5e7eb;
+  white-space: nowrap;
+}
+.table tbody tr + tr td {
+  border-top: 1px dashed #eef2f7;
+}
+
+/* Cart scrollbar */
+.table-responsive {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}
+.table-responsive::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.table-responsive::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 8px;
+}
+
+/* Summary block (ใน card เดียวกับ cart) */
+.summary {
+  .line {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: 0.95rem;
+
+    &.muted span:first-child {
+      color: #6b7280;
+    }
+    &.total {
+      font-weight: 700;
+      .value {
+        color: #16a34a;
+        font-size: 1.6rem;
+        line-height: 1;
+      }
+    }
+  }
+  .discount {
+    color: #059669;
+    font-size: 0.9rem;
+    display: flex;
+    justify-content: space-between;
+  }
+  hr {
+    border-top: 1px solid #eef2f7;
+    margin: 0.75rem 0;
+  }
+}
+
+/* ปุ่มชำระเงิน */
+.btn {
+  font-weight: 600;
+}
+.btn-success {
+  background: #16a34a;
+  border-color: #16a34a;
+}
+.btn-success:hover {
+  filter: brightness(1.05);
+}
+.btn-primary {
+  background: #2563eb;
+  border-color: #2563eb;
+}
+.btn-primary:hover {
+  filter: brightness(1.06);
+}
+
+/* ===== Utilities ===== */
+.text-success {
+  color: #16a34a !important;
+}
+.text-danger {
+  color: #dc2626 !important;
+}
+.sticky-top {
+  top: 1rem;
+  z-index: 3;
+}
+
+/* ===== Responsive ===== */
+/* iPhone 12+ */
+@media (max-width: 767.98px) {
+  .card-body {
+    padding: 1rem !important;
+  }
+  .btn {
+    padding: 0.55rem 0.9rem;
+  }
+  .table-sm th,
+  .table-sm td {
+    padding: 0.6rem 0.65rem;
+  }
+  .summary .line .value {
+    font-size: 1.5rem;
+  }
+
+  /* ปุ่ม radio ให้ชิดขอบน้อยลงในจอเล็ก */
+  .btn-group[role="group"] {
+    gap: 0.4rem;
+  }
+  .btn-group .btn {
+    padding: 0.42rem 0.65rem;
+  }
+  .ng-select .ng-select-container {
+    min-height: 40px !important;
+  }
+}
+
+/* iPad (768–1199px) */
+@media (min-width: 768px) and (max-width: 1199.98px) {
+  .row.g-3 > [class*="col-"] .card-body {
+    padding: 1.25rem;
+  }
+  .selectable-card .card-body {
+    padding: 1rem 1.1rem;
+  }
+  .summary .line .value {
+    font-size: 1.65rem;
+  }
+  /* ปรับความสูงเลื่อนของ iPad ให้เป็น 50vh */
+  .items-card .items-scroll {
+    max-height: calc(50vh - 2rem - 16px - 72px);
+  }
+}
+
+/* MacBook ≥1200px */
+@media (min-width: 1200px) and (max-width: 1439.98px) {
+  .row.g-3 {
+    row-gap: 1rem;
+  }
+
+  /* กระชับระยะ เพื่อให้เห็นการ์ดสินค้าได้มากขึ้น */
+  .card-body {
+    padding: 1rem 1.1rem !important;
+  }
+  .selectable-card .card-body {
+    padding: 0.65rem 0.7rem !important;
+  }
+  .selectable-card h6 {
+    font-size: 0.95rem;
+  }
+  .selectable-card .small {
+    font-size: 0.82rem;
+  }
+
+  /* จำกัดความสูงเลื่อนของรายการกลางให้พอดีสายตา */
+  .items-card .items-scroll {
+    max-height: 68vh; /* พอให้เห็น 2–3 แถวแบบสบายตา */
+  }
+
+  /* ตัวเลขสรุปไม่ใหญ่เกินไป */
+  .summary .line .value {
+    font-size: 1.55rem;
+  }
+}
+
+/* ≥1440px */
+@media (min-width: 1440px) {
+  .card-body {
+    padding: 1.4rem 1.6rem;
+  }
+  .summary .line .value {
+    font-size: 1.8rem;
+  }
+  .items-card .items-scroll {
+    max-height: calc(80vh - 2rem - 16px - 72px);
+  }
+}
+
+/* ===== Print (ใบเสร็จ) ===== */
+@media print {
+  :host {
+    background: #f00b0b;
+  }
+  .breadcrumb,
+  .btn,
+  .selectable-card,
+  .sticky-top,
+  .alert {
+    display: none !important;
+  }
+  .card {
+    box-shadow: none !important;
+    border: none !important;
+  }
+  .table-sm th,
+  .table-sm td {
+    padding: 0.4rem 0.5rem !important;
+  }
+  .summary .line .value {
+    font-size: 1.4rem !important;
+  }
+}
+
+/* กล่องรายการกลางให้ scroll ภายในการ์ด ไม่เลื่อนทั้งหน้า */
+.items-card {
+  /* ให้การ์ดกลางมีความสูงคงที่สัมพัทธ์กับจอ */
+  /* ปรับ  calc(...) ได้ตาม header/ระยะห่างจริงของคุณ */
+  max-height: calc(100vh - 1rem - 16px); /* viewport height - margin sticky */
+  display: flex;
+  flex-direction: column;
+
+  .card-body {
+    padding: 1rem 1rem 0.75rem 1rem !important;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .items-scroll {
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 4px;
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 transparent;
+
+    &::-webkit-scrollbar {
+      width: 8px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 8px;
+    }
+  }
+}
+
+/* ย่อการ์ดสินค้าให้กะทัดรัด */
+.selectable-card {
+  .card-body {
+    padding: 0.5rem 0.5rem !important;
+  }
+  h6 {
+    font-size: 0.98rem;
+    margin-bottom: 0.25rem !important;
+  }
+  .small {
+    font-size: 0.84rem;
+  }
+}
+
+.btn-group .btn {
+  padding: 0.35rem 0.6rem;
+  font-size: 0.85rem;
+}
+
+/* ตัดข้อความยาวให้ไม่ดันการ์ดสูง */
+.text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ระยะ grid แน่นขึ้นบนมือถือให้แสดงได้มากขึ้นต่อหน้าจอ */
+@media (max-width: 767.98px) {
+  .items-card {
+    max-height: calc(100vh - 1rem - 12px);
+    .items-scroll {
+      max-height: calc(100vh - 1rem - 12px - 64px);
+    }
+  }
+  .selectable-card .card-body {
+    padding: 0.65rem 0.7rem;
+  }
+  .selectable-card h6 {
+    font-size: 0.95rem;
+  }
+  .selectable-card .small {
+    font-size: 0.82rem;
+  }
+}
+
+.keypad {
+  max-width: 250px;
+  margin: auto;
+}
+.keypad .btn {
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0.6rem 0;
+}
+
+.summary .discount {
+  color: #047857; // เขียวเข้มขึ้นนิด
+}
+.summary .bg-light {
+  background: #f8fafc !important;
+}
+.summary .form-select-sm,
+.summary .form-control-sm {
+  font-size: 0.9rem;
+}
+
+.btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px; /* เท่ากันทั้งสองปุ่ม */
+  min-width: 36px;
+  height: 31px; /* เข้ากับ .input-group-sm */
+  padding: 0;
+}

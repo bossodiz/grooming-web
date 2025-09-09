@@ -1,1 +1,138 @@
-<p>list works!</p>
+<breadcrumb [title]="'Promotions'" [titleLink]="'/promotion'" />
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card">
+      <div
+        class="card-header d-flex justify-content-between align-items-center"
+      >
+        <h4 class="card-title mb-0">
+          {{ "promotion_management" | translate }}
+        </h4>
+        <button class="btn btn-primary" (click)="openAddPromotion()">
+          <i class="bi bi-plus"></i> เพิ่มโปรโมชั่น
+        </button>
+      </div>
+
+      <div class="card-body">
+        <div class="mb-3 row">
+          <div class="col-xl-3">
+            <!-- <input
+              id="table-filtering-search"
+              class="form-control"
+              placeholder="{{ 'search' | translate }}"
+              type="text"
+              [(ngModel)]="filter"
+              (ngModelChange)="onSearch()"
+            />
+          </div> -->
+          </div>
+
+          <div class="table-responsive">
+            <table class="table table-enhanced table-hover">
+              <thead>
+                <tr>
+                  <th scope="col" class="text-center align-middle">
+                    {{ "no" | translate }}
+                  </th>
+                  <th scope="col" class="text-center align-middle">
+                    {{ "name" | translate }}
+                  </th>
+                  <th scope="col" class="text-center align-middle">
+                    {{ "discount_category" | translate }}
+                  </th>
+                  <th scope="col" class="text-center align-middle">
+                    {{ "amount" | translate }}
+                  </th>
+                  <th scope="col" class="text-center align-middle">
+                    {{ "period_date" | translate }}
+                  </th>
+                  <th scope="col" class="text-center align-middle">
+                    {{ "status" | translate }}
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                @if (searchCountries && searchCountries.length == 0) {
+                  <tr>
+                    <td colspan="9" class="text-center align-middle">
+                      <span>{{ "no_data" | translate }}</span>
+                    </td>
+                  </tr>
+                }
+                @for (item of searchCountries; track item.id; let i = $index) {
+                  <tr>
+                    <td class="text-center align-middle">
+                      <span
+                        class="table-detail-link"
+                        (click)="viewDetail(item.id!)"
+                        >{{ i + 1 }}</span
+                      >
+                    </td>
+                    <td class="text-left">
+                      <span
+                        class="table-detail-link"
+                        (click)="viewDetail(item.id!)"
+                        >{{ item.name }}</span
+                      >
+                    </td>
+                    <td class="text-center align-middle">
+                      <span
+                        class="table-detail-link"
+                        (click)="viewDetail(item.id!)"
+                        >{{ item.discountCategory }}</span
+                      >
+                    </td>
+                    <td class="text-center align-middle">
+                      <span
+                        class="table-detail-link"
+                        (click)="viewDetail(item.id!)"
+                        >{{ item.amount }}
+                      </span>
+                    </td>
+                    <td class="text-center align-middle">
+                      <span
+                        class="table-detail-link"
+                        (click)="viewDetail(item.id!)"
+                      >
+                        {{ item.periodDate }}
+                      </span>
+                    </td>
+
+                    <td
+                      class="text-center align-middle"
+                      [style.color]="
+                        item.status === 'ACTIVE'
+                          ? 'green'
+                          : item.status === 'UPCOMING'
+                            ? 'orange'
+                            : item.status === 'ENDED'
+                              ? 'red'
+                              : item.status === 'DISABLED'
+                                ? 'gray'
+                                : 'black'
+                      "
+                    >
+                      <span
+                        class="table-detail-link"
+                        (click)="viewDetail(item.id!)"
+                        >{{ item.status! | translate }}</span
+                      >
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+          <ngb-pagination
+            class="d-flex justify-content-end"
+            [collectionSize]="collectionSize"
+            [(page)]="page"
+            [pageSize]="pageSize"
+            (pageChange)="onSearch()"
+          >
+          </ngb-pagination>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

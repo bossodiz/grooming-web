@@ -39,22 +39,20 @@ export class MasterService {
       );
   }
 
-  getGroomingServices(petTypeId?: number): Observable<ApiResponse> {
-    const options =
-      petTypeId !== undefined ? { params: { type: petTypeId } } : {};
-
+  getPetTypeByName(name: string): Observable<ApiResponse> {
+    const params = new HttpParams().set('name', name);
     return this.http
-      .get<ApiResponse>(`${Config.apiUrl}/master/grooming-list`, options)
+      .get<ApiResponse>(`${Config.apiUrl}/master/pet-type`, { params })
       .pipe(
         map((response) => response),
         catchError((error) => throwError(() => error)),
       );
   }
 
-  getPetTypeByName(name: string): Observable<ApiResponse> {
-    const params = new HttpParams().set('name', name);
+  getTags(type: string): Observable<ApiResponse> {
+    const params = new HttpParams().set('type', type);
     return this.http
-      .get<ApiResponse>(`${Config.apiUrl}/master/pet-type`, { params })
+      .get<ApiResponse>(`${Config.apiUrl}/master/tags`, { params })
       .pipe(
         map((response) => response),
         catchError((error) => throwError(() => error)),

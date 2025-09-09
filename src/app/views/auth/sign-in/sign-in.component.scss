@@ -1,5 +1,6 @@
 // ปิดการ Scroll Bar ทั้งแนวตั้งและแนวนอน
-html, body {
+html,
+body {
   height: 100%;
   overflow: hidden;
 }

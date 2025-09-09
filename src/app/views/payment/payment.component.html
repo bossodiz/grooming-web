@@ -1,0 +1,713 @@
+<breadcrumb [title]="'Payment'" [titleLink]="'/payment'" />
+
+<div class="row g-3">
+  <!-- Left: Filters / Search -->
+  <div class="col-12 col-lg-8">
+    <div class="col-12 col-lg-12">
+      <div class="card border-0 shadow-sm sticky-top" style="top: 1rem">
+        <div class="card-body p-4">
+          <div class="align-items-center mb-2">
+            <div class="btn-group" aria-label="Shop Type">
+              <input
+                type="radio"
+                class="btn-check"
+                name="btnShopType"
+                id="btnShopTypeGrooming"
+                [(ngModel)]="selectedShopType"
+                [value]="'GROOMING'"
+                (ngModelChange)="onShopTypeChange($event)"
+              />
+              <label
+                class="btn btn-outline-primary btn-sm"
+                for="btnShopTypeGrooming"
+                >Grooming</label
+              >
+
+              <input
+                type="radio"
+                class="btn-check"
+                name="btnShopType"
+                id="btnShopTypePetShop"
+                [(ngModel)]="selectedShopType"
+                [value]="'PET_SHOP'"
+                (ngModelChange)="onShopTypeChange($event)"
+              />
+              <label
+                class="btn btn-outline-primary btn-sm"
+                for="btnShopTypePetShop"
+                >Pet Shop</label
+              >
+            </div>
+          </div>
+
+          <!-- Customer -->
+          <div>
+            <label class="form-label">ลูกค้า</label>
+            <ng-select
+              [items]="customerList"
+              bindLabel="label"
+              bindValue="key"
+              [searchable]="true"
+              (change)="onCustomerChange($event)"
+            >
+              <ng-template ng-option-tmp let-item="item">
+                <div class="option-content">{{ item.label }}</div>
+              </ng-template>
+            </ng-select>
+          </div>
+
+          <!-- Pet (only GROOMING) -->
+          @if (selectedShopType === "GROOMING") {
+            <div>
+              <label class="form-label">สัตว์เลี้ยง</label>
+              <ng-select
+                [(ngModel)]="petId"
+                [items]="petList"
+                bindLabel="label"
+                bindValue="key"
+                [searchable]="true"
+                [searchFn]="customSearchFn"
+                (change)="onPetChange($event)"
+              >
+                <ng-template ng-option-tmp let-item="item">
+                  <div class="option-content">{{ item.label }}</div>
+                </ng-template>
+              </ng-select>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Middle: Items Grid -->
+      <div class="col-12 col-lg-12">
+        <div class="card border-0 shadow-sm items-card">
+          <div class="card-body p-4">
+            <div class="row mb-3">
+              <!-- ปุ่มแท๊ก -->
+              <div class="col-8 d-flex flex-wrap gap-2">
+                @for (tag of tags; track tag.id) {
+                  <button
+                    type="button"
+                    class="btn btn-sm"
+                    [ngClass]="{
+                      'btn-success': isSelected(tag.id),
+                      'btn-outline-success': !isSelected(tag.id),
+                    }"
+                    (click)="toggleTag(tag.id)"
+                    [attr.aria-pressed]="isSelected(tag.id)"
+                  >
+                    {{ tag.name }}
+                  </button>
+                }
+              </div>
+
+              <!-- ช่องค้นหา -->
+              <div class="col-4">
+                <input
+                  id="table-filtering-search"
+                  class="form-control"
+                  placeholder="{{ 'search' | translate }}"
+                  type="text"
+                  [(ngModel)]="filter"
+                  (ngModelChange)="onSearch()"
+                />
+              </div>
+            </div>
+
+            <div class="items-scroll">
+              @if (selectedShopType === "GROOMING") {
+                <div class="row g-2">
+                  @for (item of groomingItems; track item.id) {
+                    <div class="col-12 col-md-4">
+                      <div
+                        class="card selectable-card h-100"
+                        [ngClass]="{
+                          'border-success shadow-sm': isItemSelected(
+                            'G|' + item.id + '|' + petId
+                          ),
+                        }"
+                        (click)="
+                          toggleGroomingItemSelection(
+                            $event,
+                            'G|' + item.id + '|' + petId
+                          )
+                        "
+                      >
+                        <div class="card-body">
+                          <div
+                            class="d-flex align-items-start justify-content-between"
+                          >
+                            <h6 class="mb-1 text-truncate">{{ item.name }}</h6>
+                            <span class="fw-semibold text-success">
+                              {{ item.price | number: "1.2-2" }}
+                            </span>
+                          </div>
+                          <div class="small text-muted text-truncate">
+                            Note: {{ item.remark || "-" }}
+                          </div>
+                          <div class="small text-muted" *ngIf="petId">
+                            #{{ petName(petId!) }}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  }
+                </div>
+              } @else {
+                <div class="row g-2">
+                  @for (item of petShopItems; track item.id) {
+                    <div class="col-12 col-md-4">
+                      <div
+                        class="card selectable-card h-100"
+                        [ngClass]="{
+                          'border-success shadow-sm': isItemSelected(
+                            'P|' + item.id
+                          ),
+                          'disabled-card': !canAddPetShop(item),
+                        }"
+                        (click)="
+                          canAddPetShop(item) &&
+                            togglePetShopItemSelection($event, 'P|' + item.id)
+                        "
+                        [title]="
+                          !canAddPetShop(item)
+                            ? getStockDisabledReason(item)
+                            : ''
+                        "
+                      >
+                        <div class="card-body position-relative">
+                          <span
+                            *ngIf="!canAddPetShop(item)"
+                            class="badge bg-secondary position-absolute top-0 start-0 m-2"
+                          >
+                            {{
+                              item.stock <= 0 ? "หมดสต็อก" : "ครบจำนวนในตะกร้า"
+                            }}
+                          </span>
+                          @if (isItemSelected("P|" + item.id)) {
+                            <button
+                              class="btn btn-sm btn-outline-danger position-absolute top-1 end-0 m-4 z-2"
+                              (click)="
+                                decreaseItemCount($event, 'P|' + item.id)
+                              "
+                              title="ลดจำนวน"
+                            >
+                              −
+                            </button>
+                          }
+                          <div
+                            class="d-flex align-items-start justify-content-between"
+                          >
+                            <h6 class="mb-1 text-truncate">{{ item.name }}</h6>
+                            <span class="fw-semibold text-success">
+                              {{ item.price | number: "1.2-2" }}
+                            </span>
+                          </div>
+                          <div
+                            class="small text-muted text-truncate"
+                            style="padding-right: 70px"
+                          >
+                            Note: {{ item.remark || "-" }}
+                          </div>
+                          <div class="small text-muted">
+                            Stock: {{ item.stock }}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+          <!-- /items-scroll -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: Cart + Summary + Payment -->
+  <div class="col-12 col-lg-4">
+    <div class="card border-0 shadow-sm sticky-top" style="top: 1rem">
+      <div
+        class="card-header bg-dark text-white fw-bold d-flex justify-content-between align-items-center"
+      >
+        <span>ตะกร้า & สรุปบิล</span>
+        <small class="text-white-50" *ngIf="isCalculateLoading">
+          <span class="spinner-border spinner-border-sm me-1"></span
+          >คำนวณโปรโมชัน…
+        </small>
+      </div>
+
+      <div class="card-body p-0">
+        <!-- CART -->
+        <div
+          class="table-responsive"
+          style="max-height: 320px; overflow-y: auto"
+        >
+          <table class="table table-sm align-middle mb-0">
+            <thead class="table-responsive">
+              <tr class="small text-muted">
+                <th>รายการ</th>
+                <th class="text-end" style="width: 84px">จำนวน</th>
+                <th class="text-end" style="width: 120px">รวม</th>
+                <th style="width: 64px"></th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (item of currentCart; track item.key) {
+                <tr>
+                  <td>
+                    {{ item.name }}
+                    @if (item.type === "G") {
+                      <small class="text-secondary ms-1"
+                        >#{{ petName(item.petId!) }}</small
+                      >
+                    }
+                  </td>
+                  <td class="text-end">{{ item.quantity }}</td>
+                  <td class="text-end">{{ item.total | number: "1.2-2" }}</td>
+                  <td class="text-center align-middle">
+                    <div class="d-flex justify-content-end gap-2">
+                      @if (item.type === "P") {
+                        @if (canIncreaseFromCart(item)) {
+                          <button
+                            class="btn btn-sm btn-outline-secondary p-0 px-2"
+                            (click)="
+                              togglePetShopItemSelection($event, item.key!)
+                            "
+                            aria-label="เพิ่ม"
+                          >
+                            +
+                          </button>
+                        }
+                      }
+                      <button
+                        class="btn btn-sm btn-outline-secondary p-0 px-2"
+                        (click)="decreaseItemCount($event, item.key!)"
+                        aria-label="ลด"
+                      >
+                        −
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              }
+              @if (!currentCart.length) {
+                <tr>
+                  <td colspan="4" class="text-center text-muted small p-3">
+                    ไม่มีสินค้าในตะกร้า
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+
+        <!-- SUMMARY -->
+        <div class="p-2 border-top summary">
+          <span class="text-muted">จำนวน {{ cartItemCount }} รายการ</span>
+          <div class="line muted">
+            <span>รวม (ก่อนส่วนลด)</span>
+            <span class="fw-semibold">{{ cartTotal | number: "1.2-2" }}</span>
+          </div>
+
+          <div *ngIf="groupedPromotions?.length" class="mt-2">
+            <div class="small fw-semibold">โปรโมชั่น</div>
+            @for (p of groupedPromotions; track p.name) {
+              <div class="discount small" style="font-size: 13px">
+                <span>{{ p.name }}</span>
+                <span>− {{ p.amount | number: "1.2-2" }}</span>
+              </div>
+            }
+          </div>
+
+          <div *ngIf="overallPromotion" class="discount">
+            <span>ส่วนลด : {{ overallPromotion!.name }}</span>
+            <span
+              >− {{ overallPromotion!.discountAmount | number: "1.2-2" }}</span
+            >
+          </div>
+          <!-- ▶▶ Add-on: ส่วนลดพิเศษ (กรอกเอง) -->
+          <div
+            class="mt-2 bg-light"
+            [ngClass]="{ 'opacity-50 pe-none': cartItemCount === 0 }"
+          >
+            <fieldset [disabled]="cartItemCount === 0">
+              <div class="small fw-semibold mb-1">ส่วนลดพิเศษ (กรอกเอง)</div>
+
+              <div class="row g-2">
+                <!-- ประเภท -->
+                <div class="col-12 col-lg-5">
+                  <select
+                    class="form-select form-select-sm"
+                    [(ngModel)]="manualDiscount!.type"
+                  >
+                    <option [ngValue]="null" selected disabled>
+                      เลือกประเภท
+                    </option>
+                    <option value="PERCENT">ลดเป็น %</option>
+                    <option value="AMOUNT">ลดเป็นบาท</option>
+                  </select>
+                </div>
+
+                <!-- ค่า + หน่วย + ปุ่ม (อยู่ใน input-group เดียวกันเพื่อไม่ให้ล้น) -->
+                <div class="col-12 col-lg-7">
+                  <div class="input-group input-group-sm">
+                    <input
+                      type="number"
+                      class="form-control text-end"
+                      placeholder="{{
+                        manualDiscount!.type === 'PERCENT'
+                          ? 'เช่น 5'
+                          : 'เช่น 50.00'
+                      }}"
+                      [(ngModel)]="manualDiscount!.value"
+                      (keydown.enter)="applyManualDiscount()"
+                      min="0"
+                      step="1"
+                    />
+                    <span class="input-group-text">
+                      {{ manualDiscount!.type === "PERCENT" ? "%" : "฿" }}
+                    </span>
+
+                    <!-- ปุ่ม ใช้ -->
+                    <button
+                      class="btn btn-outline-primary btn-sm btn-icon"
+                      type="button"
+                      (click)="applyManualDiscount()"
+                      title="ใช้"
+                    >
+                      <i data-feather="check" width="16" height="16"></i>
+                    </button>
+
+                    <!-- ปุ่ม ลบ -->
+                    <button
+                      class="btn btn-outline-secondary btn-sm btn-icon"
+                      type="button"
+                      (click)="clearManualDiscount()"
+                      title="ลบ"
+                    >
+                      <i data-feather="trash-2" width="16" height="16"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- หมายเหตุ (เต็มบรรทัด) -->
+                <div class="col-12">
+                  <input
+                    class="form-control form-control-sm"
+                    placeholder="หมายเหตุ (เช่น ลูกค้า VIP)"
+                    [(ngModel)]="manualDiscount!.note"
+                    (keydown.enter)="applyManualDiscount()"
+                  />
+                </div>
+              </div>
+
+              <div
+                class="discount mt-2"
+                *ngIf="manualDiscount?.amount || 0 > 0"
+              >
+                <span>
+                  ส่วนลดพิเศษ (
+                  <ng-container *ngIf="manualDiscount!.note">{{
+                    manualDiscount!.note
+                  }}</ng-container>
+                  <ng-container *ngIf="manualDiscount!.type === 'PERCENT'"
+                    >- {{ manualDiscount!.value }}%</ng-container
+                  >
+                  )
+                </span>
+                <span>− {{ manualDiscount!.amount | number: "1.2-2" }}</span>
+              </div>
+            </fieldset>
+          </div>
+
+          <hr />
+
+          <div class="line muted">
+            <span>รวมส่วนลด</span>
+            <span class="text-danger"
+              >− {{ discountTotal | number: "1.2-2" }}</span
+            >
+          </div>
+
+          <div class="line total mt-1">
+            <span>ยอดสุทธิ</span>
+            <span class="value">{{
+              totalAfterDiscount | number: "1.2-2"
+            }}</span>
+          </div>
+
+          <div
+            class="alert alert-warning mt-3 mb-0"
+            *ngIf="warningPromotions?.length"
+          >
+            <ul class="mb-0 ps-3">
+              @for (w of warningPromotions; track $index) {
+                <li>{{ w }}</li>
+              }
+            </ul>
+          </div>
+        </div>
+
+        <!-- PAYMENT -->
+        <div class="p-3 border-top">
+          <button
+            class="btn btn-success w-100 mb-2"
+            [disabled]="!canPayment"
+            (click)="openCashModal(cashModal)"
+          >
+            <span *ngIf="!isCashLoading">💵 ชำระเงินสด</span>
+            <span
+              *ngIf="isCashLoading"
+              class="spinner-border spinner-border-sm me-1"
+            ></span>
+            <span *ngIf="isCashLoading">กำลังชำระเงินสด</span>
+          </button>
+          <button
+            class="btn btn-primary w-100"
+            [disabled]="!canPayment"
+            (click)="openQrModal(qrModal)"
+          >
+            <ng-container *ngIf="!isQrLoading"
+              >📱 ชำระด้วย QR Code</ng-container
+            >
+            <ng-container *ngIf="isQrLoading">
+              <span class="spinner-border spinner-border-sm me-1"></span>
+              กำลังสร้าง QR…
+            </ng-container>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- modal -->
+<ng-template #cashModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">ชำระเงินสด</h5>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="cashModalClose(modal)"
+    ></button>
+  </div>
+
+  <div class="modal-body">
+    <p>
+      ยอดสุทธิ: <strong>{{ totalAfterDiscount | number: "1.2-2" }}</strong> บาท
+    </p>
+
+    <div class="mb-3">
+      <label class="form-label">ลูกค้าจ่ายมา (บาท)</label>
+      <input
+        #cashInput
+        type="text"
+        class="form-control text-end fs-4"
+        [ngModel]="cashReceived | number: '1.2-2'"
+        (ngModelChange)="onCashChange($event)"
+        placeholder="0.00"
+        readonly
+      />
+    </div>
+
+    <!-- แป้นตัวเลข -->
+    <div class="keypad">
+      <div class="row g-2">
+        <div class="col-4" *ngFor="let key of [1, 2, 3, 4, 5, 6, 7, 8, 9]">
+          <button class="btn btn-light w-100" (click)="appendNumber(key)">
+            {{ key }}
+          </button>
+        </div>
+        <div class="col-4">
+          <button class="btn btn-warning w-100" (click)="clearInput()">
+            ลบ
+          </button>
+        </div>
+        <div class="col-4">
+          <button class="btn btn-light w-100" (click)="appendNumber(0)">
+            0
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- แสดงเงินทอน -->
+    <div
+      class="alert alert-info"
+      *ngIf="cashChange !== null"
+      style="margin-top: 10px"
+    >
+      ทอน: <strong>{{ cashChange | number: "1.2-2" }}</strong> บาท
+    </div>
+  </div>
+
+  <div class="modal-footer d-flex justify-content-between">
+    <button class="btn btn-secondary" (click)="cashModalClose(modal)">
+      ยกเลิก
+    </button>
+    <button
+      class="btn btn-success"
+      [disabled]="+cashReceived < totalAfterDiscount"
+      (click)="confirmPayment(modal, 'CASH_PAYMENT')"
+    >
+      ยืนยันรับชำระ
+    </button>
+  </div>
+</ng-template>
+<!-- QR Payment Modal -->
+
+<ng-template #qrModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">ชำระด้วย QR Code</h5>
+    <button type="button" class="btn-close" (click)="modal.dismiss()"></button>
+  </div>
+
+  <div class="modal-body text-center">
+    <div class="mb-2 text-muted small" *ngIf="qr.invoiceNo">
+      ออร์เดอร์: <strong>{{ qr.invoiceNo }}</strong>
+    </div>
+
+    <div class="mb-3 fs-5">
+      ยอดสุทธิ:
+      <strong>{{ qr.amount ?? totalAfterDiscount | number: "1.2-2" }}</strong>
+      บาท
+    </div>
+
+    <div *ngIf="qr.imageDataUrl; else loadingOrError">
+      <img
+        [src]="qr.imageDataUrl"
+        alt="QR"
+        width="240"
+        height="240"
+        class="border rounded"
+      />
+      <div class="small text-muted mt-2" *ngIf="qr.expiresAt">
+        หมดอายุ: {{ qr.expiresAt | date: "dd/MM/yyyy HH:mm:ss" }}
+      </div>
+    </div>
+
+    <ng-template #loadingOrError>
+      <div class="py-4">
+        <div *ngIf="qrError; else loading" class="text-danger">
+          {{ qrError }}
+        </div>
+        <ng-template #loading>
+          <span class="spinner-border"></span>
+        </ng-template>
+      </div>
+    </ng-template>
+  </div>
+
+  <div class="modal-footer">
+    <button class="btn btn-outline-secondary" (click)="modal.dismiss()">
+      ปิด
+    </button>
+    <button
+      class="btn btn-success"
+      (click)="confirmPayment(modal, 'QR_PAYMENT')"
+    >
+      ยืนยันรับชำระ
+    </button>
+  </div>
+</ng-template>
+
+<!-- Receipt Modal -->
+<ng-template #receiptModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">ใบเสร็จรับเงิน</h5>
+    <button type="button" class="btn-close" (click)="modal.dismiss()"></button>
+  </div>
+
+  <div class="modal-body">
+    <div id="receipt-area">
+      <div class="d-flex justify-content-between mb-2">
+        <div>
+          <div class="fw-bold">ร้าน Grooming & Pet Shop</div>
+          <div class="small text-muted">ใบเสร็จรับเงินอย่างย่อ</div>
+        </div>
+        <div class="text-end">
+          <div>
+            เลขที่: <strong>{{ receipt?.invoiceNo }}</strong>
+          </div>
+          <div>วันที่: {{ receipt?.paidAt | date: "dd/MM/yyyy HH:mm" }}</div>
+        </div>
+      </div>
+      <hr class="my-2" />
+
+      <div class="mb-2" *ngIf="receipt?.customerName">
+        ลูกค้า: {{ receipt?.customerName }}
+        <span class="text-muted" *ngIf="receipt?.customerPhone">
+          • {{ receipt?.customerPhone }}
+        </span>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table table-sm align-middle">
+          <thead class="table-light">
+            <tr>
+              <th>รายการ</th>
+              <th class="text-end">จำนวน</th>
+              <th class="text-end">ราคา/หน่วย</th>
+              <th class="text-end">รวม</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let it of receipt?.items">
+              <td>
+                {{ it.name }}
+                <small class="text-muted" *ngIf="it.petName"
+                  >#{{ it.petName }}</small
+                >
+              </td>
+              <td class="text-end">{{ it.quantity }}</td>
+              <td class="text-end">{{ it.price | number: "1.2-2" }}</td>
+              <td class="text-end">{{ it.total | number: "1.2-2" }}</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="3" class="text-end">รวม (ก่อนส่วนลด)</td>
+              <td class="text-end">
+                {{ receipt?.totalBeforeDiscount | number: "1.2-2" }}
+              </td>
+            </tr>
+            <tr *ngIf="receipt?.totalDiscount && receipt?.totalDiscount > 0">
+              <td colspan="3" class="text-end text-danger">ส่วนลด</td>
+              <td class="text-end text-danger">
+                -{{ receipt?.totalDiscount | number: "1.2-2" }}
+              </td>
+            </tr>
+            <tr class="fw-bold">
+              <td colspan="3" class="text-end">ยอดสุทธิ</td>
+              <td class="text-end">
+                {{ receipt?.totalAfterDiscount | number: "1.2-2" }}
+              </td>
+            </tr>
+            <tr>
+              <td colspan="3" class="text-end">ชำระโดย</td>
+              <td class="text-end">{{ receipt?.paymentType }}</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+
+      <div class="small text-center text-muted mt-2">
+        ขอบคุณที่ใช้บริการ 🐶🐱
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button class="btn btn-outline-secondary" (click)="closeReceipt(modal)">
+      ปิด
+    </button>
+    <button class="btn btn-primary" (click)="printReceipt()">พิมพ์ A4</button>
+    <button class="btn btn-success" (click)="printReceiptSlip()">
+      พิมพ์สลิป 58mm
+    </button>
+  </div>
+</ng-template>

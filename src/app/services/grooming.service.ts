@@ -9,12 +9,9 @@ import { ApiResponse } from './model';
 export class GroomingService {
   constructor(private http: HttpClient) {}
 
-  getService(type: string): Observable<ApiResponse> {
-    const httpParams = new HttpParams().set('type', type);
+  getService(): Observable<ApiResponse> {
     return this.http
-      .get<ApiResponse>(`${Config.apiUrl}/grooming-service/list`, {
-        params: httpParams,
-      })
+      .get<ApiResponse>(`${Config.apiUrl}/grooming-service/list`, {})
       .pipe(
         map((response) => response),
         catchError((error) => {

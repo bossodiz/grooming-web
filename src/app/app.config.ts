@@ -28,7 +28,6 @@ import { CookieService } from 'ngx-cookie-service';
 import { BrowserModule } from '@angular/platform-browser';
 import { rootReducer } from './store';
 import { AuthenticationEffects } from '@store/authentication/authentication.effects';
-import { CalendarEffects } from '@store/calendar/calendar.effects';
 import { provideEffects } from '@ngrx/effects';
 import { JwtInterceptor } from './helper/jwt.interceptor';
 import { ErrorInterceptor } from './helper/error.interceptor';
@@ -79,7 +78,7 @@ export const appConfig: ApplicationConfig = {
     provideStore(rootReducer, { metaReducers: [] }),
     importProvidersFrom(BrowserAnimationsModule, BrowserModule),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
-    provideEffects(AuthenticationEffects, CalendarEffects),
+    provideEffects(AuthenticationEffects),
     provideHttpClient(withFetch(), withInterceptorsFromDi()),
     importProvidersFrom(FeatherModule.pick(allIcons)),
   ],

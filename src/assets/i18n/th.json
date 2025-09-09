@@ -39,7 +39,8 @@
     "require": {
       "name": "กรุณากรอกชื่อ",
       "service_name": "กรุณากรอกชื่อบริการ",
-      "pet_type": "กรุณาเลือกประเภทสัตว์เลี้ยง"
+      "pet_type": "กรุณาเลือกประเภทสัตว์เลี้ยง",
+      "service_price": "กรุณากรอกค่าบริการ"
     },
     "validate": {
       "age_year_min": "กรุณากรอกปี >= 0",
@@ -59,16 +60,31 @@
   "animalType": {
     "cat": "แมว",
     "dog": "สุนัข",
+    "all": "ทั้งหมด",
     "other": "อื่นๆ"
   },
   "remark": "หมายเหตุ",
   "add_service": "เพิ่มบริการ",
-  "service_name_th": "ชื่อบริการ (ไทย)",
-  "service_name_en": "ชื่อบริการ (อังกฤษ)",
   "pet_type": "ประเภทสัตว์เลี้ยง",
   "add": "เพิ่ม",
   "update": "อัพเดต",
   "delete": "ลบ",
   "save": "บันทึก",
-  "cancel": "ยกเลิก"
+  "cancel": "ยกเลิก",
+  "promotion_management": "การจัดการโปรโมชั่น",
+  "discount_category": "ประเภทรายการ",
+  "discount_type": "ประเภทส่วนลด",
+  "amount": "จำนวน",
+  "period_date": "ระยะเวลา",
+  "start_date": "วันที่เริ่มต้น",
+  "end_date": "วันที่สิ้นสุด",
+  "specific_days": "วันเฉพาะ",
+  "customer_only": "เฉพาะลูกค้า",
+  "quota": "โควต้า",
+  "to": "ถึง",
+  "service_description": "คำอธิบาย",
+  "ACTIVE": "ใช้งาน",
+  "UPCOMING": "เร็วๆ นี้",
+  "ENDED": "สิ้นสุด",
+  "DISABLED": "ไม่สามารถใช้งานได้"
 }
