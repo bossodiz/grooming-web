@@ -19,8 +19,7 @@ jobs:
         run: |
           npm ci
           npm run build -- --configuration production
-          tar -czf dist.tgz -C dist .
-
+          tar -czf dist.tgz -C dist/grooming-admin .
       - name: Upload dist to server
         uses: appleboy/scp-action@v0.1.7
         with:
@@ -40,6 +39,6 @@ jobs:
             cd ~/apps/grooming
             rm -rf web-dist
             mkdir -p web-dist
-            tar -xzf dist.tgz -C web-dist --strip-components=1
+            tar -xzf dist.tgz -C web-dist
             rm -f dist.tgz
             docker compose up -d web
