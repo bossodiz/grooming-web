@@ -85,5 +85,5 @@ export const appConfig: ApplicationConfig = {
 };
 
 export const Config = {
-  apiUrl: environment.apiUrl + '/api',
+  apiUrl: environment.apiBaseUrl,
 };
