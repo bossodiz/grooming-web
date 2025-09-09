@@ -62,10 +62,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "boss-grooming:build:production"
+              "buildTarget": "grooming-admin:build:production"
             },
             "development": {
-              "buildTarget": "boss-grooming:build:development"
+              "buildTarget": "grooming-admin:build:development"
             }
           },
           "defaultConfiguration": "development"
