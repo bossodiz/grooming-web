@@ -1,19 +1,13 @@
-# Stage 1: Build Angular App
 FROM node:20 AS build
-
 WORKDIR /app
-
-COPY package.json package-lock.json ./
+COPY package*.json ./
 RUN npm ci
-
 COPY . .
-RUN npm run build -- --configuration production
+RUN npm run build -- --configuration=production
 
-# Stage 2: Serve with Nginx
-FROM nginx:stable-alpine
-
-COPY --from=build /app/dist/boss-grooming/browser /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-#EXPOSE
+FROM nginx:alpine
+COPY --from=build /app/dist/ /usr/share/nginx/html/
+# healthz
+RUN echo "ok" > /usr/share/nginx/html/healthz
+# reverse proxy ผ่าน Nginx ด้านหน้าอีกชั้น (ไฟล์นี้เสิร์ฟแบบ static)
 EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
