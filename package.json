@@ -1,12 +1,13 @@
 {
   "name": "boss-grooming",
   "version": "1.0.0",
+  "engines": {
+    "node": ">=20 <21"
+  },
   "scripts": {
-    "ng": "ng",
-    "start": "ng serve --live-reload=true --host 0.0.0.0 --port 4200 --disable-host-check",
+    "start": "ng serve --host 0.0.0.0 --port 4200",
     "build": "ng build --configuration production",
-    "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "build:dev": "ng build --configuration development"
   },
   "private": true,
   "dependencies": {
