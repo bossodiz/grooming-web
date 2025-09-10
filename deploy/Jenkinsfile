@@ -4,9 +4,8 @@ pipeline {
 
   // ==== ปรับ 3 ตัวนี้ให้ตรงกับ repo นี้ ====
   environment {
-    APP_NAME            = 'grooming-web'     // api: grooming-api | web: grooming-web
-    SERVICE_NAME        = 'web'              // api: api | web: web
-    HEALTH_URL          = 'http://web/'      // api แนะนำ: http://api:8080/actuator/health
+    APP_NAME            = 'grooming-web'
+    SERVICE_NAME        = 'web'
 
     // ==== คงที่ได้ ====
     COMPOSE_PROJECT     = 'bbp'
@@ -33,28 +32,18 @@ pipeline {
       }
     }
 
-    stage('Docker Login') {
+    stage('Build & Push Docker') {
       steps {
         sh label: 'docker login', script: '''
           set -e
           echo "$DOCKERHUB_PSW" | docker login -u "$DOCKERHUB_USR" --password-stdin
         '''
-      }
-    }
-
-    stage('Build Image') {
-      steps {
         sh label: 'docker build', script: '''
           set -e
           IMAGE="$DOCKERHUB_USR/${APP_NAME}:${IMG_TAG}"
           LATEST="$DOCKERHUB_USR/${APP_NAME}:latest"
           docker build --pull -t "$IMAGE" -t "$LATEST" -f Dockerfile .
         '''
-      }
-    }
-
-    stage('Push Image') {
-      steps {
         sh label: 'docker push', script: '''
           set -e
           IMAGE="$DOCKERHUB_USR/${APP_NAME}:${IMG_TAG}"
@@ -65,42 +54,18 @@ pipeline {
       }
     }
 
-    stage('Deploy: Pull') {
+    stage('Deploy') {
       steps {
         dir("${DEPLOY_DIR}") {
           sh label: 'compose pull', script: '''
             set -e
             docker compose --env-file .env -p ${COMPOSE_PROJECT} -f ${DEPLOY_COMPOSE_APP} pull ${SERVICE_NAME}
           '''
-        }
-      }
-    }
-
-    stage('Deploy: Up') {
-      steps {
-        dir("${DEPLOY_DIR}") {
           sh label: 'compose up -d', script: '''
             set -e
             docker compose --env-file .env -p ${COMPOSE_PROJECT} -f ${DEPLOY_COMPOSE_APP} up -d ${SERVICE_NAME}
           '''
         }
-      }
-    }
-
-    stage('Health Check') {
-      steps {
-        sh label: 'check service', script: '''
-          set -e
-          for i in $(seq 1 12); do
-            if wget -qS --spider ${HEALTH_URL} 2>&1 | grep -q "200 OK"; then
-              echo "Health OK"
-              exit 0
-            fi
-            echo "waiting health... ($i/12)"
-            sleep 5
-          done
-          echo "Health check failed"; exit 1
-        '''
       }
     }
   }
