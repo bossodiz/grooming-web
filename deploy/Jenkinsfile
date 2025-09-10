@@ -1,61 +1,77 @@
 pipeline {
   agent any
-  options { timestamps(); ansiColor('xterm') }
+  options { timestamps(); disableConcurrentBuilds() }
 
   environment {
-    COMPOSE_PROJECT    = 'bbp'
-    DEPLOY_COMPOSE_APP = '/workspace/deploy/docker-compose-app.yml'
-    APP_NAME           = 'grooming-web'
+    APP_NAME            = 'grooming-web'
+    SERVICE_NAME        = 'web'
+    COMPOSE_PROJECT     = 'bbp'
+    DEPLOY_DIR          = '/workspace/deploy'
+    DEPLOY_COMPOSE_APP  = "${DEPLOY_DIR}/docker-compose-app.yml"
   }
 
   stages {
-    stage('Checkout') {
-      steps {
-        checkout([$class: 'GitSCM',
-          branches: [[name: '*/main']],
-          userRemoteConfigs: [[url: 'https://github.com/bossodiz/grooming-web.git']]
-        ])
-      }
-    }
+    stage('Checkout') { steps { checkout scm } }
 
     stage('Compute Tag') {
       steps {
         script {
-          def short = sh(script: "git rev-parse --short=7 HEAD", returnStdout:true).trim()
-          def dt    = sh(script: "date +%Y%m%d-%H%M%S", returnStdout:true).trim()
-          env.IMG_TAG = "${dt}-${short}"
+          def shortHash = sh(returnStdout: true, script: 'git rev-parse --short=7 HEAD').trim()
+          def dt        = sh(returnStdout: true, script: 'date +%Y%m%d-%H%M%S').trim()
+          env.IMG_TAG   = "${dt}-${shortHash}"
+          echo "Image tag: ${env.IMG_TAG}"
         }
       }
     }
 
-    stage('Build & Push Docker') {
+    stage('Docker Login') {
       steps {
         withCredentials([usernamePassword(credentialsId: 'dockerhub-creds',
                                           usernameVariable: 'DOCKER_USER',
                                           passwordVariable: 'DOCKER_PASS')]) {
-          sh '''
-            set -e
-            echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-
-            IMAGE="$DOCKER_USER/${APP_NAME}:${IMG_TAG}"
-            LATEST="$DOCKER_USER/${APP_NAME}:latest"
-
-            docker build --pull -t "$IMAGE" -t "$LATEST" -f Dockerfile .
-            docker push "$IMAGE"
-            docker push "$LATEST"
-          '''
+          sh 'echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin'
         }
       }
     }
 
-    stage('Deploy (web)') {
+    stage('Build Image') {
       steps {
         sh '''
           set -e
-          docker compose -p ${COMPOSE_PROJECT} -f ${DEPLOY_COMPOSE_APP} pull web
-          docker compose -p ${COMPOSE_PROJECT} -f ${DEPLOY_COMPOSE_APP} up -d web
+          IMAGE="$DOCKER_USER/${APP_NAME}:${IMG_TAG}"
+          LATEST="$DOCKER_USER/${APP_NAME}:latest"
+          docker build --pull -t "$IMAGE" -t "$LATEST" -f Dockerfile .
         '''
       }
     }
+
+    stage('Push Image') {
+      steps {
+        sh '''
+          set -e
+          IMAGE="$DOCKER_USER/${APP_NAME}:${IMG_TAG}"
+          LATEST="$DOCKER_USER/${APP_NAME}:latest"
+          docker push "$IMAGE"
+          docker push "$LATEST"
+        '''
+      }
+    }
+
+    stage('Deploy') {
+      steps {
+        dir("${DEPLOY_DIR}") {
+          sh '''
+            set -e
+            docker compose --env-file .env -p ${COMPOSE_PROJECT} -f ${DEPLOY_COMPOSE_APP} pull ${SERVICE_NAME}
+            docker compose --env-file .env -p ${COMPOSE_PROJECT} -f ${DEPLOY_COMPOSE_APP} up -d ${SERVICE_NAME}
+          '''
+        }
+      }
+    }
+  }
+
+  post {
+    success { echo "✅ Deployed ${env.APP_NAME}:${env.IMG_TAG}" }
+    failure { echo "❌ Build/Deploy failed for ${env.APP_NAME}" }
   }
 }

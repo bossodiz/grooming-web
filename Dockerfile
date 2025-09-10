@@ -1,13 +1,17 @@
-FROM node:20 AS build
+# ---- Build stage ----
+FROM node:20-alpine AS build
 WORKDIR /app
 COPY package*.json ./
 RUN npm ci
 COPY . .
-RUN npm run build -- --configuration=production
+# สั่ง build ออกไปที่โฟลเดอร์ /app/build (ตัดปัญหา dist/<app-name>)
+RUN npm run build -- --configuration production --output-path=build
 
+# ---- Runtime stage ----
 FROM nginx:alpine
-COPY --from=build /app/dist/ /usr/share/nginx/html/
-# healthz
-RUN echo "ok" > /usr/share/nginx/html/healthz
-# reverse proxy ผ่าน Nginx ด้านหน้าอีกชั้น (ไฟล์นี้เสิร์ฟแบบ static)
+# Nginx config สำหรับ SPA (Angular)
+COPY deploy/nginx.default.conf /etc/nginx/conf.d/default.conf
+# คัดลอกผล build ไปเสิร์ฟ
+COPY --from=build /app/build/ /usr/share/nginx/html/
 EXPOSE 80
+HEALTHCHECK --interval=30s --timeout=5s --retries=5 CMD wget -qO- http://127.0.0.1/ >/dev/null || exit 1
