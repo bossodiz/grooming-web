@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiBaseUrl: '/api', // เรียกแบบ relative
+  apiBaseUrl: 'http://localhost:8080',
 };

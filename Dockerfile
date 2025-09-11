@@ -1,16 +1,14 @@
-# ---- Build stage ----
 FROM node:20-alpine AS build
 WORKDIR /app
 COPY package*.json ./
-RUN npm ci
+RUN npm install
 COPY . .
-# สั่ง build ออกไปที่โฟลเดอร์ /app/build (ตัดปัญหา dist/<app-name>)
-RUN npm run build -- --configuration production --output-path=build
 
-# ---- Runtime stage ----
+ARG API_BASE_URL=http://api:8080
+# แทนที่ placeholder ในไฟล์ env.prod ก่อน build
+RUN sed -i "s|__API_BASE_URL__|${API_BASE_URL}|g" src/environments/environment.prod.ts
+
+RUN npm run build --configuration production --output-path=build
+
 FROM nginx:alpine
-# Nginx config สำหรับ SPA (Angular)
-COPY ./deploy/nginx/default.conf /etc/nginx/conf.d/default.conf
-# คัดลอกผล build ไปเสิร์ฟ
-COPY --from=build /app/build/browser/ /usr/share/nginx/html/
-EXPOSE 80
+COPY --from=build /app/dist /usr/share/nginx/html

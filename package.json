@@ -1,5 +1,5 @@
 {
-  "name": "grooming-admin",
+  "name": "grooming-web",
   "version": "1.0.0",
   "engines": {
     "node": ">=20 <21"

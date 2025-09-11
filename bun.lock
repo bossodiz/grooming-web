@@ -2,7 +2,7 @@
   "lockfileVersion": 1,
   "workspaces": {
     "": {
-      "name": "grooming-admin",
+      "name": "grooming-web",
       "dependencies": {
         "@angular/animations": "^19.0.6",
         "@angular/common": "^19.0.6",

@@ -34,15 +34,6 @@ pipeline {
       }
     }
 
-    stage('Build Angular') {
-      steps {
-        sh '''
-          docker run --rm -v "$PWD":/app -w /app node:20 \
-            bash -lc "npm ci && npx ng version && npx ng build --configuration production"
-        '''
-      }
-    }
-
     stage('Build Docker Image') {
       steps {
         sh '''

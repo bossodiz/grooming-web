@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "grooming-admin": {
+    "grooming-web": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/grooming-admin",
+            "outputPath": "dist/grooming-web",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": ["zone.js", "@angular/localize/init"],
@@ -48,7 +48,12 @@
           },
           "configurations": {
             "production": {
-              "optimization": true
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ]
             },
             "development": {
               "optimization": false,
@@ -62,10 +67,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "grooming-admin:build:production"
+              "buildTarget": "grooming-web:build:production"
             },
             "development": {
-              "buildTarget": "grooming-admin:build:development"
+              "buildTarget": "grooming-web:build:development"
             }
           },
           "defaultConfiguration": "development"
