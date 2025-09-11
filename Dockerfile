@@ -4,7 +4,7 @@ COPY package*.json ./
 RUN npm install
 COPY . .
 
-ARG API_BASE_URL
+ARG API_BASE_URL=http://localhost:8091
 # แทนที่ placeholder ในไฟล์ env.prod ก่อน build
 RUN sed -i "s|__API_BASE_URL__|${API_BASE_URL}|g" src/environments/environment.prod.ts
 
