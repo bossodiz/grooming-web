@@ -7,7 +7,7 @@ pipeline {
     IMAGE_NAME = "bossodiz/grooming-web"
     STACK_DIR = "/apps/stack"
     // URL ของ API ที่ frontend จะเรียกตอน build image
-    API_BASE_URL = "http://localhost:8080"   // หรือ "http://api:8080" ถ้าใช้ผ่าน docker network
+    API_BASE_URL = "http://localhost:8091"   // หรือ "http://api:8080" ถ้าใช้ผ่าน docker network
   }
 
   options { timestamps() }
