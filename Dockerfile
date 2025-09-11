@@ -8,7 +8,7 @@ ARG API_BASE_URL=http://api:8080
 # แทนที่ placeholder ในไฟล์ env.prod ก่อน build
 RUN sed -i "s|__API_BASE_URL__|${API_BASE_URL}|g" src/environments/environment.prod.ts
 
-RUN npm run build --configuration production --output-path=build
+RUN npx ng build --configuration production --output-path=build
 
 FROM nginx:alpine
-COPY --from=build /app/dist /usr/share/nginx/html
+COPY --from=build /app/build/browser/ /usr/share/nginx/html/
