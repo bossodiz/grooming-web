@@ -1,0 +1,20 @@
+version: "3.8"
+
+networks:
+  appnet:
+    external: true
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        API_BASE_URL: /api # ให้ Angular ยิง /api ภายใต้โดเมนเดียวกัน
+    container_name: ${STACK_PREFIX}_web
+    restart: unless-stopped
+    environment:
+      TZ: Asia/Bangkok
+    ports:
+      - "18000:80"
+    networks: [appnet]

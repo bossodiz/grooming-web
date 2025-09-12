@@ -1,14 +1,22 @@
+# ---- Build stage ----
 FROM node:20-alpine AS build
 WORKDIR /app
+
 COPY package*.json ./
-RUN npm install
+RUN npm ci
+
 COPY . .
-
-ARG API_BASE_URL=http://localhost:8091
-# แทนที่ placeholder ในไฟล์ env.prod ก่อน build
-RUN sed -i "s|__API_BASE_URL__|${API_BASE_URL}|g" src/environments/environment.prod.ts
-
+# IMPORTANT: ใน environment.prod.ts ให้ตั้ง
+# export const environment = { production: true, apiBaseUrl: '/api' };
 RUN npx ng build --configuration production --output-path=build
 
+# ---- Runtime stage ----
 FROM nginx:alpine
+# ใส่ config สำหรับ SPA fallback (ไม่ต้อง proxy /api ในคอนเทนเนอร์นี้)
+COPY deploy/nginx/default.conf /etc/nginx/conf.d/default.conf
+
+# ไฟล์ Angular ที่ build แล้ว
 COPY --from=build /app/build/browser/ /usr/share/nginx/html/
+
+EXPOSE 80
+CMD ["nginx","-g","daemon off;"]
