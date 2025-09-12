@@ -1,6 +1,6 @@
 pipeline {
   agent any
-  options { timestamps() }
+  options { ansiColor('xterm'); timestamps() }
 
   parameters {
     string(name: 'BRANCH', defaultValue: 'main', description: 'Git branch to deploy')
