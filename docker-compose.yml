@@ -10,8 +10,8 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-        API_BASE_URL: /api # ให้ Angular ยิง /api ภายใต้โดเมนเดียวกัน
-    container_name: ${STACK_PREFIX}_web
+        API_BASE_URL: /api
+    container_name: bbp-web
     restart: unless-stopped
     environment:
       TZ: Asia/Bangkok
